@@ -1,0 +1,48 @@
+<?php
+/**
+ * @package		mod_qlform
+ * @copyright	Copyright (C) 2013 ql.de All rights reserved.
+ * @author 		Mareike Riegel mareike.riegel@ql.de
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+class modQlformSomethingCompletelyDifferent
+{
+	public $data;
+	public $params;
+    public $module;
+    public $form;
+
+	/**
+	 * constructor 
+	 */  	
+	public function __construct($data,$params,$module,$form)
+	{
+		$this->data=$data;
+		$this->params=$params;
+        $this->module=$module;
+        $this->form=$form;
+	}
+
+	/**
+	 * method to do completely different,
+	 * add any methods you need
+	 * @param arr $data at your service
+     * @param object $params at your service
+     * @param object $module at your service
+     * @param object $form at your service
+	 */  	
+	public function doSomethingCompletelyDifferent()
+	{
+		//echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        //notice:
+        //arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
+        //So use json_decode(preg_replace("/'/",'"',$dataOfField)); to get your array back
+        //Greetings
+        //Mareike
+		if (1==1) return true;
+		else return false;
+	}
+}

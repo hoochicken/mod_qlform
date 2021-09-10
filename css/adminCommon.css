@@ -1,0 +1,13 @@
+/**
+ * @package     tpl_qlproto
+ *
+ * @copyright   Copyright (C) 2016 Mareike Riegel
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+.row-fluid [href*="attrib-filter"],
+#attrib-hideandseek,
+.row-fluid [href*="attrib-hideandseek"],
+#attrib-form,
+.row-fluid [href*="attrib-form"]
+
+{display:none!important;}

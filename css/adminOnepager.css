@@ -1,0 +1,17 @@
+/**
+ * @package     tpl_qlproto
+ *
+ * @copyright   Copyright (C) 2016 Mareike Riegel
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+#attrib-secondHeader,
+.row-fluid [href*="attrib-secondHeader"],
+#attrib-secondFooter,
+.row-fluid [href*="attrib-secondFooter"],
+#attrib-secondNavigation,
+.row-fluid [href*="attrib-secondNavigation"],
+#attrib-modules,
+.row-fluid [href*="attrib-modules"]
+
+{display:none!important;}

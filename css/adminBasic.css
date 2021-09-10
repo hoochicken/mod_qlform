@@ -1,0 +1,18 @@
+/**
+ * @package     tpl_qlproto
+ *
+ * @copyright   Copyright (C) 2019 Mareike Riegel
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ */
+#attrib-database>.control-group,
+#attrib-databaseexternal>.control-group,
+#attrib-fileupload>.control-group
+{
+    display:none!important;
+}
+#attrib-database>.control-group:nth-child(1),
+#attrib-databaseexternal>.control-group:nth-child(1),
+#attrib-fileupload>.control-group:nth-child(1)
+{
+    display:initial!important;
+}

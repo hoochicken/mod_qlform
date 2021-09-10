@@ -1,0 +1,119 @@
+<?php
+/**
+ * @package		mod_qlform
+ * @copyright	Copyright (C) 2019 ql.de All rights reserved.
+ * @author 		Mareike Riegel mareike.riegel@ql.de
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+class modQlformPreprocessData
+{
+	public $data;
+	public $params;
+    public $module;
+    public $form;
+
+	/**
+	 * constructor 
+	 */  	
+	public function __construct($data,$params,$module,$form)
+	{
+		$this->data=$data;
+		$this->params=$params;
+        $this->module=$module;
+        $this->form=$form;
+        $formControl=$this->params->get('formControl','jform');
+        $this->files=JFactory::getApplication()->input->files->get($formControl);
+        //echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        //notice:
+        //(1) arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
+        //So use json_decode(preg_replace("/'/",'"',$dataOfField)); to get your array back
+        //(2) if you want to use the ORIGINAL data use $this->data and $this->files
+        //Greetings
+        //Mareike
+    }
+    /**
+     * print function available via $this->p($data);
+     */
+    function p($data,$die=1)
+    {
+        echo '<pre>';print_r($data);echo '</pre>';
+        if(1==$die)die('kia');
+    }
+	/**
+	 * process data from form, NO data of files yet
+	 */
+	public function formDataBeforeValidation($data)
+	{
+        return $data;
+	}
+    /**
+     * process data from form inbcluding file data
+     * these data are only used for validation
+     */
+    public function formAndFileDataBeforeValidation($data)
+    {
+        return $data;
+    }
+    /**
+     * process data before binding it back to form
+     */
+    public function beforeBindToForm($data)
+    {
+        return $data;
+    }
+
+    /**
+     * process data before mailing
+     */
+    public function email($data)
+    {
+        return $this->sendcopy($data);
+    }
+    /**
+     * process data before database storing
+     */
+    public function database($data)
+    {
+        return $data;
+    }
+    /**
+     * process data before database storing (external)
+     */
+    public function databaseExternal($data)
+    {
+        return $data;
+    }
+
+    /**
+     * process data before doing something else
+     */
+    public function somethingElse($data)
+    {
+        return $data;
+    }
+
+    /**
+     * process data before doing something completly different
+     */
+    public function completlyDifferent($data)
+    {
+        return $data;
+    }
+    /**
+     * process data before storing in database via Joomla! messages component; you can use html here
+     */
+    public function jmessage($data)
+    {
+        return $data;
+    }
+    /**
+     * process data before sending the sendcopy e-mail
+     */
+    public function sendcopy($data)
+    {
+        return $data;
+    }
+}

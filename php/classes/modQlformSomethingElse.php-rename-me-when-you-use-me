@@ -1,0 +1,77 @@
+<?php
+/**
+ * @package		mod_qlform
+ * @copyright	Copyright (C) 2016 ql.de All rights reserved.
+ * @author 		Mareike Riegel mareike.riegel@ql.de
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+defined('_JEXEC') or die;
+
+class modQlformSomethingElse
+{
+	
+	public $data;
+	public $params;
+    public $module;
+    public $form;
+
+	/**
+	 * constructor 
+	 */  	
+	public function __construct($data,$params,$module,$form)
+	{
+		$this->data=$data;
+		$this->params=$params;
+        $this->module=$module;
+        $this->form=$form;
+	}
+
+	/**
+	 * method to do something else,
+	 * that the developer of this module could never have guessed
+	 * add any methods you need
+	 * @param arr $data at your service
+     * @param object $params at your service
+     * @param object $module at your service
+     * @param object $form at your service
+     * @return bool true on success, false on failure
+	 */
+	public function doSomethingElse()
+	{
+		//echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        //$this->wtf(); /*just in case*/
+
+        //notice:
+        //arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
+        //So use json_decode(preg_replace("/'/",'"',$dataOfField)); to get your array back
+        //Greetings
+        //Mareike
+
+        if (1==1) return true;
+		else return false;
+    }
+
+    /**
+     * method to print wtf into your screen
+     * in cases of panic, paranoya, hatred, and anger
+     * towards the own (or other people's) dumbness
+     * @param string $str string for output
+     * @param bool $print print
+     * @param integer $exclamationmarks amount of exclamation marks printed after wtf output
+     * @param bool $aah wtf is followed by that an "Aaaahhhh"
+     * @param bool $exit
+     * @return string $wtf string
+     */
+    private function wtf($str='wtf',$print=1,$exclamationmarks=3,$aah=0,$exit=0)
+    {
+        $style='';
+        $str='<h1>'.$str;
+        for($i=1;$i<=$exclamationmarks;$i++)$str.='!';
+        $str.='</h1>';
+        if (1==$aah)$str.='<h1>Aaaah,Aaaaah,Aaaaah!<br />Aaaaah,Aaaaah!<br />#0/6$$§X-#/lth;@F*Ck#&amp;!<br /> AAAAAAAAAHHH!!!</h1>';
+        if(1==$print)print_r($str);
+        if(1==$exit)exit();
+        else return $str;
+    }
+}
