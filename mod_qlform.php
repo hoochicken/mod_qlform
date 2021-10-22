@@ -17,9 +17,9 @@ $objInput = JFactory::getApplication()->input;
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');
 
-    $moduleIdByAjax = (int) $objInput->getInt('moduleId', 0);
+    $moduleIdByAjax = (int)$objInput->getInt('moduleId', 0);
     $objDb = JFactory::getDbo();
-    $objDb->setQuery('SELECT * FROM #__modules WHERE id = ' . (string) $moduleIdByAjax);
+    $objDb->setQuery('SELECT * FROM #__modules WHERE id = ' . (string)$moduleIdByAjax);
     $arrResult = $objDb->loadObject();
     $strParams = $arrResult->params ?? '';
 
@@ -34,7 +34,7 @@ $objHelper = new modQlformHelper($params, $module);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
 
-if (1 === (int) $params->get('smtpCheck', 0)) {
+if (1 === (int)$params->get('smtpCheck', 0)) {
     $recipient = preg_split("?\n?", $params->get('emailrecipient'));
     if (0 === count($recipient)) {
         $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
