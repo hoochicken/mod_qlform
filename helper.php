@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2019 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2021 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -34,6 +34,7 @@ class modQlformHelper
     {
         $this->params = $params;
         $this->module = $module;
+        $this->arrMessages = [];
     }
 
 
@@ -266,7 +267,6 @@ class modQlformHelper
             $obj_validator = new modQlformValidation($data, $this->params, $this->module, $this->form);
             $validatedCustom = $obj_validator->validate();
         }
-
         if ((isset($validated) AND false == $validated) OR (isset($validatedCustom) AND false == $validatedCustom)) {
             $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_VALIDATION_FAILED'));
             foreach ($this->form->getErrors() as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => $v->getMessage());
