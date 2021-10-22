@@ -7,26 +7,27 @@
  */
 defined('_JEXEC') or die;
 
+/** @var $module stdClass */
+/** @var $objHelper qlform\modQlformHelper */
+/** @var $params Joomla\Registry\Registry */
+/** @var $modelModqlform  */
+/** @var $modQlformCaptcha qlform\modQlformCaptcha */
+/** @var $modQlformMailer qlform\modQlformMailer */
+/** @var $modQlformDatabase qlform\modQlformDatabase */
+/** @var $modQlformDatabaseExternal qlform\modQlformDatabaseExternal */
+/** @var $modQlformMessager qlform\modQlformMessager */
+/** @var $modQlformJmessages qlform\modQlformJmessages */
+/** these 4 classes only exist, if files are renamed */
+/** @var $modQlformSomethingElse qlform\modQlformSomethingElse */
+/** @var $modQlformSomethingCompletelyDifferent qlform\modQlformSomethingCompletelyDifferent */
+/** @var $modQlformValidation qlform\modQlformValidation */
+/** @var $modQlformPreprocessData qlform\modQlformPreprocessData */
+
 require_once(dirname(__FILE__) . '/helper.php');
-$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
+$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
 foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
 
 $objInput = JFactory::getApplication()->input;
-/** @var $module stdClass */
-/** @var $objHelper modQlformHelper */
-/** @var $params Joomla\Registry\Registry */
-/** @var $modelModqlform  */
-/** @var $modQlformCaptcha Joomla\Registry\Registry */
-/** @var $modQlformMailer Joomla\Registry\Registry */
-/** @var $modQlformDatabase Joomla\Registry\Registry */
-/** @var $modQlformDatabaseExternal Joomla\Registry\Registry */
-/** @var $modQlformMessager Joomla\Registry\Registry */
-/** @var $modQlformSomethingElse Joomla\Registry\Registry */
-/** @var $modQlformSomethingCompletelyDifferent Joomla\Registry\Registry */
-/** @var $modQlformFiler Joomla\Registry\Registry */
-/** @var $modQlformJmessages Joomla\Registry\Registry */
-/** @var $modQlformValidation Joomla\Registry\Registry */
-/** @var $modQlformPreprocessData Joomla\Registry\Registry */
 
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');
