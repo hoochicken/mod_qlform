@@ -20,9 +20,9 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin)
     }
 }?>
 
-<form method="post" action="<?php echo JText::_(htmlspecialchars($params->get('action'))); ?>" id="mod_qlform_<?php echo $module->id;?>" class="<?php echo $params->get('formclass','form-horizontal');?> form-validate" <?php if (1==$params->get('fileupload_enabled') OR 1==$params->get('fileemail_enabled')) echo ' enctype="multipart/form-data" ';?>>
+<form method="post" action="<?php echo JText::_(htmlspecialchars($params->get('action'))); ?>" id="mod_qlform_<?php echo $module->id;?>" class="<?php echo $params->get('formclass','form-horizontal');?> form-validate" <?php if (1==$params->get('fileupload_enabled') || 1==$params->get('fileemail_enabled')) echo ' enctype="multipart/form-data" ';?>>
     <?php
-    if (1==$params->get('addPostToForm') AND isset($array_posts) AND is_array($array_posts)) : foreach ($array_posts as $k=>$v) :?>
+    if (1==$params->get('addPostToForm') && isset($array_posts) && is_array($array_posts)) : foreach ($array_posts as $k=>$v) :?>
         <input type="hidden" name="former[<?php echo $k;?>]" value="<?php echo preg_replace("/\"/","",$v);?>" /><?php
     endforeach; endif; ?>
     <?php if(1==$params->get('honeypot',0)) :?>
@@ -39,7 +39,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin)
         echo '<fieldset id="'.$fieldset->name.'"';
         if (isset($fieldset->class)) echo ' class="'.$fieldset->class.'"';
         echo '>';
-        if (isset($fieldset->label) AND ''!=$fieldset->label) echo '<legend id="legend'.$fieldset->name.'">'.JText::_($fieldset->label).'</legend>';
+        if (isset($fieldset->label) && ''!=$fieldset->label) echo '<legend id="legend'.$fieldset->name.'">'.JText::_($fieldset->label).'</legend>';
         foreach($fields as $field):
             if ($field->hidden && false !== strpos($field->input, 'MAX_FILE_SIZE')): echo $field->value.'<input type="hidden" name="MAX_FILE_SIZE" value="' . $params->get('fileupload_maxfilesize', 0) . '" />';
             elseif ($field->hidden): echo $field->input;
@@ -48,7 +48,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin)
                 <div class="form-group control-group <?php echo $field->id;?> <?php if (1==$params->get('stylesLabelswithin',0)) echo 'notlabelled'; else echo 'labelled';?> <?php echo $field->class;?>">
                     <?php
                     // print_r($field);
-                    if (1!=$params->get('stylesLabelswithin',0) OR $objHelper->formControl.'_sendcopy'==trim($field->id) OR 'spacer'==strtolower($field->type) OR 'checkboxes'==strtolower($field->type)):
+                    if (1!=$params->get('stylesLabelswithin',0) || $objHelper->formControl.'_sendcopy'==trim($field->id) || 'spacer'==strtolower($field->type) || 'checkboxes'==strtolower($field->type)):
                         $label=$field->label;
                         $label=str_replace('}}','>',str_replace('{{','<',preg_replace('/class="/', 'class="control-label ',$label,1)));
                         echo $label;
@@ -66,7 +66,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin)
         endforeach;
         echo '</fieldset>';
     endforeach; ?>
-    <?php if (true === $boolShowCaptcha AND $objCaptcha instanceof JCaptcha) require JModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
+    <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require JModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
     <div class="submit control-group">
         <div class="controls"><button class="btn btn-large btn-primary submit" type="submit"><?php echo htmlspecialchars(JText::_($params->get('submit'))); ?></button></div>
     </div>

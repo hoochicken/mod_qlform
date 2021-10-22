@@ -10,19 +10,20 @@ defined('_JEXEC') or die;
 require_once(dirname(__FILE__) . '/helper.php');
 
 $objInput = JFactory::getApplication()->input;
-/** @var $module stdClass*/
-/** @var $objHelper modQlformHelper*/
+/** @var $module stdClass */
+/** @var $objHelper modQlformHelper */
+/** @var $params Joomla\Registry\Registry */
 
 if (1 == $objInput->getInt('qlformAjax', 0)) {
-    jimport( 'joomla.application.module.helper' );
+    jimport('joomla.application.module.helper');
 
-    $moduleIdByAjax = $objInput->getInt('moduleId', 0);
+    $moduleIdByAjax = (int) $objInput->getInt('moduleId', 0);
     $objDb = JFactory::getDbo();
-    $objDb->setQuery('SELECT * FROM #__modules WHERE id = ' . $moduleIdByAjax);
+    $objDb->setQuery('SELECT * FROM #__modules WHERE id = ' . (string) $moduleIdByAjax);
     $arrResult = $objDb->loadObject();
-    $strParams = isset($arrResult->params) ? $arrResult->params : '';
+    $strParams = $arrResult->params ?? '';
 
-    // create propor param object
+    // create proper param object
     $params = new JRegistry();
     $params->loadString($strParams);
     $module = $arrResult;
@@ -33,7 +34,7 @@ $objHelper = new modQlformHelper($params, $module);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
 
-if (1 == $params->get('smtpCheck', 0)) {
+if (1 === (int) $params->get('smtpCheck', 0)) {
     $recipient = preg_split("?\n?", $params->get('emailrecipient'));
     if (0 === count($recipient)) {
         $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
@@ -86,14 +87,14 @@ if (true === $boolShowCaptcha) {
 // check database connection
 if (true === (bool)$params->get('todoDatabase')) {
     $boolCheckDatabase = $objHelper->connectToDatabase();
-    if (true === $boolCheckDatabase){
+    if (true === $boolCheckDatabase) {
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
 }
 
 if (true === (bool)$params->get('todoDatabaseExternal')) {
     $arrParamsDatabaseExternal = ['driver', 'host', 'user', 'password', 'database', 'prefix',];
-    foreach ($arrParamsDatabaseExternal as $strAttribute){
+    foreach ($arrParamsDatabaseExternal as $strAttribute) {
         $strParameter = 'databaseexternal' . $strAttribute;
         $arrParamsDatabaseExternal[$$strAttribute] = $params->get($strParameter);
     }
@@ -110,21 +111,21 @@ if
     /*JabBerwOcky for anti spam*/
     (
         0 == $params->get('honeypot', 0)
-        OR
-        (1 == $params->get('honeypot', 0) AND isset($_POST['JabBerwOcky']) AND '' == $_POST['JabBerwOcky'])
+        or
+        (1 == $params->get('honeypot', 0) and isset($_POST['JabBerwOcky']) and '' == $_POST['JabBerwOcky'])
     )
-    AND
+    and
     (
-        (true === $boolFieldModuleId AND isset($_POST['moduleId']) AND $_POST['moduleId'] == $numModuleId AND isset($_POST['formSent']) AND 1 == $_POST['formSent'] AND is_object($objForm))
-        OR
-        (false === $boolFieldModuleId AND isset($_POST['formSent']) AND 1 == $_POST['formSent'] AND is_object($objForm))
+        (true === $boolFieldModuleId and isset($_POST['moduleId']) and $_POST['moduleId'] == $numModuleId and isset($_POST['formSent']) and 1 == $_POST['formSent'] and is_object($objForm))
+        or
+        (false === $boolFieldModuleId and isset($_POST['formSent']) and 1 == $_POST['formSent'] and is_object($objForm))
     )
 ) {
     $data = $objInput->getData($objHelper->formControl);
     $objHelper->processData = false;
     if (1 == $params->get('processData', 0)) $objHelper->initPreprocessing($data, $module, $objForm);
     if ($objHelper->processData) $data = $objHelper->processFor($data, 'formDataBeforeValidation');
-    if (1 == $params->get('captchaadded') AND 0 != $boolShowCaptcha AND isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
+    if (1 == $params->get('captchaadded') and 0 != $boolShowCaptcha and isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
     $dataToValidate = $data;
     $dataFiles = $objInput->files->get($objHelper->formControl);
     if (is_array($dataFiles)) $dataToValidate = array_merge($dataFiles, $dataToValidate);
@@ -132,10 +133,10 @@ if
     $validatedForm = $objHelper->validate($dataToValidate);
     $objForm = $objHelper->form;
     $validatedCaptcha = false;
-    if (1 == $boolShowCaptcha AND $objCaptcha instanceof JCaptcha) $validatedCaptcha = $objHelper->checkCaptcha($objCaptcha, $data);
-    if ($validatedForm AND (0 == $boolShowCaptcha OR (1 == $boolShowCaptcha AND $validatedCaptcha))) $validated = true;
+    if (1 == $boolShowCaptcha and $objCaptcha instanceof JCaptcha) $validatedCaptcha = $objHelper->checkCaptcha($objCaptcha, $data);
+    if ($validatedForm and (0 == $boolShowCaptcha or (1 == $boolShowCaptcha and $validatedCaptcha))) $validated = true;
     else {
-        if (is_array($data) OR is_object($data)) foreach ($data as $k => $v) if (is_string($v)) $data[$k] = strip_tags(html_entity_decode($v));
+        if (is_array($data) or is_object($data)) foreach ($data as $k => $v) if (is_string($v)) $data[$k] = strip_tags(html_entity_decode($v));
         if (true == $objHelper->processData) $data = $objHelper->processFor($data, 'beforeBindToForm');
         $success = $objForm->bind($data);
         $validated = false;
@@ -148,15 +149,15 @@ if (1 == $params->get('addPostToForm', 0)) {
         $array_posts = $objHelper->stripQuotesInArrayValue($array_posts);
         $array_posts = $objHelper->mergeSubarrays($array_posts, 'former', $objHelper->formControl);
     }
-    if (isset($data) AND isset($array_posts) AND is_array($array_posts)) {
+    if (isset($data) and isset($array_posts) and is_array($array_posts)) {
         $data = array_merge($data, $array_posts);
     }
 }
 
-if (isset($validated) AND 1 == $validated) {
+if (isset($validated) and 1 == $validated) {
     /*FILE_UPLOAD START*/
     $objHelper->files = $objInput->files->get($objHelper->formControl);
-    if ((1 == $params->get('fileupload_enabled', 0) OR 1 == $params->get('fileemail_enabled', 0)) AND true == $objHelper->checkPlgQlformuploaderExists() AND is_array($objHelper->files) AND 0 < count($objHelper->files)) {
+    if ((1 == $params->get('fileupload_enabled', 0) or 1 == $params->get('fileemail_enabled', 0)) and true == $objHelper->checkPlgQlformuploaderExists() and is_array($objHelper->files) and 0 < count($objHelper->files)) {
         require_once(JPATH_BASE . '/plugins/system/qlformuploader/php/classes/plgQlformuploaderFiler.php');
         foreach ($objHelper->files as $k => $v) {
             $objHelper->files[$k]['current'] = $objHelper->files[$k]['tmp_name'];
@@ -192,7 +193,7 @@ if (isset($validated) AND 1 == $validated) {
             }
             $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
         }
-        foreach($mailSent as $k => $v) {
+        foreach ($mailSent as $k => $v) {
             if (1 != $v) {
                 unset($mailSent[$k]);
             }
@@ -204,7 +205,7 @@ if (isset($validated) AND 1 == $validated) {
             $failed = count($recipient) - count($mailSent);
             $objHelper->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_MAIL_SENT_ERROR_COUNT'), $successful, $failed));
         }
-        if (isset($objHelper->files) AND 1 == $params->get('fileemail_enabled', 0)) {
+        if (isset($objHelper->files) and 1 == $params->get('fileemail_enabled', 0)) {
             foreach ($objHelper->files as $k => $v) {
                 $dataFileUpload[$v['name']]['savedTo'] = $v['current'];
                 $dataFileUpload[$v['name']]['error'] = $v['error'];
@@ -215,13 +216,13 @@ if (isset($validated) AND 1 == $validated) {
     }
     $dataJsonified = $objHelper->subarrayToJson($data);
 
-    if (1 == $params->get('todoDatabase') AND true == $boolCheckDatabase) {
+    if (1 == $params->get('todoDatabase') and true == $boolCheckDatabase) {
         if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
         if (1 == $params->get('databaseaddcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databasetable'), $dataJsonified);
     }
-    if (1 == $params->get('todoDatabaseExternal') AND true == $boolCheckDatabaseExternal) {
+    if (1 == $params->get('todoDatabaseExternal') and true == $boolCheckDatabaseExternal) {
         if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
         if (1 == $params->get('databaseexternaladdcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
@@ -239,7 +240,7 @@ if (isset($validated) AND 1 == $validated) {
         if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'jmessage');
         $objHelper->sendJmessage($data);
     }
-    if (1 == $params->get('todoSendcopy') AND isset($_POST[$objHelper->formControl]) AND isset($_POST[$objHelper->formControl]['sendcopy']) AND 1 == $_POST[$objHelper->formControl]['sendcopy'] AND !empty($data[$params->get('sendcopyfieldname')])) {
+    if (1 == $params->get('todoSendcopy') and isset($_POST[$objHelper->formControl]) and isset($_POST[$objHelper->formControl]['sendcopy']) and 1 == $_POST[$objHelper->formControl]['sendcopy'] and !empty($data[$params->get('sendcopyfieldname')])) {
         $dataWithoutServer = $data;
         if (isset($dataWithoutServer['server'])) unset($dataWithoutServer['server']);
         if (true == $objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
@@ -248,7 +249,7 @@ if (isset($validated) AND 1 == $validated) {
     }
 
     $strLocation = $params->get('location');
-    if (1 == $params->get('locationbool') AND !empty($strLocation)) {
+    if (1 == $params->get('locationbool') and !empty($strLocation)) {
         header('HTTP/1.0 302 Found');
         header('location:' . JText::_($strLocation));
         exit;
@@ -259,6 +260,7 @@ if (isset($validated) AND 1 == $validated) {
 // output json for recieve with javascript
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     $arrReturn = array_column($objHelper->arrMessages, 'str');
+    // $arrReturn = array_merge($arrReturn, $arrReturn2);
     if ($validated) {
         $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn));
     } else {
@@ -270,5 +272,5 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
 
 
 /*Display messages*/
-if (isset($objHelper->arrMessages) AND is_array($objHelper->arrMessages)) $messages = $objHelper->displayMessages($params->get('messageType'));
+if (isset($objHelper->arrMessages) and is_array($objHelper->arrMessages)) $messages = $objHelper->displayMessages($params->get('messageType'));
 require JModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));

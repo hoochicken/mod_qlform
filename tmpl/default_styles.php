@@ -48,7 +48,7 @@ $script.= $moduleIdSelector.','.$moduleIdSelector.' legend,'.$moduleIdSelector.'
 $script.= '{'."\n";
     $script.= 'color:'.$params->get('stylesFontcolor','#000000').';';
     $script.= "\n";
-    if('0'!=$params->get('stylesFontsize','') AND ''!=$params->get('stylesFontsize',''))$script.='font-size:'.$params->get('stylesFontsize','').'px;';
+    if('0'!=$params->get('stylesFontsize','') && ''!=$params->get('stylesFontsize',''))$script.='font-size:'.$params->get('stylesFontsize','').'px;';
     $script.= "\n";
     if(''!=$params->get('stylesFontfamily','')) $script.='font-family:\''.$params->get('stylesFontfamily','').'\';';
     $script.= "\n";

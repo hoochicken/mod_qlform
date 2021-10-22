@@ -36,7 +36,7 @@ class JFormFieldFunctionality extends JFormField
         );
         $used=array();
         $filesNeeded=array();
-        foreach($arr_actions as $k => $v) if(isset($params->$k) AND (('validate'!=$k AND 1==$params->$k) OR ('validate'==$k AND (2==$params->$k OR 3==$params->$k)))) {
+        foreach($arr_actions as $k => $v) if(isset($params->$k) && (('validate'!=$k && 1==$params->$k) || ('validate'==$k && (2==$params->$k || 3==$params->$k)))) {
             $used[]=JText::_('MOD_QLFORM_'.strtoupper(str_replace('_enabled','',$k)).'_LABEL');
             if(false==$v) continue;
             $file='modules/mod_qlform/php/classes/'.$v.'.php';
@@ -65,7 +65,7 @@ class JFormFieldFunctionality extends JFormField
         $query->where('`id`=\''.$id.'\'');
         $db->setQuery($query);
         $data=$db->loadObject();
-        if('*'==$selector OR !isset($data->$selector)) return $data;
+        if('*'==$selector || !isset($data->$selector)) return $data;
         return $data->$selector;
     }
     function checkIfFileExists()

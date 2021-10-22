@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 ?>
 <fieldset id="fieldsetCaptcha">
     <div class="control-group captcha">
-        <?php if(''!=$params->get('captchalabel') AND 1!=$params->get('captchaLabelswithin')) : ?>
+        <?php if(''!=$params->get('captchalabel') && 1!=$params->get('captchaLabelswithin')) : ?>
             <label class="control-label" for="captcha"><?php echo JText::_($params->get('captchalabel'));?></label>
         <?php endif; ?>
         <?php if(''!=trim($params->get('captchadesc'))):?>

@@ -46,15 +46,15 @@ class JFormRuleFoldername extends JFormRule
         {
             $inputApp=JFactory::getApplication()->input;
             $jform=$inputApp->getData('jform');
-            if(!is_array($jform) OR !isset($jform['params'])) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
+            if(!is_array($jform) || !isset($jform['params'])) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
             if(!isset($jform['params']['fileupload_enabled']))return true;
-            if(isset($jform['params']['fileupload_enabled']) AND 0==$jform['params']['fileupload_enabled'])return true;
+            if(isset($jform['params']['fileupload_enabled']) && 0==$jform['params']['fileupload_enabled'])return true;
             if(!preg_match('?[a-zA-Z0-9_\-/]*$?',$value)) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
             //$config=JFactory::getConfig();
             //$tmp=$config->get('tmp_path');
             //$path=$tmp.'/'.$value;
             $path=$value;
-            if (!is_dir($path) AND 0==$dirTrial=mkdir($path)) throw new Exception(JText::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE',$path));
+            if (!is_dir($path) && 0==$dirTrial=mkdir($path)) throw new Exception(JText::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE',$path));
             return true;
         }
         catch (Exception $e)

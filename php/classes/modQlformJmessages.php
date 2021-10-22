@@ -94,11 +94,11 @@ class modQlformJmessages
     public function getSubject($subject,$data,$subject2)
     {
         $arr=explode(',',$subject2);
-        if(!is_array($arr) OR 0==count($arr))return $subject;
+        if(!is_array($arr) || 0==count($arr))return $subject;
         foreach($arr as $k=>$v)if(isset($data[trim($v)]))
         {
             $v=trim($v);
-            if(isset($data[$v]) AND is_string($data[$v]['data']))$subject.=' - '.$data[$v]['data'];
+            if(isset($data[$v]) && is_string($data[$v]['data']))$subject.=' - '.$data[$v]['data'];
             else $subject.=' - '.json_encode($data[$v]);
         }
         return $subject;

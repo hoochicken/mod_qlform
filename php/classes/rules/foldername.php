@@ -48,7 +48,7 @@ class JFormRuleFoldername extends JFormRule
             $config=JFactory::getConfig();
             $tmp=$config->get('tmp_path');
             $path=$tmp.'/'.$value;
-            if (!is_dir($path) AND 0==$dirTrial=mkdir($path)) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE'));
+            if (!is_dir($path) && 0==$dirTrial=mkdir($path)) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE'));
             return true;
         }
         catch (Exception $e)

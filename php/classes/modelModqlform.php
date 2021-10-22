@@ -42,7 +42,7 @@ class modelModqlform extends JModelForm
 	function check($data)
 	{
 		$form=$this->getForm();
-        if (1==$form->validate($data) AND 0==count($form->getErrors())) return true;
+        if (1==$form->validate($data) && 0==count($form->getErrors())) return true;
         return false;
 	}
     public function setFormControl($str)

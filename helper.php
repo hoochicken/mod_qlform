@@ -6,15 +6,18 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use FOF30\Params\Params;
+
 jimport('joomla.form.form');
 
 $arr_files = array('modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',);
-foreach ($arr_files as $k => $v) if (!class_exists($v) AND file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
+foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
 
 class modQlformHelper
 {
 
     public $arrMessages = array();
+    /** @var $params Joomla\Registry\Registry */
     public $params;
     public $form;
     public $module;
@@ -261,13 +264,13 @@ class modQlformHelper
     {
         /*no validation due to params*/
         if (0 == $this->params->get('validate', 1)) return true;
-        if (1 == $this->params->get('validate', 1) OR 3 == $this->params->get('validate', 1)) $validated = $this->obj_form->check($data);
-        if (2 == $this->params->get('validate', 1) OR 3 == $this->params->get('validate', 1)) {
+        if (1 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) $validated = $this->obj_form->check($data);
+        if (2 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) {
             if (false == $this->checkIfCustomExists('modQlformValidation')) return false;
             $obj_validator = new modQlformValidation($data, $this->params, $this->module, $this->form);
             $validatedCustom = $obj_validator->validate();
         }
-        if ((isset($validated) AND false == $validated) OR (isset($validatedCustom) AND false == $validatedCustom)) {
+        if ((isset($validated) && false == $validated) || (isset($validatedCustom) && false == $validatedCustom)) {
             $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_VALIDATION_FAILED'));
             foreach ($this->form->getErrors() as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => $v->getMessage());
             $validated = false;
@@ -289,7 +292,7 @@ class modQlformHelper
      */
     public function raiseFormErrors()
     {
-        if (isset($this->obj_form->formErrors) AND is_array($this->obj_form->formErrors))
+        if (isset($this->obj_form->formErrors) && is_array($this->obj_form->formErrors))
             foreach ($this->obj_form->formErrors as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => $v->getMessage());
     }
 
@@ -303,7 +306,7 @@ class modQlformHelper
     public function displayMessages($type)
     {
         $obj_messager = new modQlformMessager($this->arrMessages, $type);
-        if (isset($obj_messager->message) AND !empty($obj_messager->message)) return $obj_messager->message;
+        if (isset($obj_messager->message) && !empty($obj_messager->message)) return $obj_messager->message;
     }
 
     /**
@@ -330,7 +333,7 @@ class modQlformHelper
             if (!class_exists('modQlformDatabase')) return false;
             $this->objDatabase = new modQlformDatabase();
         } else {
-            if (!class_exists('modQlformDatabase') OR !class_exists('modQlformDatabaseExternal')) return false;
+            if (!class_exists('modQlformDatabase') || !class_exists('modQlformDatabaseExternal')) return false;
             $this->objDatabaseexternal = new modQlformDatabaseExternal($paramsDatabaseExternal);
         }
         return true;
@@ -390,7 +393,7 @@ class modQlformHelper
         $tableExists = $objDatabase->tableExists($strDatabase, $table);
 
         $this->arrTableFields = array();
-        if (false == $tableExists AND 1 == $showErrors) {
+        if (false == $tableExists && 1 == $showErrors) {
             $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBTABLENOTFOUND'), $table, $strDatabase));
         }
         if (false == $tableExists) return false;
@@ -417,10 +420,10 @@ class modQlformHelper
         $arrDifference2 = array_diff_key($arrTableFields, $arrFormFields);
         $this->arrClean = array_intersect_key($arrFormFields, $arrTableFields);
         if (1 == $showErrors) {
-            if (1 <= count($arrDifference1) OR 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_TITLE'));
+            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_TITLE'));
             foreach ($arrDifference1 as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBFORM_ERROR_DATABASE'), $k, $table, $strDatabase));
             foreach ($arrDifference2 as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBFORM_ERROR_FORM'), $k, $table, $strDatabase));
-            if (1 <= count($arrDifference1) OR 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_GENERAL'));
+            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_GENERAL'));
         }
         return true;
     }
@@ -435,7 +438,7 @@ class modQlformHelper
     {
         if (is_object($xml->fieldset)) foreach ($xml->fieldset as $k => $v) {
             if (is_object($v->field)) foreach ($v->field as $k2 => $v2) {
-                if (isset($v2['type']) AND 'spacer' != $v2['type']) $arr[] = (string)$v2['name'];
+                if (isset($v2['type']) && 'spacer' != $v2['type']) $arr[] = (string)$v2['name'];
             }
         }
         return $arr;
@@ -463,10 +466,10 @@ class modQlformHelper
         if (2 == $this->params->get('emailseparator2', '1')) $obj_mailer->separator2 = "\n\n";
 
         if ('' != trim($pretext)) $pretext = $this->preparePretext(JText::_($pretext), $data);
-        if (1 == $this->params->get('fileemail_enabled', 0) AND isset($this->files)) $obj_mailer->files = $this->files;
+        if (1 == $this->params->get('fileemail_enabled', 0) && isset($this->files)) $obj_mailer->files = $this->files;
 
         $subject .= $paramsMail['emailsubject2'];
-        $mailSent = $obj_mailer->mail($recipient, $subject, $data, $paramsMail, $pretext, $this->params->get('emaildisplay'));
+        $mailSent = $obj_mailer->mail($recipient, $subject, $data, $paramsMail, $pretext, (bool)$this->params->get('emaildisplay'));
         foreach ($obj_mailer->arrMessages as $strMsg) {
             $this->arrMessages[] = ['str' => $strMsg];
         }
@@ -490,7 +493,7 @@ class modQlformHelper
         $dataWithLabel = array();
         foreach ($data as $k => $v) {
             $label = $k;
-            if ('' != $form->getLabel($k) AND 1 == $labels) $label = str_replace('&#160;', '', htmlspecialchars_decode(strip_tags($form->getLabel($k))));
+            if ('' != $form->getLabel($k) && 1 == $labels) $label = str_replace('&#160;', '', htmlspecialchars_decode(strip_tags($form->getLabel($k))));
             $dataWithLabel[$k]['name'] = $k;
             $dataWithLabel[$k]['label'] = trim($label);
             $data = $v;
@@ -522,7 +525,7 @@ class modQlformHelper
             $subjectGenerated = '';
             foreach ($arrSubjectGenerated as $k => $v) if (isset($data[trim($v)])) {
                 $dataForSubject = $data[trim($v)];
-                if (is_array($dataForSubject) OR is_object($dataForSubject)) $subjectGenerated .= $this->params->get('emailsubjectseparator', '') . (string)json_encode($dataForSubject);
+                if (is_array($dataForSubject) || is_object($dataForSubject)) $subjectGenerated .= $this->params->get('emailsubjectseparator', '') . (string)json_encode($dataForSubject);
                 else $subjectGenerated .= $this->params->get('emailsubjectseparator', '') . (string)$dataForSubject;
                 unset($dataForSubject);
             }
@@ -531,14 +534,14 @@ class modQlformHelper
 
         /*set e-mail sender*/
         $emailSender = $this->params->get('emailsender', '');
-        if ('' != trim($emailSender) AND isset($data[trim($emailSender)]) AND true == $this->checkEmail($data[$emailSender])) $emailSender = $data[$emailSender];
+        if ('' != trim($emailSender) && isset($data[trim($emailSender)]) && true == $this->checkEmail($data[$emailSender])) $emailSender = $data[$emailSender];
         else $emailSender = $config->mailfrom;
         $arrMailParams['emailsender'] = $emailSender;
 
         /*set replyTo*/
         if (0 == $copy) {
             $emailReplyTo = $this->params->get('emailreplyto', '');
-            if ('' != trim($emailReplyTo) AND isset($data[$emailReplyTo]) AND true == $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
+            if ('' != trim($emailReplyTo) && isset($data[$emailReplyTo]) && true == $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
             else $emailReplyTo = $config->mailfrom;
             $arrMailParams['emailreplyto'] = $emailReplyTo;
         } else {
@@ -568,7 +571,7 @@ class modQlformHelper
         $config = JFactory::getConfig();
         $objCaptchaToBeUsed = $objCaptchaConfig = $config->get('captcha');
         $showCaptcha = 0;
-        if ('' != $objCaptchaConfig AND '' == $this->params->get('captcha', '0')) {
+        if ('' != $objCaptchaConfig && '' == $this->params->get('captcha', '0')) {
             $showCaptcha = 1;
             $objCaptchaToBeUsed = $objCaptchaConfig;
         } elseif ('' == $this->params->get('captcha', '0')) {
@@ -603,10 +606,10 @@ class modQlformHelper
     {
         $handle = opendir($folder);
         while ($file = readdir($handle)) {
-            if ('.' != $file AND '..' != $file AND 'index.html' != $file) {
+            if ('.' != $file && '..' != $file && 'index.html' != $file) {
                 $arr = preg_split('?_?', $file);
                 $dateFile = substr(array_pop($arr), 0, 6);
-                if ($dateFile + 1 < date('ymd') AND file_exists($folder . '/' . $file)) unlink($folder . '/' . $file);
+                if ($dateFile + 1 < date('ymd') && file_exists($folder . '/' . $file)) unlink($folder . '/' . $file);
             }
         }
         closedir($handle);
@@ -706,7 +709,7 @@ class modQlformHelper
         $sender = $this->params->get('jmessagesender', 0);
         $obj_jmessager = new modQlformJmessages;
         $data = $this->prepareDataWithXml($data, $this->form, $this->params->get('jmessagelabels', 1));
-        if (0 == $sender OR 0 == $recipient) {
+        if (0 == $sender || 0 == $recipient) {
             if (0 == $sender) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENOSENDER'));
             if (0 == $recipient) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENORECIPIENT'));
             return false;
@@ -729,7 +732,7 @@ class modQlformHelper
     function preparePretext($str, $data)
     {
         $str .= "\n\n";
-        if (!isset($data) OR !is_array($data)) return $str;
+        if (!isset($data) || !is_array($data)) return $str;
 
         foreach ($data as $k => $v) {
             if (isset($v['data'])) $str = str_replace('{*' . $k . '*}', (string)$v['data'], $str);
@@ -772,7 +775,7 @@ class modQlformHelper
 
         $filesUploaded = 0;;
         foreach ($this->files as $k => $v) {
-            if (!isset($v['fileChecked']) OR true !== $v['fileChecked']) {
+            if (!isset($v['fileChecked']) || true !== $v['fileChecked']) {
                 $obj_plgQlformuploaderFiler->logg($v, $destination, $this->module, $this->params);
                 continue;
             }
@@ -821,7 +824,7 @@ class modQlformHelper
         /*for licence*/
         if (1 != $obj_plgQlformuploaderFiler->checkLicenceAllowed()) {
             $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_NOTALLOWED'));
-            if (isset($obj_plgQlformuploaderFiler->arrMessages) AND 0 < count($obj_plgQlformuploaderFiler->arrMessages)) foreach ($obj_plgQlformuploaderFiler->arrMessages as $v) $this->arrMessages = $v;
+            if (isset($obj_plgQlformuploaderFiler->arrMessages) && 0 < count($obj_plgQlformuploaderFiler->arrMessages)) foreach ($obj_plgQlformuploaderFiler->arrMessages as $v) $this->arrMessages = $v;
             return false;
         }
         if (!is_array($this->files)) {
