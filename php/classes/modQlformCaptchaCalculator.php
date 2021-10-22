@@ -1,9 +1,16 @@
 <?php
+
 /**
  * @package		mod_qlform
  * @copyright	Copyright (C) 2015 ql.de All rights reserved.
  * @author 		Ingo Holewcuk ingo.holewczuk@ql.de
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+namespace qlform;
+/**
+ * Class modQlformCaptchaCalculator
+ * @package qlform
  */
 class modQlformCaptchaCalculator extends modQlformCaptchaSimplex
 {
@@ -37,4 +44,7 @@ class modQlformCaptchaCalculator extends modQlformCaptchaSimplex
         {
             $string=$first.' + '.$second;
             $this->solution=$first+$second;
-   
+        }
+        return $string;
+    }
+}

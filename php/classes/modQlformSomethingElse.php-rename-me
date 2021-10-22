@@ -5,7 +5,7 @@
  * @author 		Mareike Riegel mareike.riegel@ql.de
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
+namespace qlform;
 defined('_JEXEC') or die;
 
 class modQlformSomethingElse
@@ -25,7 +25,7 @@ class modQlformSomethingElse
 		$this->params=$params;
         $this->module=$module;
         $this->form=$form;
-    }
+	}
 
 	/**
 	 * method to do something else,
@@ -39,9 +39,9 @@ class modQlformSomethingElse
 	 */
 	public function doSomethingElse()
 	{
-        //echo "<pre>";print_r($_POST);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
-        return true;
-        //alle eintragen; dann die Verknuepgunfstabelle ausfuellen
+		//echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        //$this->wtf(); /*just in case*/
+
         //notice:
         //arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
         //So use json_decode(preg_replace("/'/",'"',$dataOfField)); to get your array back
@@ -69,7 +69,7 @@ class modQlformSomethingElse
         $str='<h1>'.$str;
         for($i=1;$i<=$exclamationmarks;$i++)$str.='!';
         $str.='</h1>';
-        if(1==$aah)$str.='<h1>Aaaah,Aaaaah,Aaaaah!<br />Aaaaah,Aaaaah!<br />#0/6$$§X-#/lth;@F*Ck#&amp;!<br /> AAAAAAAAAHHH!!!</h1>';
+        if (1==$aah)$str.='<h1>Aaaah,Aaaaah,Aaaaah!<br />Aaaaah,Aaaaah!<br />#0/6$$§X-#/lth;@F*Ck#&amp;!<br /> AAAAAAAAAHHH!!!</h1>';
         if(1==$print)print_r($str);
         if(1==$exit)exit();
         else return $str;

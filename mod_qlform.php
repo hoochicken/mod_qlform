@@ -1,18 +1,32 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2021 ql.de All rights reserved.
- * @author        Mareike Riegel mareike.riegel@ql.de
+ * @copyright      Copyright (C) 2021 ql.de All rights reserved.
+ * @author         Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
 
 require_once(dirname(__FILE__) . '/helper.php');
+$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
+foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
 
 $objInput = JFactory::getApplication()->input;
 /** @var $module stdClass */
 /** @var $objHelper modQlformHelper */
 /** @var $params Joomla\Registry\Registry */
+/** @var $modelModqlform  */
+/** @var $modQlformCaptcha Joomla\Registry\Registry */
+/** @var $modQlformMailer Joomla\Registry\Registry */
+/** @var $modQlformDatabase Joomla\Registry\Registry */
+/** @var $modQlformDatabaseExternal Joomla\Registry\Registry */
+/** @var $modQlformMessager Joomla\Registry\Registry */
+/** @var $modQlformSomethingElse Joomla\Registry\Registry */
+/** @var $modQlformSomethingCompletelyDifferent Joomla\Registry\Registry */
+/** @var $modQlformFiler Joomla\Registry\Registry */
+/** @var $modQlformJmessages Joomla\Registry\Registry */
+/** @var $modQlformValidation Joomla\Registry\Registry */
+/** @var $modQlformPreprocessData Joomla\Registry\Registry */
 
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');

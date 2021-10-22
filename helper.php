@@ -8,9 +8,6 @@
 
 jimport('joomla.form.form');
 
-$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
-foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
-
 class modQlformHelper
 {
 

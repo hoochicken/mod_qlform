@@ -5,6 +5,10 @@
  * @author 		Ingo Holewcuk ingo.holewczuk@ql.de
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
+namespace qlform;
+/**
+ * Class modQlformCaptchaSimplex
+ */
 class modQlformCaptchaSimplex
 {
 	public $solution;
