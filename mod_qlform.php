@@ -117,7 +117,7 @@ if
     (
         (true === $boolFieldModuleId AND isset($_POST['moduleId']) AND $_POST['moduleId'] == $numModuleId AND isset($_POST['formSent']) AND 1 == $_POST['formSent'] AND is_object($objForm))
         OR
-        (true === $boolFieldModuleId AND isset($_POST['formSent']) AND 1 == $_POST['formSent'] AND is_object($objForm))
+        (false === $boolFieldModuleId AND isset($_POST['formSent']) AND 1 == $_POST['formSent'] AND is_object($objForm))
     )
 ) {
     $data = $objInput->getData($objHelper->formControl);
