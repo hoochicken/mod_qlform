@@ -23,7 +23,7 @@ class modQlformCaptcha
 	{
 		$this->params=$params;
         $this->module=$module;
-        $this->errors=array();
+        $this->errors=[];
 	}
     /**
      * Method to initiate captcha according to catcha plugin

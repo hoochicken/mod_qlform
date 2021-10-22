@@ -10,13 +10,13 @@ use FOF30\Params\Params;
 
 jimport('joomla.form.form');
 
-$arr_files = array('modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',);
+$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
 foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
 
 class modQlformHelper
 {
 
-    public $arrMessages = array();
+    public $arrMessages = [];
     /** @var $params Joomla\Registry\Registry */
     public $params;
     public $form;
@@ -327,7 +327,7 @@ class modQlformHelper
      * @param array $paramsDatabaseExternal
      * @return  mixed    array with table cols on success, false on failure
      */
-    public function connectToDatabase($paramsDatabaseExternal = array())
+    public function connectToDatabase($paramsDatabaseExternal = [])
     {
         if (0 == count($paramsDatabaseExternal)) {
             if (!class_exists('modQlformDatabase')) return false;
@@ -347,7 +347,7 @@ class modQlformHelper
      * @param array $paramsDatabaseExternal
      * @return  bool    true on success, false on failure
      */
-    public function saveToDatabase($table, $data, $paramsDatabaseExternal = array())
+    public function saveToDatabase($table, $data, $paramsDatabaseExternal = [])
     {
         $data = array_intersect_key($data, $this->arrTableFields);
         if (0 == count($paramsDatabaseExternal)) $this->objDatabase->save($table, $data);
@@ -392,7 +392,7 @@ class modQlformHelper
         $table = $objDatabase->getTableName($table);
         $tableExists = $objDatabase->tableExists($strDatabase, $table);
 
-        $this->arrTableFields = array();
+        $this->arrTableFields = [];
         if (false == $tableExists && 1 == $showErrors) {
             $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBTABLENOTFOUND'), $table, $strDatabase));
         }
@@ -490,7 +490,7 @@ class modQlformHelper
      */
     public function prepareDataWithXml($data, $form, $labels = 1)
     {
-        $dataWithLabel = array();
+        $dataWithLabel = [];
         foreach ($data as $k => $v) {
             $label = $k;
             if ('' != $form->getLabel($k) && 1 == $labels) $label = str_replace('&#160;', '', htmlspecialchars_decode(strip_tags($form->getLabel($k))));
@@ -513,7 +513,7 @@ class modQlformHelper
     public function mailPrepareParams($data, $copy = 0)
     {
         $config = new JConfig();
-        $arrMailParams = array();
+        $arrMailParams = [];
 
         $arrMailParams['emailrecipient'] = $this->params->get('emailrecipient', $config->mailfrom);
         $arrMailParams['emailsubject'] = $this->params->get('emailsubject', $config->sitename);
@@ -794,9 +794,9 @@ class modQlformHelper
      */
     function getFilesUploadedData()
     {
-        $dataFilesUpload = array();
+        $dataFilesUpload = [];
         foreach ($this->files as $k => $v) {
-            $dataFilesUpload[$k] = array();
+            $dataFilesUpload[$k] = [];
             $dataFilesUpload[$k]['name'] = $v['name'];
             $dataFilesUpload[$k]['savedTo'] = $v['current'];
             $dataFilesUpload[$k]['errorUploadServer'] = $v['error'];
@@ -832,7 +832,7 @@ class modQlformHelper
             return false;
         }
         if (0 == count($this->files)) return true;
-        $arrCheck = array();
+        $arrCheck = [];
         $arrCheck['filemaxsize'] = $this->params->get('fileupload_maxfilesize', 10000);
         $arrCheck['filetypeallowed'] = explode(',', (string)$this->params->get('fileupload_filetypeallowed', ''));
         foreach ($this->files as $k => $v) {
@@ -915,7 +915,7 @@ class modQlformHelper
         $strModuleId = 'mod_qlform_' . $this->module->id;
         $moduleIdSelector = '#' . $strModuleId;
 
-        $styles = array();;
+        $styles = [];;
         $styles[] = $moduleIdSelector . ' input,' . $moduleIdSelector . ' Xbutton,' . $moduleIdSelector . ' select,' . $moduleIdSelector . ' textarea';
         $styles[] = '{';
         $styles[] = 'border-radius:' . $params->get('stylesInputborderradius', '0') . 'px;';

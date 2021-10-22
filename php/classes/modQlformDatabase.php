@@ -148,7 +148,7 @@ class modQlformDatabase
 	{
 		if (is_object ($input))
         {
-            $output=array();
+            $output=[];
             foreach ($input as $k=>$v) $output[$k]=$v;
         }
 		if (is_array ($input))

@@ -17,7 +17,7 @@ class JFormFieldFileupload extends JFormField
     {
         try
         {
-            $this->errors=array();
+            $this->errors=[];
 
             $config=JFactory::getConfig();
             $input=JFactory::getApplication()->input;

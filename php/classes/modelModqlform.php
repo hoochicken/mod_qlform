@@ -22,7 +22,7 @@ class modelModqlform extends JModelForm
 	 *
 	 * @since   11.1
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
 		if (!isset($this->form_name))$this->form_name='form'.md5(rand(0,1000));

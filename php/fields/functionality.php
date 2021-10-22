@@ -34,8 +34,8 @@ class JFormFieldFunctionality extends JFormField
             'validate'=>'modQlformValidation',
             'processData'=>'modQlformPreprocessData',
         );
-        $used=array();
-        $filesNeeded=array();
+        $used=[];
+        $filesNeeded=[];
         foreach($arr_actions as $k => $v) if(isset($params->$k) && (('validate'!=$k && 1==$params->$k) || ('validate'==$k && (2==$params->$k || 3==$params->$k)))) {
             $used[]=JText::_('MOD_QLFORM_'.strtoupper(str_replace('_enabled','',$k)).'_LABEL');
             if(false==$v) continue;
