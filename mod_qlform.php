@@ -5,12 +5,16 @@
  * @author         Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use qlform\modQlformHelper;
+use qlform\modQlformMailer;
+
 defined('_JEXEC') or die;
 
 /** @var $module stdClass */
 /** @var $objHelper qlform\modQlformHelper */
 /** @var $params Joomla\Registry\Registry */
-/** @var $modelModqlform  */
+/** @var $modelModqlform modelModqlform */
 /** @var $modQlformCaptcha qlform\modQlformCaptcha */
 /** @var $modQlformMailer qlform\modQlformMailer */
 /** @var $modQlformDatabase qlform\modQlformDatabase */
@@ -25,7 +29,11 @@ defined('_JEXEC') or die;
 
 require_once(dirname(__FILE__) . '/helper.php');
 $arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
-foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
+foreach ($arr_files as $filename) {
+    if (!class_exists($filename) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $filename . '.php')) {
+        require_once($file);
+    }
+}
 
 $objInput = JFactory::getApplication()->input;
 

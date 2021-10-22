@@ -7,6 +7,8 @@
  */
 
 namespace qlform;
+use JFactory;
+
 defined('_JEXEC') or die;
 
 class modQlformDatabase

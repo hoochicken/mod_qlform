@@ -36,11 +36,13 @@ class JFormFieldFunctionality extends JFormField
         );
         $used=[];
         $filesNeeded=[];
-        foreach($arr_actions as $k => $v) if(isset($params->$k) && (('validate'!=$k && 1==$params->$k) || ('validate'==$k && (2==$params->$k || 3==$params->$k)))) {
-            $used[]=JText::_('MOD_QLFORM_'.strtoupper(str_replace('_enabled','',$k)).'_LABEL');
-            if(false==$v) continue;
-            $file='modules/mod_qlform/php/classes/'.$v.'.php';
-            if(!file_exists(JPATH_ROOT.'/'.$file))$filesNeeded[$k]=$file;
+        foreach($arr_actions as $k => $v) {
+            if (isset($params->$k) && (('validate' != $k && 1 == $params->$k) || ('validate' == $k && (2 == $params->$k || 3 == $params->$k)))) {
+                $used[] = JText::_('MOD_QLFORM_' . strtoupper(str_replace('_enabled', '', $k)) . '_LABEL');
+                if (false == $v) continue;
+                $file = 'modules/mod_qlform/php/classes/' . $v . '.php';
+                if (!file_exists(JPATH_ROOT . '/' . $file)) $filesNeeded[$k] = $file;
+            }
         }
         foreach($filesNeeded as $k => $v) {
             JFactory::getApplication()->enqueueMessage(JText::sprintf('MOD_QLFORM_MSG_FUNCTIONALITY_FILESNEEDED',$k,$v),'error');

@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace qlform;
+use JFactory;
+use JText;
+
 defined('_JEXEC') or die;
 
 class modQlformMailer

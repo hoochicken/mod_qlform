@@ -6,6 +6,14 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace qlform;
+use JCaptcha;
+use JConfig;
+use JFactory;
+use JHtml;
+use JTable;
+use JText;
+use modelModqlform;
+
 jimport('joomla.form.form');
 
 class modQlformHelper
