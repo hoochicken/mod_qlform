@@ -6,8 +6,6 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-use FOF30\Params\Params;
-
 jimport('joomla.form.form');
 
 $arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
