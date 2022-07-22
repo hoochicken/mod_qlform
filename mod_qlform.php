@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2021 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2022 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -75,23 +75,23 @@ if (isset($objHelper->arrFields) && is_array($objHelper->arrFields)) {
 
 // transform xml to Joomla! form object
 $objForm = $objHelper->getForm($strXml, $numModuleId);
-if (true === (bool)$params->get('stylesLabelswithin', false)) {
+if ((bool)$params->get('stylesLabelswithin', false)) {
     $objForm = $objHelper->addPlaceholder($objForm);
 }
 
 // initiate captcha
-if (true === $boolShowCaptcha) {
+if ($boolShowCaptcha) {
     $objCaptcha = $objHelper->getCaptcha();
 }
 // check database connection
-if (true === (bool)$params->get('todoDatabase')) {
+if ((bool)$params->get('todoDatabase')) {
     $boolCheckDatabase = $objHelper->connectToDatabase();
     if (true === $boolCheckDatabase){
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
 }
 
-if (true === (bool)$params->get('todoDatabaseExternal')) {
+if ((bool)$params->get('todoDatabaseExternal')) {
     $arrParamsDatabaseExternal = ['driver', 'host', 'user', 'password', 'database', 'prefix',];
     foreach ($arrParamsDatabaseExternal as $strAttribute){
         $strParameter = 'databaseexternal' . $strAttribute;
