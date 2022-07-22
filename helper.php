@@ -6,6 +6,8 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+
 jimport('joomla.form.form');
 
 $arr_files = array('modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',);
@@ -336,11 +338,11 @@ class modQlformHelper
      * @param array $paramsDatabaseExternal
      * @return  mixed    array with table cols on success, false on failure
      */
-    public function connectToDatabase($paramsDatabaseExternal = array())
+    public function connectToDatabase($db, $paramsDatabaseExternal = [])
     {
         if (0 == count($paramsDatabaseExternal)) {
             if (!class_exists('modQlformDatabase')) return false;
-            $this->objDatabase = new modQlformDatabase();
+            $this->objDatabase = new modQlformDatabase($db);
         } else {
             if (!class_exists('modQlformDatabase') || !class_exists('modQlformDatabaseExternal')) return false;
             $this->objDatabaseexternal = new modQlformDatabaseExternal($paramsDatabaseExternal);
@@ -714,16 +716,17 @@ class modQlformHelper
      */
     function sendJmessage($data)
     {
+        $db = new modQlformDatabase(Factory::getContainer()->get('DatabaseDriver'));
         $recipient = $this->params->get('jmessagerecipient', 0);
         $sender = $this->params->get('jmessagesender', 0);
-        $obj_jmessager = new modQlformJmessages;
+        $obj_jmessager = new modQlformJmessages($db);
         $data = $this->prepareDataWithXml($data, $this->form, $this->params->get('jmessagelabels', 1));
         if (0 == $sender || 0 == $recipient) {
             if (0 == $sender) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENOSENDER'));
             if (0 == $recipient) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENORECIPIENT'));
             return false;
         }
-        $obj_jmessager = new modQlformJmessages;
+        $obj_jmessager = new modQlformJmessages($db);
         $message = $obj_jmessager->getDataAsString($data, $this->params->get('jmessagestringtype', 'json'), $this->params->get('jmessagestringseparator', '#'));
         $subject = JText::_($this->params->get('jmessagesubject', 'qlform message'));
         $subject = $obj_jmessager->getSubject($subject, $data, $this->params->get('jmessagesubject2', ''));

@@ -7,9 +7,15 @@
  */
 
 defined('_JEXEC') or die;
+use Joomla\CMS\Factory;
 
 class modQlformDatabase
 {
+
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
 
     /**
      * Method for getting database fields
@@ -17,12 +23,13 @@ class modQlformDatabase
      * @param string $database database name
      * @param string $table Name of table to save data in
      *
-     * @return  bool true on success, false on failure
+     * @return  \Joomla\Database\DatabaseDriver
      *
      */
     function getDatabase()
     {
-        return JFactory::getDBO();
+        return $this->db;
+        // return Factory::getContainer()->get('DatabaseDriver');
     }
 
     /**
@@ -54,7 +61,6 @@ class modQlformDatabase
     {
         $db = $this->getDatabase();
         $db->setQuery('SHOW COLUMNS FROM `' . $table . '` FROM `' . $database . '` ');
-        $db->query();
         return $db->loadObjectList();
     }
 
@@ -71,7 +77,6 @@ class modQlformDatabase
     {
         $db = $this->getDatabase();
         $db->setQuery('SHOW TABLES FROM `' . $database . '`');
-        $db->query();
         foreach ($db->loadObjectList() as $k => $v) foreach ($v as $v2) $arr[$k] = $v2;
         if (is_array($arr) && in_array($table, $arr)) return true;
         else return false;

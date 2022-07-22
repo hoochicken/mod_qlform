@@ -19,9 +19,9 @@ class modQlformJmessages
      *
      * @return  bool  True on success, false on failure
      */
-    public function __construct()
+    public function __construct($db)
     {
-        $this->db = new modQlformDatabase();
+        $this->db = $db;
     }
 
     /**

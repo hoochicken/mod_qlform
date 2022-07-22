@@ -34,6 +34,7 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
 $objHelper = new modQlformHelper($params, $module);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
+$db = Factory::getContainer()->get('DatabaseDriver');
 
 if (1 == $params->get('smtpCheck', 0)) {
     $recipient = preg_split("?\n?", $params->get('emailrecipient'));
@@ -87,7 +88,7 @@ if ($boolShowCaptcha) {
 }
 // check database connection
 if ($params->get('todoDatabase')) {
-    $boolCheckDatabase = $objHelper->connectToDatabase();
+    $boolCheckDatabase = $objHelper->connectToDatabase($db);
     if (true === $boolCheckDatabase) {
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
@@ -99,7 +100,7 @@ if ($params->get('todoDatabaseExternal')) {
         $strParameter = 'databaseexternal' . $strAttribute;
         $arrParamsDatabaseExternal[$$strAttribute] = $params->get($strParameter);
     }
-    $boolCheckDatabaseExternal = $objHelper->connectToDatabase($arrParamsDatabaseExternal);
+    $boolCheckDatabaseExternal = $objHelper->connectToDatabase($db, $arrParamsDatabaseExternal);
     //print_r($arrParamsDatabaseExternal);die;
     if (false !== $boolCheckDatabaseExternal) {
         $boolCheckDatabaseExternal = $objHelper->checkDatabase($objHelper->objDatabaseexternal, $params->get('databaseexternaltable'), $strXml, $params->get('showDatabaseexternalFormError'), $params->get('databaseexternaladdcreated'));
@@ -112,13 +113,13 @@ if
     /*JabBerwOcky for anti spam*/
     (
         0 == $params->get('honeypot', 0)
-        or
+        ||
         (1 == $params->get('honeypot', 0) && isset($_POST['JabBerwOcky']) && '' == $_POST['JabBerwOcky'])
     )
-    and
+    &&
     (
         (true === $boolFieldModuleId && isset($_POST['moduleId']) && $_POST['moduleId'] == $numModuleId && isset($_POST['formSent']) && 1 == $_POST['formSent'] && is_object($objForm))
-        or
+        ||
         (false === $boolFieldModuleId && isset($_POST['formSent']) && 1 == $_POST['formSent'] && is_object($objForm))
     )
 ) {
