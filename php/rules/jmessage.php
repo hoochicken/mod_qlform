@@ -46,7 +46,7 @@ class JFormRuleJmessage extends JFormRule
         if(0==$value)return true;
         $jmessagerecipient=$input->get('params')->jmessagerecipient;
         $jmessagesender=$input->get('params')->jmessagesender;
-        if(is_numeric($jmessagerecipient) AND 0<$jmessagerecipient AND is_numeric($jmessagesender) AND 0<$jmessagesender)return true;
+        if(is_numeric($jmessagerecipient) && 0<$jmessagerecipient && is_numeric($jmessagesender) && 0<$jmessagesender)return true;
         JFactory::getApplication()->enqueueMessage(JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER'));
         return false;
     }

@@ -42,7 +42,7 @@ class modQlformMailer
 		$mail->setBody($message);
         $mail->setSender($params['emailsender']);
         $mail->addReplyTo($params['emailreplyto']);
-        if (isset($this->files) AND is_array($this->files) AND 0<count($this->files))
+        if (isset($this->files) && is_array($this->files) && 0<count($this->files))
         {
             foreach($this->files as $k=>$v) if(1==$v['fileChecked'])$mail->addAttachment($v['current'],$v['name'],'base64',$v['type']);
             unset($this->files);
@@ -90,8 +90,8 @@ class modQlformMailer
 	public function generateMailHeadline($data,$subject)
 	{
         $headline=$subject."\n\n";
-		if (isset($data['subject']) AND isset($data['subject']['data'])) $headline.=$data['subject']['data']."\n";
-		if (isset($data['name']) AND isset($data['name']['data']) AND isset($data['email']) AND isset($data['email']['data'])) $headline.=$data['name']['data'].' <'.$data['email']['data'].'>'."\n\n";
+		if (isset($data['subject']) && isset($data['subject']['data'])) $headline.=$data['subject']['data']."\n";
+		if (isset($data['name']) && isset($data['name']['data']) && isset($data['email']) && isset($data['email']['data'])) $headline.=$data['name']['data'].' <'.$data['email']['data'].'>'."\n\n";
 		return $headline;
 	}
 

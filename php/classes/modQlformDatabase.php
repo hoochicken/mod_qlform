@@ -72,7 +72,7 @@ class modQlformDatabase
         $db->setQuery('SHOW TABLES FROM `'.$database.'`');
         $db->query();
         foreach ($db->loadObjectList() as $k=>$v) foreach ($v as $v2) $arr[$k]=$v2;
-        if (is_array($arr) AND in_array($table,$arr)) return true;
+        if (is_array($arr) && in_array($table,$arr)) return true;
 		else return false;
 	}
     /**

@@ -17,7 +17,7 @@ class modQlformMessager
 	 */
 	public function __construct($arrMessages,$type=1)
 	{
-		if (0==$type OR !is_array($arrMessages) OR 0>=count($arrMessages)) return false;
+		if (0==$type || !is_array($arrMessages) || 0>=count($arrMessages)) return false;
         if (1==$type) $this->getMessage($arrMessages);
 		if (2==$type) $this->raiseJMessages($arrMessages);
 		if (3==$type) {$this->getMessage($arrMessages);$this->raiseJMessages($arrMessages);}
@@ -32,12 +32,12 @@ class modQlformMessager
 	{
 	    //print_r($arrMessages);die;
         $app=JFactory::getApplication();
-        if (is_array($arrMessages) AND 0<count($arrMessages))
+        if (is_array($arrMessages) && 0<count($arrMessages))
 		foreach ($arrMessages as $k=>$v) 
 		{
 			if (''!=trim(strip_tags($v['str'])))
 			{
-                if(isset($v['warning']) AND 1==$v['warning'])$app->enqueueMessage($v['str'],'error');
+                if(isset($v['warning']) && 1==$v['warning'])$app->enqueueMessage($v['str'],'error');
                 else $app->enqueueMessage($v['str'],'message');
 			}	
 		}

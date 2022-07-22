@@ -22,9 +22,9 @@ class JFormFieldFileupload extends JFormField
             $config=JFactory::getConfig();
             $input=JFactory::getApplication()->input;
             $params=json_decode($this->getModuleData($input->get('id'),'params'));
-            if(!is_object($params) OR !isset($params->fileupload_enabled)) return $this->errors[]=JText::_('MOD_QLFORM_MSG_QLFORMCANTFINDITSPARAMS');;
+            if(!is_object($params) || !isset($params->fileupload_enabled)) return $this->errors[]=JText::_('MOD_QLFORM_MSG_QLFORMCANTFINDITSPARAMS');;
             /*if deactivated anyway=>no checking*/
-            if (0==$params->fileupload_enabled AND 0==$params->fileemail_enabled) return;
+            if (0==$params->fileupload_enabled && 0==$params->fileemail_enabled) return;
 
             /*else check phpinfo anmd plugin stuff*/
             if (true!=$this->checkPhpfileinfo()) $this->errors[]=array(JText::_('MOD_QLFORM_MSG_PHPEXTENSIONFILEINFONOTLOADED'),'notice');
@@ -37,7 +37,7 @@ class JFormFieldFileupload extends JFormField
             foreach($this->errors as $k => $v) {
                 JFactory::getApplication()->enqueueMessage($v[0],$v[1]);
             }
-            if (isset($this->plgSystemQlformInstalled) AND false==$this->plgSystemQlformInstalled) echo '<br />'.JText::_('MOD_QLFORM_FILEUPLOADCOMMENT');
+            if (isset($this->plgSystemQlformInstalled) && false==$this->plgSystemQlformInstalled) echo '<br />'.JText::_('MOD_QLFORM_FILEUPLOADCOMMENT');
             return JText::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS',$config->get('tmp_path'));
         }
         return JText::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS',$config->get('tmp_path'));
@@ -51,7 +51,7 @@ class JFormFieldFileupload extends JFormField
         $query->where('`id`=\''.$id.'\'');
         $db->setQuery($query);
         $data=$db->loadObject();
-        if('*'==$selector OR !isset($data->$selector)) return $data;
+        if('*'==$selector || !isset($data->$selector)) return $data;
         return $data->$selector;
     }
     private function checkPhpfileinfo()
@@ -78,7 +78,7 @@ class JFormFieldFileupload extends JFormField
     }
     private function checkPluginQlformEnabled()
     {
-        if (!isset($this->plg_data) OR !isset($this->plg_data->enabled) OR (isset($this->plg_data->enabled) AND 1!=$this->plg_data->enabled)) return false;
+        if (!isset($this->plg_data) || !isset($this->plg_data->enabled) || (isset($this->plg_data->enabled) && 1!=$this->plg_data->enabled)) return false;
         return true;
     }
 }

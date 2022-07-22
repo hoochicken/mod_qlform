@@ -15,13 +15,13 @@ JHtml::_('behavior.formvalidator');
     echo '<span style="display:none;">{emailcloak=off}</span>';
     require JModuleHelper::getLayoutPath('mod_qlform', 'default_copyright');
 
-    if (((1==$params->get('messageType') OR 3==$params->get('messageType')) AND isset($messages) ) OR 1==$params->get('ajax',0)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_message');
-    if (0==$params->get('hideform') OR (1==$params->get('hideform') AND  (!isset($validated) OR (isset($validated) AND 0==$validated))))
+    if (((1==$params->get('messageType') || 3==$params->get('messageType')) && isset($messages) ) || 1==$params->get('ajax',0)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_message');
+    if (0==$params->get('hideform') || (1==$params->get('hideform') &&  (!isset($validated) || (isset($validated) && 0==$validated))))
     {
         if ('1'==$params->get('showpretext','0')) require JModuleHelper::getLayoutPath('mod_qlform', 'default_pretext');
         if (is_object($objForm)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_form');
     }
-    if (1==$params->get('backbool') AND isset($validated)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_back');
+    if (1==$params->get('backbool') && isset($validated)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_back');
     if (1==$params->get('authorbool')) require JModuleHelper::getLayoutPath('mod_qlform', 'default_author');
 ?>
 </div>
