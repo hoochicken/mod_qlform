@@ -77,7 +77,7 @@ if (isset($objHelper->arrFields) && is_array($objHelper->arrFields)) {
 
 // transform xml to Joomla! form object
 $objForm = $objHelper->getForm($strXml, $numModuleId);
-if ((bool)$params->get('stylesLabelswithin', false)) {
+if ($params->get('stylesLabelswithin', false)) {
     $objForm = $objHelper->addPlaceholder($objForm);
 }
 
@@ -86,14 +86,14 @@ if ($boolShowCaptcha) {
     $objCaptcha = $objHelper->getCaptcha();
 }
 // check database connection
-if ((bool)$params->get('todoDatabase')) {
+if ($params->get('todoDatabase')) {
     $boolCheckDatabase = $objHelper->connectToDatabase();
     if (true === $boolCheckDatabase) {
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
 }
 
-if ((bool)$params->get('todoDatabaseExternal')) {
+if ($params->get('todoDatabaseExternal')) {
     $arrParamsDatabaseExternal = ['driver', 'host', 'user', 'password', 'database', 'prefix',];
     foreach ($arrParamsDatabaseExternal as $strAttribute) {
         $strParameter = 'databaseexternal' . $strAttribute;
