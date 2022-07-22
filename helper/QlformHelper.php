@@ -354,10 +354,8 @@ class QlformHelper
     public function connectToDatabase($db, $paramsDatabaseExternal = [])
     {
         if (0 == count($paramsDatabaseExternal)) {
-            // if (!class_exists('modQlformDatabase')) return false;
             $this->objDatabase = new modQlformDatabase($db);
         } else {
-            // if (!class_exists('modQlformDatabase') || !class_exists('modQlformDatabaseExternal')) return false;
             $this->objDatabaseexternal = new modQlformDatabaseExternal($paramsDatabaseExternal);
         }
         return true;
