@@ -22,6 +22,7 @@
         <filename>index.html</filename>
         <filename>license.txt</filename>
         <filename>README.md</filename>
+        <filename>mod_qlform.xml</filename>
         <folder>css</folder>
         <folder>fonts</folder>
         <folder>helper</folder>
