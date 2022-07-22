@@ -8,6 +8,8 @@
 // no direct access
 defined('_JEXEC') or die;
 JHtml::_('behavior.formvalidator');
+/** @var JForm $objForm  */
+/** @var JRegistry $params  */
 ?>
 
 <div class="qlformContainer qlform<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">

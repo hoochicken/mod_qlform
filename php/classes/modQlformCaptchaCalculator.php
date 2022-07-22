@@ -1,5 +1,7 @@
 <?php
 
+namespace Joomla\Module\Qlform\Site\Helper;
+
 /**
  * @package        mod_qlform
  * @copyright    Copyright (C) 2015 ql.de All rights reserved.

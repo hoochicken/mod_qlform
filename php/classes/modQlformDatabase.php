@@ -6,7 +6,11 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Module\Qlform\Site\Helper;
+
 defined('_JEXEC') or die;
+
+use JFactory;
 use Joomla\CMS\Factory;
 
 class modQlformDatabase
@@ -163,7 +167,7 @@ class modQlformDatabase
             foreach ($input as $k => $v) $output[$k] = $v;
         }
         if (is_array($input)) {
-            $output = new stdClass();
+            $output = new \stdClass();
             foreach ($input as $k => $v) $output->$k = $v;
         }
         return $output;

@@ -6,21 +6,23 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+require_once(dirname(__FILE__) . '/helper/QlformHelper.php');
+
 use Joomla\CMS\Factory;
+use Joomla\Module\Qlform\Site\Helper\QlformHelper;
 
 defined('_JEXEC') or die;
 
-require_once(dirname(__FILE__) . '/helper.php');
 
 $objInput = JFactory::getApplication()->input;
 /** @var $module stdClass */
-/** @var $objHelper modQlformHelper */
+/** @var QlformHelper $objHelper  */
 
 
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');
 
-    $result = modQlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
+    $result = QlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
     $paramsRaw = $result->params ?? '';
 
     // create proper param object
@@ -31,7 +33,7 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
 }
 
 // build helper with new parameter settings
-$objHelper = new modQlformHelper($params, $module);
+$objHelper = new QlformHelper($params, $module);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
 $db = Factory::getContainer()->get('DatabaseDriver');
@@ -89,7 +91,7 @@ if ($boolShowCaptcha) {
 // check database connection
 if ($params->get('todoDatabase')) {
     $boolCheckDatabase = $objHelper->connectToDatabase($db);
-    if (true === $boolCheckDatabase) {
+    if ($boolCheckDatabase) {
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
 }

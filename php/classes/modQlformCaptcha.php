@@ -6,6 +6,10 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+namespace Joomla\Module\Qlform\Site\Helper;
+
+use JText;
+
 defined('_JEXEC') or die;
 
 class modQlformCaptcha

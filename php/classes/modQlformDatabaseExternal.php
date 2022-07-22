@@ -5,10 +5,8 @@
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-
+namespace Joomla\Module\Qlform\Site\Helper;
 defined('_JEXEC') or die;
-
-if (!class_exists('modQlformDatabase')) return;
 
 class modQlformDatabaseExternal extends modQlformDatabase
 {

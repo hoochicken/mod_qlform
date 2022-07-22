@@ -5,15 +5,28 @@
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-
+namespace Joomla\Module\Qlform\Site\Helper;
+##        Joomla\Module\Qlform
+use JCaptcha;
+use JConfig;
+use JFactory;
+use JHtml;
 use Joomla\CMS\Factory;
+use JTable;
+use JText;
 
 jimport('joomla.form.form');
 
 $arr_files = array('modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',);
-foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = dirname(__FILE__) . '/php/classes/' . $v . '.php')) require_once($file);
+$included = [];
+foreach ($arr_files as $k => $v) {
+    $classExists = class_exists($v);
+    $fileExists = file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php');
+    if (!file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php')) continue;
+    require_once($included[] = $file);
+}
 
-class modQlformHelper
+class QlformHelper
 {
 
     public array $arrMessages = [];
@@ -177,11 +190,11 @@ class modQlformHelper
      * method to add field to xml
      *
      * @param string $str_xml
-     * @param string $arrFields array of fields to add
+     * @param array $arrFields array of fields to add
      * @param string $class string of fieldset class
      * @return string $str_xml
      */
-    function addFieldsToXml($str_xml, $arrFields, $class = '')
+    function addFieldsToXml(string $str_xml, array $arrFields, string $class = '')
     {
         if (is_array($arrFields)) {
             $formCloseTag = '</form>';
@@ -292,7 +305,7 @@ class modQlformHelper
     private function checkIfCustomExists($str)
     {
         if (class_exists($str)) return true;
-        $this->arrMessages[] = array('warning' => 1, 'str' => JText::sprintf('MOD_QLFORM_MSG_CLASSNOTFOUND', $str));
+        $this->arrMessages[] = ['warning' => 1, 'str' => JText::sprintf('MOD_QLFORM_MSG_CLASSNOTFOUND', $str)];
         return false;
     }
 
@@ -341,10 +354,10 @@ class modQlformHelper
     public function connectToDatabase($db, $paramsDatabaseExternal = [])
     {
         if (0 == count($paramsDatabaseExternal)) {
-            if (!class_exists('modQlformDatabase')) return false;
+            // if (!class_exists('modQlformDatabase')) return false;
             $this->objDatabase = new modQlformDatabase($db);
         } else {
-            if (!class_exists('modQlformDatabase') || !class_exists('modQlformDatabaseExternal')) return false;
+            // if (!class_exists('modQlformDatabase') || !class_exists('modQlformDatabaseExternal')) return false;
             $this->objDatabaseexternal = new modQlformDatabaseExternal($paramsDatabaseExternal);
         }
         return true;
@@ -567,7 +580,7 @@ class modQlformHelper
      * Get captcha instance or null if not available
      *
      * @return  JCaptcha|null
-     * @throws Exception
+     * @throws Exception|\Exception
      */
     public function getCaptcha()
     {
