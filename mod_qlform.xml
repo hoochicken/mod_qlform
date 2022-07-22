@@ -21,6 +21,7 @@
         <filename module="mod_qlform">mod_qlform.php</filename>
         <filename>index.html</filename>
         <filename>license.txt</filename>
+        <filename>README.md</filename>
         <folder>css</folder>
         <folder>fonts</folder>
         <folder>helper</folder>
