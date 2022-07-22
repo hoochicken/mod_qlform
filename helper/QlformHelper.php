@@ -73,12 +73,12 @@ class QlformHelper
 
 
     /**
-     * @return array|bool|false|string|null
+     * @return void
      * @throws Exception
      */
     public static function recieveQlformAjax()
     {
-        include_once(__DIR__ . '/mod_qlform.php');
+        include_once(__DIR__ . '/../mod_qlform.php');
     }
 
 
@@ -123,12 +123,12 @@ class QlformHelper
      */
     function dump($data, $type = 'var_dump')
     {
-        if ('var_dump' == $type) {
+        if ('var_dump' === $type) {
             ob_start();
             var_dump($data);
             $str_data = ob_get_contents();
             ob_end_clean();
-        } elseif ('foreachstring' == $type) {
+        } elseif ('foreachstring' === $type) {
             $str_data = '';
             foreach ($data as $k => $v) {
                 $str_data .= 'col[' . $k . ']=>' . $v . '<br />';
