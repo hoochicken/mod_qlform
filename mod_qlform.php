@@ -30,6 +30,7 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
     $module->params = $params;
 }
 
+// build helper with new parameter settings
 $objHelper = new modQlformHelper($params, $module);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
