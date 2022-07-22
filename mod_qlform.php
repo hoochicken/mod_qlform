@@ -221,33 +221,33 @@ if (isset($validated) && 1 == $validated) {
     $dataJsonified = $objHelper->subarrayToJson($data);
 
     if (1 == $params->get('todoDatabase') && true == $boolCheckDatabase) {
-        if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
+        if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
         if (1 == $params->get('databaseaddcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databasetable'), $dataJsonified);
     }
     if (1 == $params->get('todoDatabaseExternal') && true == $boolCheckDatabaseExternal) {
-        if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
+        if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
         if (1 == $params->get('databaseexternaladdcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databaseexternaltable'), $dataJsonified, $arrParamsDatabaseExternal);
     }
     if (1 == $params->get('todoSomethingElse')) {
-        if (true == $objHelper->processData) $data = $objHelper->processFor($data, 'somethingElse');
+        if ($objHelper->processData) $data = $objHelper->processFor($data, 'somethingElse');
         $objHelper->doSomethingElse($data, $module, $objForm);
     }
     if (1 == $params->get('todoSomethingCompletelyDifferent')) {
-        if (true == $objHelper->processData) $data = $objHelper->processFor($data, 'completlyDifferent');
+        if ($objHelper->processData) $data = $objHelper->processFor($data, 'completlyDifferent');
         $objHelper->doSomethingCompletelyDifferent($data, $module, $objForm);
     }
     if (1 == $params->get('todoJmessage')) {
-        if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'jmessage');
+        if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'jmessage');
         $objHelper->sendJmessage($data);
     }
     if (1 == $params->get('todoSendcopy') && isset($_POST[$objHelper->formControl]) && isset($_POST[$objHelper->formControl]['sendcopy']) && 1 == $_POST[$objHelper->formControl]['sendcopy'] && !empty($data[$params->get('sendcopyfieldname')])) {
         $dataWithoutServer = $data;
         if (isset($dataWithoutServer['server'])) unset($dataWithoutServer['server']);
-        if (true == $objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
+        if ($objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
         $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
         $objHelper->mail($data[$params->get('sendcopyfieldname')], JText::_('MOD_QLFORM_COPY') . ': ' . JText::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $params->get('sendcopypretext'), $params->get('sendcopylabels', 1), 1);
     }

@@ -45,7 +45,7 @@ class JFormRuleJmessagesubject extends JFormRule
         try {
             if ('' == $value) return true;
             $arrFieldnames = explode(',', $value);
-            $arrNotFound = array();
+            $arrNotFound = [];
             $xml = $input->get('params')->xml;
             //print_r($arrFieldnames );die;
             foreach ($arrFieldnames as $k => $v) {

@@ -1,31 +1,38 @@
 <?php
 /**
- * @package		mod_qlform
- * @copyright	Copyright (C) 2022 ql.de All rights reserved.
- * @author 		Mareike Riegel mareike.riegel@ql.de
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package        mod_qlform
+ * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @author        Mareike Riegel mareike.riegel@ql.de
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+namespace Joomla\Module\Qlform\Site\Helper;
+
+use JFactory;
+use Joomla\CMS\Form\Form;
+use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
 
 class modQlformPreprocessData
 {
-	public $data;
-	public $params;
-    public $module;
-    public $form;
+    public array $data;
+    public Registry $params;
+    public \stdClass $module;
+    public Form $form;
+    public $files;
 
-	/**
-	 * constructor 
-	 */  	
-	public function __construct($data,$params,$module,$form)
-	{
-		$this->data=$data;
-		$this->params=$params;
-        $this->module=$module;
-        $this->form=$form;
-        $formControl=$this->params->get('formControl','jform');
-        $this->files=JFactory::getApplication()->input->files->get($formControl);
+    /**
+     * constructor
+     */
+    public function __construct($data, $params, $module, $form)
+    {
+        $this->data = $data;
+        $this->params = $params;
+        $this->module = $module;
+        $this->form = $form;
+        $formControl = $this->params->get('formControl', 'jform');
+        $this->files = JFactory::getApplication()->input->files->get($formControl);
         //echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
         //notice:
         //(1) arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
@@ -34,21 +41,26 @@ class modQlformPreprocessData
         //Greetings
         //Mareike
     }
+
     /**
      * print function available via $this->p($data);
      */
-    function p($data,$die=1)
+    function p($data, $die = 1)
     {
-        echo '<pre>';print_r($data);echo '</pre>';
-        if(1==$die)die('kia');
+        echo '<pre>';
+        print_r($data);
+        echo '</pre>';
+        if (1 == $die) die('kia');
     }
-	/**
-	 * process data from form, NO data of files yet
-	 */
-	public function formDataBeforeValidation($data)
-	{
+
+    /**
+     * process data from form, NO data of files yet
+     */
+    public function formDataBeforeValidation($data)
+    {
         return $data;
-	}
+    }
+
     /**
      * process data from form inbcluding file data
      * these data are only used for validation
@@ -57,6 +69,7 @@ class modQlformPreprocessData
     {
         return $data;
     }
+
     /**
      * process data before binding it back to form
      */
@@ -72,6 +85,7 @@ class modQlformPreprocessData
     {
         return $this->sendcopy($data);
     }
+
     /**
      * process data before database storing
      */
@@ -79,6 +93,7 @@ class modQlformPreprocessData
     {
         return $data;
     }
+
     /**
      * process data before database storing (external)
      */
@@ -102,6 +117,7 @@ class modQlformPreprocessData
     {
         return $data;
     }
+
     /**
      * process data before storing in database via Joomla! messages component; you can use html here
      */
@@ -109,6 +125,7 @@ class modQlformPreprocessData
     {
         return $data;
     }
+
     /**
      * process data before sending the sendcopy e-mail
      */

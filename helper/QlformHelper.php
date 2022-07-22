@@ -7,46 +7,53 @@
  */
 namespace Joomla\Module\Qlform\Site\Helper;
 ##        Joomla\Module\Qlform
+use Exception;
 use JCaptcha;
 use JConfig;
 use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
+use Joomla\Registry\Registry;
 use JTable;
 use JText;
 
 jimport('joomla.form.form');
 
-$arr_files = array('modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',);
+$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
 $included = [];
 foreach ($arr_files as $k => $v) {
     $classExists = class_exists($v);
     $fileExists = file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php');
-    if (!file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php')) continue;
-    require_once($included[] = $file);
+    if (!file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php')) {
+        continue;
+    }
+    require_once($file);
 }
 
+/**
+ * @property modQlformPreprocessData $obj_processor
+ */
 class QlformHelper
 {
 
     public array $arrMessages = [];
     public array $arrFields = [];
-    public $params;
-    public $form;
-    public $module;
-    public $formControl;
-    public $objDatabase;
-    public $objDatabaseexternal;
-    public $captchaToBeUsed;
-    /** @var modelModqlform */
-    public $obj_form;
+    public Registry $params;
+    public Form $form;
+    public \stdClass $module;
+    public string $formControl;
+    public modQlformDatabase $objDatabase;
+    public modQlformDatabaseExternal $objDatabaseexternal;
+    public int $captchaToBeUsed;
+    public modelModqlform $obj_form;
 
     /**
      * constructor
-     * @param object $params
+     * @param Registry $params
      * @param $module
      */
-    function __construct($params, $module)
+    function __construct(Registry $params, $module)
     {
         $this->params = $params;
         $this->module = $module;
@@ -85,7 +92,7 @@ class QlformHelper
      */
     function doSomethingElse($data, $module, $form)
     {
-        if (false == $this->checkIfCustomExists('modQlformSomethingElse')) return false;
+        if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
         $obj = new modQlformSomethingElse($data, $this->params, $module, $form);
         if (1 == $obj->doSomethingElse()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEDIDNOTWORK'));
@@ -100,7 +107,7 @@ class QlformHelper
      */
     function doSomethingCompletelyDifferent($data, $module, $form)
     {
-        if (false == $this->checkIfCustomExists('modQlFormSomethingCompletelyDifferent')) return false;
+        if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
         $obj = new modQlFormSomethingCompletelyDifferent($data, $this->params, $module, $form);
         if (1 == $obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTDIDNOTWORK'));
@@ -290,7 +297,7 @@ class QlformHelper
         if (0 == $this->params->get('validate', 1)) return true;
         if (1 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) $validated = $this->obj_form->check($data);
         if (2 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) {
-            if (false == $this->checkIfCustomExists('modQlformValidation')) return false;
+            if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformValidation')) return false;
             $obj_validator = new modQlformValidation($data, $this->params, $this->module, $this->form);
             $validatedCustom = $obj_validator->validate();
         }
@@ -370,7 +377,7 @@ class QlformHelper
      * @param array $paramsDatabaseExternal
      * @return  bool    true on success, false on failure
      */
-    public function saveToDatabase($table, $data, $paramsDatabaseExternal = array())
+    public function saveToDatabase($table, $data, $paramsDatabaseExternal = [])
     {
         $data = array_intersect_key($data, $this->arrTableFields);
         if (0 == count($paramsDatabaseExternal)) $this->objDatabase->save($table, $data);
@@ -415,7 +422,7 @@ class QlformHelper
         $table = $objDatabase->getTableName($table);
         $tableExists = $objDatabase->tableExists($strDatabase, $table);
 
-        $this->arrTableFields = array();
+        $this->arrTableFields = [];
         if (false == $tableExists && 1 == $showErrors) {
             $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBTABLENOTFOUND'), $table, $strDatabase));
         }
@@ -513,7 +520,7 @@ class QlformHelper
      */
     public function prepareDataWithXml($data, $form, $labels = 1)
     {
-        $dataWithLabel = array();
+        $dataWithLabel = [];
         foreach ($data as $k => $v) {
             $label = $k;
             if ('' != $form->getLabel($k) && 1 == $labels) $label = str_replace('&#160;', '', htmlspecialchars_decode(strip_tags($form->getLabel($k))));
@@ -536,7 +543,7 @@ class QlformHelper
     public function mailPrepareParams($data, $copy = 0)
     {
         $config = new JConfig();
-        $arrMailParams = array();
+        $arrMailParams = [];
 
         $arrMailParams['emailrecipient'] = $this->params->get('emailrecipient', $config->mailfrom);
         $arrMailParams['emailsubject'] = $this->params->get('emailsubject', $config->sitename);
@@ -818,9 +825,9 @@ class QlformHelper
      */
     function getFilesUploadedData()
     {
-        $dataFilesUpload = array();
+        $dataFilesUpload = [];
         foreach ($this->files as $k => $v) {
-            $dataFilesUpload[$k] = array();
+            $dataFilesUpload[$k] = [];
             $dataFilesUpload[$k]['name'] = $v['name'];
             $dataFilesUpload[$k]['savedTo'] = $v['current'];
             $dataFilesUpload[$k]['errorUploadServer'] = $v['error'];
@@ -856,7 +863,7 @@ class QlformHelper
             return false;
         }
         if (0 == count($this->files)) return true;
-        $arrCheck = array();
+        $arrCheck = [];
         $arrCheck['filemaxsize'] = $this->params->get('fileupload_maxfilesize', 10000);
         $arrCheck['filetypeallowed'] = explode(',', (string)$this->params->get('fileupload_filetypeallowed', ''));
         foreach ($this->files as $k => $v) {
@@ -939,7 +946,7 @@ class QlformHelper
         $strModuleId = 'mod_qlform_' . $this->module->id;
         $moduleIdSelector = '#' . $strModuleId;
 
-        $styles = array();;
+        $styles = [];;
         $styles[] = $moduleIdSelector . ' input,' . $moduleIdSelector . ' Xbutton,' . $moduleIdSelector . ' select,' . $moduleIdSelector . ' textarea';
         $styles[] = '{';
         $styles[] = 'border-radius:' . $params->get('stylesInputborderradius', '0') . 'px;';
@@ -973,7 +980,7 @@ class QlformHelper
     function initPreprocessing($data, $module, $form)
     {
         $this->processData = false;
-        if (true == $this->checkIfCustomExists('modQlformPreprocessData')) $this->processData = true;
+        if ($this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformPreprocessData')) $this->processData = true;
         else return false;
         $this->obj_processor = new modQlformPreprocessData($data, $this->params, $module, $form);
     }

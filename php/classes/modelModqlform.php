@@ -15,6 +15,7 @@ jimport('joomla.application.component.modelform');
 
 class modelModqlform extends JModelForm
 {
+    public string $str_xml;
 
     /**
      * Method for getting the form from the model.
@@ -26,11 +27,11 @@ class modelModqlform extends JModelForm
      *
      * @since   11.1
      */
-    public function getForm($data = array(), $loadData = true)
+    public function getForm($data = [], $loadData = true)
     {
         // Get the form.
         if (!isset($this->form_name)) $this->form_name = 'form' . md5(rand(0, 1000));
-        $form = $this->loadForm($this->form_name, $this->str_xml, array('control' => $this->formControl, 'load_data' => false));
+        $form = $this->loadForm($this->form_name, $this->str_xml, ['control' => $this->formControl, 'load_data' => false]);
         //echo '<pre>';print_r($form);die;
         if (empty($form)) return false;
         return $this->form = $form;
@@ -46,7 +47,7 @@ class modelModqlform extends JModelForm
     function check($data)
     {
         $form = $this->getForm();
-        if (1 == $form->validate($data) && 0 == count($form->getErrors())) return true;
+        if (1 == $form->validate($data) && 0 === count($form->getErrors())) return true;
         return false;
     }
 

@@ -11,10 +11,12 @@ namespace Joomla\Module\Qlform\Site\Helper;
 defined('_JEXEC') or die;
 
 use JFactory;
-use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseDriver;
 
 class modQlformDatabase
 {
+
+    private $db;
 
     public function __construct($db)
     {
@@ -24,13 +26,9 @@ class modQlformDatabase
     /**
      * Method for getting database fields
      *
-     * @param string $database database name
-     * @param string $table Name of table to save data in
-     *
-     * @return  \Joomla\Database\DatabaseDriver
-     *
+     * @return  DatabaseDriver
      */
-    function getDatabase()
+    function getDatabase(): DatabaseDriver
     {
         return $this->db;
         // return Factory::getContainer()->get('DatabaseDriver');
@@ -45,7 +43,7 @@ class modQlformDatabase
      * @return  mixed A database resource if successful, FALSE if not.
      *
      */
-    public function save($table, $data)
+    public function save(string $table, $data): mixed
     {
         $db = $this->getDatabase();
         $data = $this->objectToArrayOrTheOtherWay($data);
@@ -58,10 +56,10 @@ class modQlformDatabase
      * @param string $database database name
      * @param string $table Name of table to save data in
      *
-     * @return  bool true on success, false on failure
+     * @return array
      *
      */
-    function getDatabaseFields($database, $table)
+    function getDatabaseFields(string $database, string $table)
     {
         $db = $this->getDatabase();
         $db->setQuery('SHOW COLUMNS FROM `' . $table . '` FROM `' . $database . '` ');
@@ -74,10 +72,9 @@ class modQlformDatabase
      * @param string $database database name
      * @param string $table Name of table to save data in
      *
-     * @return  string insert query
-     *
+     * @return bool|string insert query
      */
-    function tableExists($database, $table)
+    function tableExists($database, $table): bool|string
     {
         $db = $this->getDatabase();
         $db->setQuery('SHOW TABLES FROM `' . $database . '`');
@@ -108,7 +105,7 @@ class modQlformDatabase
      */
     function getTableName($table)
     {
-        if (preg_match('/#__/', $table)) $table = $this->getPrefix() . substr($table, 3);
+        if (str_contains($table, '#__')) $table = $this->getPrefix() . substr($table, 3);
         return $table;
     }
 
@@ -163,7 +160,7 @@ class modQlformDatabase
     function objectToArrayOrTheOtherWay($input)
     {
         if (is_object($input)) {
-            $output = array();
+            $output = [];
             foreach ($input as $k => $v) $output[$k] = $v;
         }
         if (is_array($input)) {

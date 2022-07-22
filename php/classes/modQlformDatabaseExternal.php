@@ -7,20 +7,19 @@
  */
 namespace Joomla\Module\Qlform\Site\Helper;
 use JDatabaseDriver;
+use Joomla\Database\DatabaseDriver;
 
 defined('_JEXEC') or die;
 
 class modQlformDatabaseExternal extends modQlformDatabase
 {
+    private $params;
 
     /**
      * Method for construction darabase params
      *
-     * @param string $database database name
-     * @param string $table Name of table to save data in
-     *
-     * @return  bool true on success, false on failure
-     *
+     * @param $db
+     * @param $params
      */
     function __construct($db, $params)
     {
@@ -31,13 +30,9 @@ class modQlformDatabaseExternal extends modQlformDatabase
     /**
      * Method for construction darabase params
      *
-     * @param string $database database name
-     * @param string $table Name of table to save data in
-     *
-     * @return  bool true on success, false on failure
-     *
+     * @return  DatabaseDriver true on success, false on failure
      */
-    function getDatabase()
+    function getDatabase(): DatabaseDriver
     {
         return JDatabaseDriver::getInstance($this->params);
     }
@@ -48,7 +43,7 @@ class modQlformDatabaseExternal extends modQlformDatabase
      * @return  string database name
      *
      */
-    function getDatabaseName()
+    function getDatabaseName(): string
     {
         return $this->params['database'];
     }
@@ -59,7 +54,7 @@ class modQlformDatabaseExternal extends modQlformDatabase
      * @return  string database name
      *
      */
-    function getPrefix()
+    function getPrefix(): string
     {
         return $this->params['prefix'];
     }
@@ -70,7 +65,7 @@ class modQlformDatabaseExternal extends modQlformDatabase
      * @return  string database name
      *
      */
-    function getTableName($table)
+    function getTableName($table): string
     {
         return $table;
     }

@@ -29,7 +29,7 @@ class JFormFieldXml extends JFormField
      */
     protected function getInput()
     {
-        $options = array();
+        $options = [];
         $html = '';
         $html .= '<textarea style="width:400px;height:400px;" name="' . $this->name . '" id="' . $this->id . '">';
         $html .= $this->value;

@@ -49,7 +49,7 @@ class modQlformJmessages
      */
     public function getData($recipient, $sender, $subject, $message)
     {
-        $data = array();
+        $data = [];
         $data['user_id_from'] = $sender;
         $data['user_id_to'] = $recipient;
         $data['subject'] = $subject;
@@ -114,7 +114,7 @@ class modQlformJmessages
      */
     function getHtml($array)
     {
-        $arr = array();
+        $arr = [];
         $separator = '<br />';
         foreach ($array as $k => $v) {
             $arr[] = '<strong>' . $v['label'] . '</strong>';
@@ -131,7 +131,7 @@ class modQlformJmessages
      */
     function getImplode($array, $separator)
     {
-        $arr = array();
+        $arr = [];
         foreach ($array as $k => $v) {
             $arr[] = $v['label'] . $separator . $v['data'];
         }

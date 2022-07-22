@@ -27,7 +27,7 @@ class modQlformCaptcha
     {
         $this->params = $params;
         $this->module = $module;
-        $this->errors = array();
+        $this->errors = [];
     }
 
     /**
