@@ -20,7 +20,7 @@ use JText;
 
 jimport('joomla.form.form');
 
-$arr_files = ['modelModqlform', 'modQlformCaptcha', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
+$arr_files = ['modelModqlform', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
 $included = [];
 foreach ($arr_files as $k => $v) {
     $classExists = class_exists($v);
