@@ -311,12 +311,6 @@
             </fieldset>
             <fieldset name="database">
                 <field
-                        name="databasedescription"
-                        type="spacer"
-                        label="MOD_QLFORM_MSG_PROVERSIONAVAILABLE_LABEL"
-                        >
-                </field>
-                <field
                         name="todoDatabase"
                         type="radio"
                         class="btn-group"
@@ -366,12 +360,6 @@
                 </field>
             </fieldset>
             <fieldset name="databaseexternal">
-                <field
-                        name="databaseexternaldescription"
-                        type="spacer"
-                        label="MOD_QLFORM_MSG_PROVERSIONAVAILABLE_LABEL"
-                        >
-                </field>
                 <field
                         name="todoDatabaseExternal"
                         type="radio"
@@ -475,13 +463,6 @@
                 </field>
             </fieldset>
             <fieldset name="fileupload">
-                <!--field type="spacer" label="MOD_QLFORM_FILEUPLOADCOMMENT" /-->
-                <field
-                        name="fileuploaddescription"
-                        type="spacer"
-                        label="MOD_QLFORM_MSG_PROVERSIONAVAILABLE_LABEL"
-                        >
-                </field>
                 <field
                         name="fileupload_enabled"
                         type="radio"

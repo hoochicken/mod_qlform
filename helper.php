@@ -38,6 +38,17 @@ class modQlformHelper
         $this->arrMessages = [];
     }
 
+    static public function getModuleParameters(int $moduleId)
+    {
+        $db = JFactory::getContainer()->get('DatabaseDriver');
+        $query = $db->getQuery(true)
+            ->select('*')
+            ->from('#__modules')
+            ->where('id = :moduleId')
+            ->bind(':moduleId', $moduleId);
+        return $db->setQuery($query)->loadObject();
+    }
+
 
     /**
      * @return array|bool|false|string|null

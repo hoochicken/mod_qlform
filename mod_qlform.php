@@ -16,19 +16,17 @@ $objInput = JFactory::getApplication()->input;
 /** @var $module stdClass */
 /** @var $objHelper modQlformHelper */
 
+
 if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');
 
-    $moduleIdByAjax = $objInput->getInt('moduleId', 0);
-    $db = Factory::getContainer()->get('DatabaseDriver');
-    $db->setQuery('SELECT * FROM #__modules WHERE id = ' . $moduleIdByAjax);
-    $arrResult = $db->loadObject();
-    $strParams = isset($arrResult->params) ? $arrResult->params : '';
+    $result = modQlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
+    $paramsRaw = $result->params ?? '';
 
-    // create propor param object
+    // create proper param object
     $params = new JRegistry();
-    $params->loadString($strParams);
-    $module = $arrResult;
+    $params->loadString($paramsRaw);
+    $module = $result;
     $module->params = $params;
 }
 
