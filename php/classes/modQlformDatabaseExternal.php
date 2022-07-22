@@ -6,6 +6,8 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 namespace Joomla\Module\Qlform\Site\Helper;
+use JDatabaseDriver;
+
 defined('_JEXEC') or die;
 
 class modQlformDatabaseExternal extends modQlformDatabase
@@ -20,9 +22,10 @@ class modQlformDatabaseExternal extends modQlformDatabase
      * @return  bool true on success, false on failure
      *
      */
-    function __construct($params)
+    function __construct($db, $params)
     {
         $this->params = $params;
+        parent::__construct($db);
     }
 
     /**

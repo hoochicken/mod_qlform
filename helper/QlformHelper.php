@@ -348,15 +348,16 @@ class QlformHelper
     /**
      * Method for checking database
      *
+     * @param $db
      * @param array $paramsDatabaseExternal
      * @return  mixed    array with table cols on success, false on failure
      */
-    public function connectToDatabase($db, $paramsDatabaseExternal = [])
+    public function connectToDatabase($db, array $paramsDatabaseExternal = [])
     {
         if (0 == count($paramsDatabaseExternal)) {
             $this->objDatabase = new modQlformDatabase($db);
         } else {
-            $this->objDatabaseexternal = new modQlformDatabaseExternal($paramsDatabaseExternal);
+            $this->objDatabaseexternal = new modQlformDatabaseExternal($db, $paramsDatabaseExternal);
         }
         return true;
     }
