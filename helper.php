@@ -14,7 +14,8 @@ foreach ($arr_files as $k => $v) if (!class_exists($v) && file_exists($file = di
 class modQlformHelper
 {
 
-    public $arrMessages = array();
+    public array $arrMessages = [];
+    public array $arrFields = [];
     public $params;
     public $form;
     public $module;
