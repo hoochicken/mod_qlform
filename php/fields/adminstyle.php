@@ -1,9 +1,9 @@
 <?php
 /**
- * @package		mod_form
- * @copyright	Copyright (C) 2022 ql.de All rights reserved.
- * @author 		Mareike Riegel mareike.riegel@ql.de
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package        mod_form
+ * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @author        Mareike Riegel mareike.riegel@ql.de
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -19,6 +19,7 @@ class JFormFieldAdminstyle extends JFormField
      * @since 1.6
      */
     protected $type = 'adminstyle'; //the form field type see the name is the same
+
     /**
      * Method to retrieve the lists that resides in your application using the API.
      *
@@ -28,8 +29,8 @@ class JFormFieldAdminstyle extends JFormField
     protected function getInput()
     {
 
-        if(0==$this->getAttribute('value'))JFactory::getDocument()->addStyleSheet(JUri::root().'/modules/mod_qlform/css/adminBasic.css');
-        elseif(1==$this->getAttribute('value'))JFactory::getDocument()->addStyleSheet(JUri::root().'/modules/mod_qlform/css/adminPro.css');
-        return '<input type="hidden" id="'.$this->id.'" name="' . $this->name . '" value="'.$this->value.'"/>';
+        if (0 == $this->getAttribute('value')) JFactory::getDocument()->addStyleSheet(JUri::root() . '/modules/mod_qlform/css/adminBasic.css');
+        elseif (1 == $this->getAttribute('value')) JFactory::getDocument()->addStyleSheet(JUri::root() . '/modules/mod_qlform/css/adminPro.css');
+        return '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . $this->value . '"/>';
     }
 }

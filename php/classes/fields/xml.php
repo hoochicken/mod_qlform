@@ -1,9 +1,9 @@
 <?php
 /**
- * @package		mod_qlform
- * @copyright	Copyright (C) 2014 ql.de All rights reserved.
- * @author 		Mareike Riegel mareike.riegel@ql.de
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package        mod_qlform
+ * @copyright    Copyright (C) 2014 ql.de All rights reserved.
+ * @author        Mareike Riegel mareike.riegel@ql.de
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -30,10 +30,10 @@ class JFormFieldXml extends JFormField
     protected function getInput()
     {
         $options = array();
-        $html='';
-        $html.='<textarea style="width:400px;height:400px;" name="'.$this->name.'" id="'.$this->id.'">';
-        $html.=$this->value;
-        $html.='</textarea>';
+        $html = '';
+        $html .= '<textarea style="width:400px;height:400px;" name="' . $this->name . '" id="' . $this->id . '">';
+        $html .= $this->value;
+        $html .= '</textarea>';
         return $html;
     }
 

@@ -10,11 +10,11 @@ defined('_JEXEC') or die;
 require_once(dirname(__FILE__) . '/helper.php');
 
 $objInput = JFactory::getApplication()->input;
-/** @var $module stdClass*/
-/** @var $objHelper modQlformHelper*/
+/** @var $module stdClass */
+/** @var $objHelper modQlformHelper */
 
 if (1 == $objInput->getInt('qlformAjax', 0)) {
-    jimport( 'joomla.application.module.helper' );
+    jimport('joomla.application.module.helper');
 
     $moduleIdByAjax = $objInput->getInt('moduleId', 0);
     $objDb = JFactory::getDbo();
@@ -86,14 +86,14 @@ if ($boolShowCaptcha) {
 // check database connection
 if ((bool)$params->get('todoDatabase')) {
     $boolCheckDatabase = $objHelper->connectToDatabase();
-    if (true === $boolCheckDatabase){
+    if (true === $boolCheckDatabase) {
         $boolCheckDatabase = $objHelper->checkDatabase($objHelper->objDatabase, $params->get('databasetable'), $strXml, $params->get('showDatabaseFormError'), $params->get('databaseaddcreated'));
     }
 }
 
 if ((bool)$params->get('todoDatabaseExternal')) {
     $arrParamsDatabaseExternal = ['driver', 'host', 'user', 'password', 'database', 'prefix',];
-    foreach ($arrParamsDatabaseExternal as $strAttribute){
+    foreach ($arrParamsDatabaseExternal as $strAttribute) {
         $strParameter = 'databaseexternal' . $strAttribute;
         $arrParamsDatabaseExternal[$$strAttribute] = $params->get($strParameter);
     }
@@ -110,13 +110,13 @@ if
     /*JabBerwOcky for anti spam*/
     (
         0 == $params->get('honeypot', 0)
-        OR
+        or
         (1 == $params->get('honeypot', 0) && isset($_POST['JabBerwOcky']) && '' == $_POST['JabBerwOcky'])
     )
-    AND
+    and
     (
         (true === $boolFieldModuleId && isset($_POST['moduleId']) && $_POST['moduleId'] == $numModuleId && isset($_POST['formSent']) && 1 == $_POST['formSent'] && is_object($objForm))
-        OR
+        or
         (false === $boolFieldModuleId && isset($_POST['formSent']) && 1 == $_POST['formSent'] && is_object($objForm))
     )
 ) {
@@ -192,7 +192,7 @@ if (isset($validated) && 1 == $validated) {
             }
             $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
         }
-        foreach($mailSent as $k => $v) {
+        foreach ($mailSent as $k => $v) {
             if (1 != $v) {
                 unset($mailSent[$k]);
             }

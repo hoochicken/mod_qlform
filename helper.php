@@ -231,7 +231,7 @@ class modQlformHelper
      * The base form is loaded from XML and then an event is fired
      * for users plugins to extend the form with extra fields.
      *
-     * @param    array $str_xml An optional array of data for the form to interogate.
+     * @param array $str_xml An optional array of data for the form to interogate.
      * @return    mixed    $form        JForm object on success, false on failure
      * @since    1.6
      */
@@ -253,7 +253,7 @@ class modQlformHelper
      * The base form is loaded from XML and then an event is fired
      * for users plugins to extend the form with extra fields.
      *
-     * @param    array $data An array of data (post data) to be validated
+     * @param array $data An array of data (post data) to be validated
      * @return    mixed    $form        JForm object on success, false on failure
      * @since    1.6
      */
@@ -296,9 +296,9 @@ class modQlformHelper
     /**
      * Method to raise Errors
      *
-     * @param    int $type type of error displayed, either via joomla or text displayes
-     * @since    1.6
+     * @param int $type type of error displayed, either via joomla or text displayes
      * @return
+     * @since    1.6
      */
     public function displayMessages($type)
     {
@@ -356,7 +356,7 @@ class modQlformHelper
      * Method for checking database
      *
      * @param $objDatabase
-     * @param   string $table Name of table to save data in
+     * @param string $table Name of table to save data in
      * @param $str_xml
      * @param $showErrors
      * @param $fieldCreated
@@ -373,8 +373,8 @@ class modQlformHelper
     /**
      * Method for checking if table exists
      *
-     * @param   string $table Name of table to save data in
-     * @param   bool $showErrors If to raise Errors or let be
+     * @param string $table Name of table to save data in
+     * @param bool $showErrors If to raise Errors or let be
      *
      * @return  bool    truewith table cols on success, false on failure
      *
@@ -402,8 +402,8 @@ class modQlformHelper
     /**
      * Method for checking if table exists
      *
-     * @param   string $table Name of table to save data in
-     * @param   bool $showErrors If to raise Errors or let be
+     * @param string $table Name of table to save data in
+     * @param bool $showErrors If to raise Errors or let be
      *
      * @return  bool    true on success, false on failure
      *
@@ -741,7 +741,7 @@ class modQlformHelper
     /**
      * Method to check validation of e-mail address
      *
-     * @param    string $str wouldbe-email address
+     * @param string $str wouldbe-email address
      * @return  bool    true on success; false on failure
      */
     public function checkEmail($str)
@@ -894,7 +894,7 @@ class modQlformHelper
     public function addScript()
     {
         $document = JFactory::getDocument();
-        if (1 === (int) $this->params->get('ajax', '0')) {
+        if (1 === (int)$this->params->get('ajax', '0')) {
             $document->addScript('/media/mod_qlform/js/qlform.js');
         }
         //echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
