@@ -265,11 +265,11 @@ class QlformHelper
      * The base form is loaded from XML and then an event is fired
      * for users plugins to extend the form with extra fields.
      *
-     * @param array $str_xml An optional array of data for the form to interogate.
+     * @param string $str_xml An optional array of data for the form to interogate.
      * @return    mixed    $form        JForm object on success, false on failure
      * @since    1.6
      */
-    public function getForm($str_xml, $id)
+    public function getForm(string $str_xml, $id)
     {
         $this->obj_form = new modelModqlform();
         $this->obj_form->form_name = 'qlform' . $id;
