@@ -5,6 +5,9 @@
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
+
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die;
 
 require_once(dirname(__FILE__) . '/helper.php');
@@ -17,9 +20,9 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
     jimport('joomla.application.module.helper');
 
     $moduleIdByAjax = $objInput->getInt('moduleId', 0);
-    $objDb = JFactory::getDbo();
-    $objDb->setQuery('SELECT * FROM #__modules WHERE id = ' . $moduleIdByAjax);
-    $arrResult = $objDb->loadObject();
+    $db = Factory::getContainer()->get('DatabaseDriver');
+    $db->setQuery('SELECT * FROM #__modules WHERE id = ' . $moduleIdByAjax);
+    $arrResult = $db->loadObject();
     $strParams = isset($arrResult->params) ? $arrResult->params : '';
 
     // create propor param object

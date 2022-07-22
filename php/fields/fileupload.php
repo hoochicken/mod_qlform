@@ -6,6 +6,8 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+
 defined('_JEXEC') or die;
 jimport('joomla.html.html');
 //import the necessary class definition for formfield
@@ -42,7 +44,7 @@ class JFormFieldFileupload extends JFormField
 
     function getModuleData($id, $selector = '*')
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select($selector);
         $query->from('`#__modules`');
@@ -61,7 +63,7 @@ class JFormFieldFileupload extends JFormField
 
     private function checkPluginQlform()
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('`#__extensions`');
