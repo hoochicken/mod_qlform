@@ -6,9 +6,15 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
+use Joomla\Registry\Registry;
+
 defined('_JEXEC') or die;
 
 $objCaptchaEnabled = false;
+
+/** @var Registry $params */
+/** @var JForm $objForm*/
+/** @var stdClass $module*/
 
 $objCaptchaSet = $params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
 foreach (JPluginHelper::getPlugin('captcha') as $plugin) {

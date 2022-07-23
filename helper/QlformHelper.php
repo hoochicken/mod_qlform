@@ -14,6 +14,7 @@ use JFactory;
 use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\Registry\Registry;
 use JTable;
 use JText;
@@ -927,11 +928,14 @@ class QlformHelper
      */
     public function addScript()
     {
-        $document = JFactory::getDocument();
         if (1 === (int)$this->params->get('ajax', '0')) {
-            $document->addScript('/media/mod_qlform/js/qlform.js');
+            // $document->addScript('/media/mod_qlform/js/qlform.js');
+            echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
         }
-        //echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
+        JHtml::_('jquery.framework');
+        // echo JHtml::_('script', 'media/mod_qlform/js/qlform.js', array('version' => 'auto', 'relative' => true));
+        // JHTML::script('qlform.js', 'media/mod_qlform/js/');
+        // echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
         //JHtml::stylesheet('mod_qlform/qlform.css', false, true, false);
         //JHtml::script('qlform.js');
         //JHtml::_('script', 'qlform/qlform.js', array('version' => 'auto', 'relative' => true));

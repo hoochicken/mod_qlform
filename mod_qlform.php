@@ -6,20 +6,23 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-require_once(dirname(__FILE__) . '/helper/QlformHelper.php');
+if (!class_exists('Joomla\Module\Qlform\Site\Helper\QlformHelper') && !class_exists('QlformHelper')) require_once(__DIR__ . '/helper/QlformHelper.php');
 
 use Joomla\CMS\Factory;
 use Joomla\Module\Qlform\Site\Helper\QlformHelper;
 
+$objInput = JFactory::getApplication()->input;
+$ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
+$validated = false;
+
 defined('_JEXEC') or die;
 
-
 $objInput = JFactory::getApplication()->input;
-/** @var $module stdClass */
+/** @var stdClass $module */
 /** @var QlformHelper $objHelper  */
 
 
-if (1 == $objInput->getInt('qlformAjax', 0)) {
+if ($ajax) {
     jimport('joomla.application.module.helper');
 
     $result = QlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
@@ -67,8 +70,10 @@ if (1 == $params->get('bootstrap', 0)) {
 }
 
 // Xml: getting xml string from params
-$objHelper->addStyles();
-$objHelper->addScript();
+if (!$ajax) {
+    $objHelper->addStyles();
+    $objHelper->addScript();
+}
 $strXml = $objHelper->transformText($params->get('xml'));
 // simplexml_load_string($strXml);
 
@@ -186,7 +191,7 @@ if (isset($validated) && 1 == $validated) {
     $dataJsonified = $objHelper->subarrayToJson($data);
 
     if (1 == $params->get('todoEmail')) {
-        if (true == $objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'email');
+        if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'email');
         $recipient = preg_split("?\n?", $params->get('emailrecipient'));
         $mailSent = [];
         foreach ($recipient as $k => $v) {
@@ -220,13 +225,13 @@ if (isset($validated) && 1 == $validated) {
     }
     $dataJsonified = $objHelper->subarrayToJson($data);
 
-    if (1 == $params->get('todoDatabase') && true == $boolCheckDatabase) {
+    if (1 == $params->get('todoDatabase') && $boolCheckDatabase) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
         if (1 == $params->get('databaseaddcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databasetable'), $dataJsonified);
     }
-    if (1 == $params->get('todoDatabaseExternal') && true == $boolCheckDatabaseExternal) {
+    if (1 == $params->get('todoDatabaseExternal') && $boolCheckDatabaseExternal) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
         if (1 == $params->get('databaseexternaladdcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
         if (1 == $params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
@@ -262,7 +267,8 @@ if (isset($validated) && 1 == $validated) {
 }
 
 // output json for recieve with javascript
-if (1 == $objInput->getInt('qlformAjax', 0)) {
+// if (1 == $objInput->getInt('qlformAjax', 0)) {
+if ($ajax) {
     $arrReturn = array_column($objHelper->arrMessages, 'str');
     if ($validated) {
         $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn));
@@ -275,5 +281,6 @@ if (1 == $objInput->getInt('qlformAjax', 0)) {
 
 
 /*Display messages*/
-if (isset($objHelper->arrMessages) && is_array($objHelper->arrMessages)) $messages = $objHelper->displayMessages($params->get('messageType'));
+$messages = '';
+if (isset($objHelper->arrMessages) && is_array($objHelper->arrMessages && 0 < count($objHelper->arrMessages))) $messages = $objHelper->displayMessages($params->get('messageType'));
 require JModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));
