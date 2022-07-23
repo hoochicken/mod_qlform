@@ -6,7 +6,7 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 echo "<!--
-mod_qlform : Copyright (C) " . date('Y') . " https://www.ql.de All rights reserved.
+mod_qlform : Copyright (C) " . date('Y') . " https://ql.de All rights reserved.
 Author : Mareike Riegel ql.de mareike.riegel(at)ql.de 
 License : GNU General Public License version 2 or later
 -->";

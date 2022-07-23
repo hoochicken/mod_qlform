@@ -8,4 +8,4 @@
 // no direct access
 defined('_JEXEC') or die;
 ?>
-<div class="author">qlform generator by <a href="https://www.ql.de" target="_blank">ql.de</a></div>
+<div class="author">qlform generator by <a href="https://ql.de" target="_blank">ql.de</a></div>
