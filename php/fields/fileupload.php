@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * @package        mod_qlform
  * @copyright    Copyright (C) 2022 ql.de All rights reserved.
