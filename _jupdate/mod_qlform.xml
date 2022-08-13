@@ -1,0 +1,22 @@
+ <updates>
+	 <update>
+		<name>qlform</name>
+		<client>site</client>
+		<type>plugin</type>
+		<folder>content</folder>
+		<element>qlform</element>
+		<version>11.0.3</version>
+		<description>qlaudio displays a form</description>
+		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
+		<downloads>
+			<downloadurl type="full" format="zip">https://github.com/hoochicken/plg_content_qlaudio/archive/refs/tags/release-11.0.3.zip</downloadurl>
+		</downloads>
+		<tags>
+			<tag>stable</tag>
+		</tags>
+		<maintainer>Dr. Mareike Riegel</maintainer>
+		<maintainerurl>http://ql.de</maintainerurl>
+		<section>Updates</section>
+		<targetplatform name="joomla" version="4.*"/>
+	 </update>
+ </updates>
