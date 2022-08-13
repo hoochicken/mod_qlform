@@ -517,13 +517,13 @@
                         default="datetime-filename-rand"
                         label="MOD_QLFORM_FILEUPLOAD_FILENAME_LABEL"
                         description="MOD_QLFORM_FILEUPLOAD_FILENAME_DESC">
-                    <option value="datetime-filename-rand"></option>
-                    <option value="filename-datetime-rand"></option>
-                    <option value="filename-datetime"></option>
-                    <option value="datetime-filename"></option>
-                    <option value="filename-rand"></option>
-                    <option value="filename"></option>
-                    <option value="datetime-rand-filename"></option>
+                    <option value="datetime-filename-rand">datetime-filename-rand</option>
+                    <option value="filename-datetime-rand">filename-datetime-rand</option>
+                    <option value="filename-datetime">filename-datetime</option>
+                    <option value="datetime-filename">datetime-filename</option>
+                    <option value="filename-rand">filename-rand</option>
+                    <option value="filename">filename</option>
+                    <option value="datetime-rand-filename">datetime-rand-filename</option>
                 </field>
                 <field
                         name="fileupload_destination"
@@ -1197,8 +1197,7 @@
                         name="cachemode"
                         type="hidden"
                         default="static">
-                    <option
-                            value="static"></option>
+                    <option value="static">static</option>
                 </field>
             </fieldset>
         </fields>
