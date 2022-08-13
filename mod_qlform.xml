@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension
         type="module"
-        version="11.0.0"
+        version="11.0.3"
         client="site"
         method="upgrade">
     <name>qlform</name>
@@ -11,7 +11,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>4.0.3</version>
+    <version>4.*</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>Joomla\Module\Qlform</namespace>
     <updateservers>
