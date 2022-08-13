@@ -15,7 +15,7 @@
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>Joomla\Module\Qlform</namespace>
     <updateservers>
-        <server type="extension" priority="1" name="qlform - Updates"></server>
+        <server type="extension" priority="1" name="qlform - Updates">https://raw.githubusercontent.com/hoochicken/mod_qlform/main/_jupdate/mod_qlform.xml</server>
     </updateservers>
     <files>
         <filename module="mod_qlform">mod_qlform.php</filename>
