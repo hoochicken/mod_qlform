@@ -5,7 +5,7 @@
 		<type>plugin</type>
 		<folder>content</folder>
 		<element>qlform</element>
-		<version>11.1.0</version>
+		<version>11.1.1</version>
 		<description>qlaudio displays a form</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
 		<downloads>
