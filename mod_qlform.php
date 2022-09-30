@@ -283,5 +283,7 @@ if ($ajax) {
 
 /*Display messages*/
 $messages = '';
-if (isset($objHelper->arrMessages) && is_array($objHelper->arrMessages && 0 < count($objHelper->arrMessages))) $messages = $objHelper->displayMessages($params->get('messageType'));
+if (is_array($objHelper->arrMessages) && 0 < count($objHelper->arrMessages)) {
+    $messages = $objHelper->displayMessages($params->get('messageType'));
+}
 require JModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));

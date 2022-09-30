@@ -56,7 +56,13 @@ class modQlformMessager
     public function getMessage($arrMessages)
     {
         $message = '';
-        foreach ($arrMessages as $k => $v) if (isset($v['str'])) $message .= $v['str'] . '<br />';
+        array_walk($arrMessages, function (&$item) {
+            $item['html'] = $item['str'];
+            // check, if html .. pretty hack, but ... well ... excuse me ...
+            if (false !== strpos($item['str'], '<')) return;
+            $item['html'] = '<p>' . $item['str'] . '</p>';
+        });
+        foreach ($arrMessages as $v) if (isset($v['html'])) $message .= $v['html'] . "\n";
         return $this->message = $message;
     }
 }
