@@ -19,7 +19,7 @@ defined('_JEXEC') or die;
 
 $objInput = JFactory::getApplication()->input;
 /** @var stdClass $module */
-/** @var QlformHelper $objHelper  */
+/** @var QlformHelper $objHelper */
 
 
 if ($ajax) {
@@ -37,9 +37,10 @@ if ($ajax) {
 
 // build helper with new parameter settings
 $objHelper = new QlformHelper($params, $module);
+$objHelper::setJVersion(JVERSION);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
-$db = Factory::getContainer()->get('DatabaseDriver');
+$db = $objHelper->getDatabaseDriver(JVERSION);
 
 if (1 == $params->get('smtpCheck', 0)) {
     $recipient = preg_split("?\n?", $params->get('emailrecipient'));

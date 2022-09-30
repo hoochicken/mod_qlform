@@ -59,7 +59,7 @@ class JFormFieldFunctionality extends JFormField
 
     function getModuleData($id, $selector = '*')
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = ((int)JVERSION >= 4) ? Factory::getContainer()->get('DatabaseDriver') : JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select($selector);
         $query->from('`#__modules`');

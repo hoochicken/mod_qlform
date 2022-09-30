@@ -38,6 +38,7 @@ foreach ($arr_files as $k => $v) {
 class QlformHelper
 {
 
+    private static string $jversion = '';
     public array $arrMessages = [];
     public array $arrFields = [];
     public Registry $params;
@@ -61,9 +62,19 @@ class QlformHelper
         $this->arrMessages = [];
     }
 
+    static public function setJVersion($jversion)
+    {
+        self::$jversion = (string) $jversion;
+    }
+
+    static public function getJVersion()
+    {
+        return self::$jversion;
+    }
+
     static public function getModuleParameters(int $moduleId)
     {
-        $db = JFactory::getContainer()->get('DatabaseDriver');
+        $db = self::getDatabaseDriver(self::$jversion);
         $query = $db->getQuery(true)
             ->select('*')
             ->from('#__modules')
@@ -736,7 +747,7 @@ class QlformHelper
      */
     function sendJmessage($data)
     {
-        $db = new modQlformDatabase(Factory::getContainer()->get('DatabaseDriver'));
+        $db = new modQlformDatabase(self::getDatabaseDriver(self::getJVersion()));
         $recipient = $this->params->get('jmessagerecipient', 0);
         $sender = $this->params->get('jmessagesender', 0);
         $obj_jmessager = new modQlformJmessages($db);
@@ -997,5 +1008,13 @@ class QlformHelper
     function processFor($data, $for)
     {
         return $this->obj_processor->$for($data);
+    }
+
+    /**
+     * @return mixed
+     */
+    static public function getDatabaseDriver($version)
+    {
+        return ((int) $version >= 4) ? Factory::getContainer()->get('DatabaseDriver'): JFactory::getDbo();
     }
 }

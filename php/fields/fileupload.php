@@ -44,26 +44,26 @@ class JFormFieldFileupload extends JFormField
 
     function getModuleData($id, $selector = '*')
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = ((int)JVERSION >= 4) ? Factory::getContainer()->get('DatabaseDriver') : JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select($selector);
         $query->from('`#__modules`');
         $query->where('`id`=\'' . $id . '\'');
         $db->setQuery($query);
         $data = $db->loadObject();
-        if ('*' == $selector || !isset($data->$selector)) return $data;
+        if ('*' === $selector || !isset($data->$selector)) return $data;
         return $data->$selector;
     }
 
     private function checkPhpfileinfo()
     {
-        if (true == extension_loaded('fileinfo')) return true;
+        if (extension_loaded('fileinfo')) return true;
         return false;
     }
 
     private function checkPluginQlform()
     {
-        $db = Factory::getContainer()->get('DatabaseDriver');
+        $db = ((int)JVERSION >= 4) ? Factory::getContainer()->get('DatabaseDriver') : JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('*');
         $query->from('`#__extensions`');
