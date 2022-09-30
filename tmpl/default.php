@@ -18,7 +18,7 @@ JHtml::_('behavior.formvalidator');
     echo '<span style="display:none;">{emailcloak=off}</span>';
     require JModuleHelper::getLayoutPath('mod_qlform', 'default_copyright');
 
-    if (((1 == $params->get('messageType') || 3 == $params->get('messageType')) && isset($messages)) || 1 == $params->get('ajax', 0)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_message');
+    if (((1 == $params->get('messageType') || 3 == $params->get('messageType')) && isset($messages) && 0 < strlen($messages)) || 1 == $params->get('ajax', 0)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_message');
     if (0 == $params->get('hideform') || (1 == $params->get('hideform') && (!isset($validated) || (isset($validated) && 0 == $validated)))) {
         if ('1' == $params->get('showpretext', '0')) require JModuleHelper::getLayoutPath('mod_qlform', 'default_pretext');
         if (is_object($objForm)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_form');
