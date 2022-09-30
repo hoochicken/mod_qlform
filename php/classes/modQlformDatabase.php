@@ -74,7 +74,7 @@ class modQlformDatabase
      *
      * @return bool|string insert query
      */
-    function tableExists($database, $table): bool|string
+    function tableExists($database, $table)
     {
         $db = $this->getDatabase();
         $db->setQuery('SHOW TABLES FROM `' . $database . '`');
