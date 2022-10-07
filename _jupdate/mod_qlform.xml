@@ -2,14 +2,13 @@
 	 <update>
 		<name>qlform</name>
 		<client>site</client>
-		<type>plugin</type>
-		<folder>content</folder>
+		<type>module</type>
 		<element>qlform</element>
-		<version>11.1.1</version>
-		<description>qlaudio displays a form</description>
+		<version>11.2.0</version>
+		<description>qlform displays a form</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/hoochicken/mod_qlform/archive/refs/tags/v11.1.0.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/hoochicken/mod_qlform/archive/refs/tags/v11.2.0.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
