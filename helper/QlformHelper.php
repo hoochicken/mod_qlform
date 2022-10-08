@@ -47,7 +47,7 @@ class QlformHelper
     public string $formControl;
     public modQlformDatabase $objDatabase;
     public modQlformDatabaseExternal $objDatabaseexternal;
-    public int $captchaToBeUsed;
+    public string $captchaToBeUsed;
     public modelModqlform $obj_form;
 
     /**
