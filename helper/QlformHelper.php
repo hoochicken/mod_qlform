@@ -931,8 +931,12 @@ class QlformHelper
      */
     public function addStyles()
     {
-        $wam = Factory::getDocument()->getWebAssetManager();
-        $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
+        if (4 >= JVERSION) {
+            $wam = Factory::getDocument()->getWebAssetManager();
+            $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
+        } else {
+            JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
+        }
         if ('1' == $this->params->get('stylesActive', '0')) JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
     }
 
