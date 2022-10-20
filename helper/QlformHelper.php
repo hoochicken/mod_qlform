@@ -937,7 +937,9 @@ class QlformHelper
         } else {
             JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
         }
-        if ('1' == $this->params->get('stylesActive', '0')) JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+        if ($this->params->get('stylesActive', '0')) {
+            JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+        }
     }
 
     /**
