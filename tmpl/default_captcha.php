@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
         <?php if ('' != $params->get('captchalabel') && 1 != $params->get('captchaLabelswithin')) : ?>
             <label class="control-label" for="captcha"><?php echo JText::_($params->get('captchalabel')); ?></label>
         <?php endif; ?>
-        <?php if ('' != trim($params->get('captchadesc'))): ?>
+        <?php if ('' != $params->get('captchadesc')): ?>
             <label class="control-label" for="captcha"><?php echo JText::_($params->get('captchadesc')); ?></label>
         <?php endif; ?>
         <div class="controls">

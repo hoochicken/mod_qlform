@@ -15,6 +15,7 @@ use JHtml;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Registry\Registry;
 use JTable;
 use JText;
@@ -930,8 +931,15 @@ class QlformHelper
      */
     public function addStyles()
     {
-        JHtml::stylesheet('mod_qlform/qlform.css', false, true, false);
-        if ('1' == $this->params->get('stylesActive', '0')) JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+        if (4 >= (int) JVERSION) {
+            $wam = Factory::getDocument()->getWebAssetManager();
+            $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
+        } else {
+            JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
+        }
+        if ($this->params->get('stylesActive', '0')) {
+            JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+        }
     }
 
     /**
