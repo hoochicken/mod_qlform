@@ -11,9 +11,11 @@ JHtml::_('behavior.formvalidator');
 /** @var JForm $objForm  */
 /** @var JRegistry $params  */
 /** @var stdClass $params  */
+
+$sfx = !empty($params->get('moduleclass_sfx')) ? htmlspecialchars($params->get('moduleclass_sfx')) : '';
 ?>
 
-<div class="qlformContainer qlform<?php echo htmlspecialchars($params->get('moduleclass_sfx')); ?>">
+<div class="qlformContainer qlform<?php echo $sfx; ?>">
     <?php
     echo '<span style="display:none;">{emailcloak=off}</span>';
     require JModuleHelper::getLayoutPath('mod_qlform', 'default_copyright');
