@@ -931,7 +931,7 @@ class QlformHelper
      */
     public function addStyles()
     {
-        if (4 >= JVERSION) {
+        if (4 >= (int) JVERSION) {
             $wam = Factory::getDocument()->getWebAssetManager();
             $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
         } else {
