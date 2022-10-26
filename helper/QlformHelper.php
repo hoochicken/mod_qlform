@@ -931,7 +931,7 @@ class QlformHelper
      */
     public function addStyles()
     {
-        if (4 >= (int) JVERSION) {
+        if ($this->isJoomla4((int) JVERSION)) {
             $wam = Factory::getDocument()->getWebAssetManager();
             $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
         } else {
@@ -940,6 +940,14 @@ class QlformHelper
         if ($this->params->get('stylesActive', '0')) {
             JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
         }
+    }
+
+    /**
+     *
+     */
+    public function isJoomla4($version)
+    {
+        return 4 <= $version;
     }
 
     /**
