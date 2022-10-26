@@ -947,7 +947,7 @@ class QlformHelper
      */
     public function isJoomla4($version)
     {
-        return $version >= (int) JVERSION;
+        return 4 <= $version;
     }
 
     /**
