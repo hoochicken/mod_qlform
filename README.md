@@ -1,6 +1,6 @@
 # mod_qlform
 
-he form generator is based on the J! way of generating forms.
+The form generator is based on the J! way of generating forms.
 
 For input data can be sent via e-mail. Even captcha is included and can be inserted - if wished.
 
