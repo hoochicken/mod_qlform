@@ -50,6 +50,7 @@ class QlformHelper
     public modQlformDatabaseExternal $objDatabaseexternal;
     public string $captchaToBeUsed;
     public modelModqlform $obj_form;
+    public $linebreak = "\n";
 
     /**
      * constructor
@@ -107,7 +108,7 @@ class QlformHelper
     {
         if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
         $obj = new modQlformSomethingElse($data, $this->params, $module, $form);
-        if (1 == $obj->doSomethingElse()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE'));
+        if ($obj->doSomethingElse()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEDIDNOTWORK'));
     }
 
@@ -122,7 +123,7 @@ class QlformHelper
     {
         if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
         $obj = new modQlFormSomethingCompletelyDifferent($data, $this->params, $module, $form);
-        if (1 == $obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE'));
+        if ($obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTDIDNOTWORK'));
     }
 
@@ -220,15 +221,15 @@ class QlformHelper
 
         $formCloseTag = '</form>';
         $formCloseTagLength = strlen($formCloseTag);
-        $offset = -$formCloseTagLength;
-        $str_xml = substr_replace($formCloseTag, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $formCloseTag, $str_xml, $offset);
+        $offset = -$formCloseTagLength - 1;
+        $str_xml = substr_replace($str_xml, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $this->linebreak . $formCloseTag, $offset);
         foreach ($arrFields as $k => $v) {
             $str_fieldtag = '<field ';
             foreach ($v as $k2 => $v2) $str_fieldtag .= $k2 . '="' . $v2 . '" ';
             $str_fieldtag .= ' />' . "\n";
-            $str_xml = substr_replace($formCloseTag, $str_fieldtag . $formCloseTag, $str_xml, $offset);
+            $str_xml = substr_replace($str_xml, $str_fieldtag . $this->linebreak . $formCloseTag, $offset);
         }
-        return substr_replace($formCloseTag, '</fieldset>' . $formCloseTag, $str_xml, $offset);
+        return substr_replace($str_xml, '</fieldset>' . $this->linebreak . $formCloseTag, $offset);
     }
 
     /**
@@ -1030,8 +1031,19 @@ class QlformHelper
     /**
      * @return mixed
      */
-    static public function getDatabaseDriver($version)
+    static public function getDatabaseDriver($version = 4)
     {
         return ((int) $version >= 4) ? Factory::getContainer()->get('DatabaseDriver'): JFactory::getDbo();
+    }
+
+    /**
+     * @return mixed
+     * @throws Exception
+     */
+    static public function getInputByVersion($version = 4)
+    {
+        return ((int) $version >= 4)
+            ? Factory::getApplication()->input
+            : JFactory::getApplication()->input;
     }
 }

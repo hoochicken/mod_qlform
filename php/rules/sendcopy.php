@@ -44,6 +44,7 @@ class JFormRuleSendcopy extends JFormRule
     {
         try {
             if (0 == $value) return true;
+            if (0 == $input->get('params')->todoSendcopy) return true;
             $fieldname = $input->get('params')->sendcopyfieldname;
             $search = 'name="' . $fieldname . '"';
             $exits = strpos($input->get('params')->xml, $search);

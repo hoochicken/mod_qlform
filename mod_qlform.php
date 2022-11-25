@@ -11,13 +11,12 @@ if (!class_exists('Joomla\Module\Qlform\Site\Helper\QlformHelper') && !class_exi
 use Joomla\CMS\Factory;
 use Joomla\Module\Qlform\Site\Helper\QlformHelper;
 
-$objInput = JFactory::getApplication()->input;
+$objInput = QlformHelper::getInputByVersion(JVERSION);
 $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
 $validated = false;
 
 defined('_JEXEC') or die;
 
-$objInput = JFactory::getApplication()->input;
 /** @var stdClass $module */
 /** @var QlformHelper $objHelper */
 
@@ -195,13 +194,17 @@ if (isset($validated) && 1 == $validated) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'email');
         $recipient = preg_split("?\n?", $params->get('emailrecipient'));
         $mailSent = [];
-        foreach ($recipient as $k => $v) {
-            $v = trim($v);
-            if ('' == $v) {
-                unset($recipient[$k]);
-                continue;
+        try {
+            foreach ($recipient as $k => $v) {
+                $v = trim($v);
+                if ('' == $v) {
+                    unset($recipient[$k]);
+                    continue;
+                }
+                $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
             }
-            $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
+        } catch (Exception $e) {
+
         }
         foreach ($mailSent as $k => $v) {
             if (1 != $v) {
