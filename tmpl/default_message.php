@@ -7,6 +7,7 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+if (empty($messages) || empty(strip_tags($messages))) return;
 ?>
 <div class="qlform message alert alert-info">
     <?php echo $messages; ?>
