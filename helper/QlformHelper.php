@@ -103,7 +103,7 @@ class QlformHelper
      * @param $form
      * @return bool true on success, false on failure
      */
-    function doSomethingElse($data, $module, $form)
+    public function doSomethingElse($data, $module, $form)
     {
         if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
         $obj = new modQlformSomethingElse($data, $this->params, $module, $form);
@@ -118,7 +118,7 @@ class QlformHelper
      * @param $form
      * @return bool
      */
-    function doSomethingCompletelyDifferent($data, $module, $form)
+    public function doSomethingCompletelyDifferent($data, $module, $form)
     {
         if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
         $obj = new modQlFormSomethingCompletelyDifferent($data, $this->params, $module, $form);
@@ -134,7 +134,7 @@ class QlformHelper
      * @param string $type
      * @return false|string
      */
-    function dump($data, $type = 'var_dump')
+    public function dump($data, $type = 'var_dump')
     {
         if ('var_dump' === $type) {
             ob_start();
@@ -156,7 +156,7 @@ class QlformHelper
      * @param string $str_content of param cell
      * @return string $str_xml
      */
-    function transformText($str_content)
+    public function transformText($str_content)
     {
         $str_xml = $str_content;
         $str_xml = preg_replace("/\[/", "<", $str_xml);
@@ -167,7 +167,7 @@ class QlformHelper
     /**
      * method to get and manipulize server data
      */
-    function getServerData($ipSecure)
+    public function getServerData($ipSecure)
     {
         if (1 != $ipSecure) return $_SERVER;
         $this->arrServer = $_SERVER;
@@ -181,7 +181,7 @@ class QlformHelper
     /**
      *
      */
-    function createAdditionalFields()
+    public function createAdditionalFields()
     {
         /*adding fields*/
         if (1 == $this->params->get('user_id', 0)) $this->arrFields[] = array('name' => 'user_id', 'type' => 'hidden', 'default' => $this->getUserData('id'),);
@@ -214,20 +214,21 @@ class QlformHelper
      * @param string $class string of fieldset class
      * @return string $str_xml
      */
-    function addFieldsToXml(string $str_xml, array $arrFields, string $class = '')
+    public function addFieldsToXml(string $str_xml, array $arrFields, string $class = '')
     {
-        if (is_array($arrFields)) {
-            $formCloseTag = '</form>';
-            $str_xml = str_replace($formCloseTag, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $formCloseTag, $str_xml);
-            foreach ($arrFields as $k => $v) {
-                $str_fieldtag = '<field ';
-                foreach ($v as $k2 => $v2) $str_fieldtag .= $k2 . '="' . $v2 . '" ';
-                $str_fieldtag .= ' />' . "\n";
-                $str_xml = str_replace($formCloseTag, $str_fieldtag . $formCloseTag, $str_xml);
-            }
-            $str_xml = str_replace($formCloseTag, '</fieldset>' . $formCloseTag, $str_xml);
+        if (empty($arrFields)) return $str_xml;
+
+        $formCloseTag = '</form>';
+        $formCloseTagLength = strlen($formCloseTag);
+        $offset = -$formCloseTagLength;
+        $str_xml = substr_replace($formCloseTag, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $formCloseTag, $str_xml, $offset);
+        foreach ($arrFields as $k => $v) {
+            $str_fieldtag = '<field ';
+            foreach ($v as $k2 => $v2) $str_fieldtag .= $k2 . '="' . $v2 . '" ';
+            $str_fieldtag .= ' />' . "\n";
+            $str_xml = substr_replace($formCloseTag, $str_fieldtag . $formCloseTag, $str_xml, $offset);
         }
-        return $str_xml;
+        return substr_replace($formCloseTag, '</fieldset>' . $formCloseTag, $str_xml, $offset);
     }
 
     /**
@@ -237,7 +238,7 @@ class QlformHelper
      * see http://forum.joomla.org/viewtopic.php?t=525350
      * @throws Exception
      */
-    function getArticleData($field)
+    private function getArticleData($field)
     {
         $app = JFactory::getApplication();
         $option = $app->input->getData('option');
@@ -255,7 +256,7 @@ class QlformHelper
      * @param string $field
      * @return result field value
      */
-    function getUserData($field)
+    private function getUserData($field)
     {
         $user = JFactory::getUser();
         if ("" != $user->get($field)) return $user->get($field);
@@ -267,7 +268,7 @@ class QlformHelper
      * @param string $str_xml
      * @return object xml
      */
-    function getXml($str_xml)
+    private function getXml($str_xml)
     {
         return simplexml_load_string($str_xml);
     }
