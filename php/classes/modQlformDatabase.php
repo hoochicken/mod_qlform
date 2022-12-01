@@ -43,7 +43,7 @@ class modQlformDatabase
      * @return  mixed A database resource if successful, FALSE if not.
      *
      */
-    public function save(string $table, $data): mixed
+    public function save(string $table, $data)
     {
         $db = $this->getDatabase();
         $data = $this->objectToArrayOrTheOtherWay($data);
