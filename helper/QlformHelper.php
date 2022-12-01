@@ -215,7 +215,7 @@ class QlformHelper
      * @param string $class string of fieldset class
      * @return string $str_xml
      */
-    public function addFieldsToXml(string $str_xml, array $arrFields, string $class = '')
+    public function addFieldsToXml(string $str_xml, array $arrFields, string $class = ''): string
     {
         if (empty($arrFields)) return $str_xml;
 
