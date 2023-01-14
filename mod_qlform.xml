@@ -5,8 +5,8 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2022-12-01</creationDate>
-    <copyright>Copyright (C) 2022 ql.de</copyright>
+    <creationDate>2023-01-13</creationDate>
+    <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
@@ -1158,6 +1158,33 @@
                 <field type="text" name="formControl" default="jform"
                        label="MOD_QLFORM_FORMCONTROL_LABEL"
                        description="MOD_QLFORM_FORMCONTROL_DESC" />
+            </fieldset>
+
+            <fieldset name="scripts">
+                <field name="formBehaviourBeforeSendUse"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_LABEL"
+                        description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field type="textarea" name="formBehaviourBeforeSend" default=""
+                       label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_DESC" />
+                <field name="formBehaviourAfterSendUse"
+                       type="radio"
+                       class="btn-group"
+                       default="0"
+                       label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field type="textarea" name="formBehaviourAfterSend" default=""
+                       label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_DESC" />
             </fieldset>
 
             <fieldset

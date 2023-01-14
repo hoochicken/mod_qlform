@@ -1,6 +1,6 @@
 jQuery(document).ready(
     function() {
-        var objMessage = jQuery('.qlform.message.alert');
+        let objMessage = jQuery('.qlform.message.alert');
         jQuery.each(objMessage, function (index, value) {
             if ('' === objMessage.text().trim()) {
                 jQuery(objMessage[index]).addClass('hidden');
@@ -10,16 +10,17 @@ jQuery(document).ready(
 
         jQuery(document).on('click', '.qlform button.submit', function (e) {
             e.preventDefault();
-            var objButton = jQuery(e.target);
-            var objForm = jQuery(objButton.closest('form'));
-            var objMessage = objForm.closest('.qlformContainer').find('.message.alert');
-            var strData = objForm.serialize();
+            let objButton = jQuery(e.target);
+            let objForm = jQuery(objButton.closest('form'));
+            let objMessage = objForm.closest('.qlformContainer').find('.message.alert');
+            let strData = objForm.serialize();
+            let moduleId = 146;
             if (false) {
                 console.log(objForm);
                 console.log(strData);
             }
-            var strUrl = 'index.php?option=com_ajax&module=qlform&method=recieveQlform&format=json';
-            var objParams = {
+            let strUrl = 'index.php?option=com_ajax&module=qlform&method=recieveQlform&format=json';
+            let objParams = {
                 url: strUrl,
                 type: 'post',
                 dataType: 'json',
@@ -34,6 +35,7 @@ jQuery(document).ready(
                     // objForm.addClass('hidden');
                     // console.log(objResult);
                     // console.log('success');
+                    qlformAfterSend(moduleId);
                 },
                 error: function (objResult) {
                     console.log('fail');

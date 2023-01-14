@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -76,7 +76,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
     <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require JModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
     <div class="submit control-group">
         <div class="controls">
-            <button class="btn btn-large btn-primary submit"
+            <button class="btn btn-large btn-primary submit" onclick="qlformBeforeSend(<?php echo $module->id; ?>)"
                     type="submit"><?php echo htmlspecialchars(JText::_($params->get('submit'))); ?></button>
         </div>
     </div>

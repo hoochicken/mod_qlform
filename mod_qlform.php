@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -9,7 +9,7 @@
 if (!class_exists('Joomla\Module\Qlform\Site\Helper\QlformHelper') && !class_exists('QlformHelper')) require_once(__DIR__ . '/helper/QlformHelper.php');
 
 use Joomla\CMS\Factory;
-use Joomla\Module\Qlform\Site\Helper\QlformHelper;
+// use Joomla\Module\Qlform\Site\Helper\QlformHelper;
 
 $objInput = QlformHelper::getInputByVersion(JVERSION);
 $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');

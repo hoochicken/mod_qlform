@@ -1,13 +1,17 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-use Joomla\Module\Qlform\Site\Helper\QlformHelper;
+namespace Modules\Mod_Qlform;
 
-class modQlformHelper
+use Modules\Mod_Qlform\Helper\QlformHelper;
+// require_once __DIR__ . '/helper/QlformHelper.php';
+
+
+class ModQlformHelper
 {
     /**
      * @return void

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -13,13 +13,17 @@ JHtml::_('behavior.formvalidator');
 /** @var stdClass $params  */
 
 $sfx = !empty($params->get('moduleclass_sfx')) ? htmlspecialchars($params->get('moduleclass_sfx')) : '';
+
+if (!defined('QLFORM_JAVASCRIPT_ALREADY_LOADED')) {
+    define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
+    require_once JModuleHelper::getLayoutPath('mod_qlform', 'default_javascript');
+}
 ?>
 
 <div class="qlformContainer qlform<?php echo $sfx; ?>">
     <?php
     echo '<span style="display:none;">{emailcloak=off}</span>';
     require JModuleHelper::getLayoutPath('mod_qlform', 'default_copyright');
-
     if (((1 == $params->get('messageType') || 3 == $params->get('messageType')) && isset($messages) && 0 < strlen($messages)) || 1 == $params->get('ajax', 0)) require JModuleHelper::getLayoutPath('mod_qlform', 'default_message');
     if (0 == $params->get('hideform') || (1 == $params->get('hideform') && (!isset($validated) || (isset($validated) && 0 == $validated)))) {
         if ('1' == $params->get('showpretext', '0')) require JModuleHelper::getLayoutPath('mod_qlform', 'default_pretext');
