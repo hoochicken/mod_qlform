@@ -262,6 +262,9 @@ if (isset($validated) && 1 == $validated) {
         $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
         $objHelper->mail($data[$params->get('sendcopyfieldname')], JText::_('MOD_QLFORM_COPY') . ': ' . JText::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $params->get('sendcopypretext'), $params->get('sendcopylabels', 1), 1);
     }
+    if (1 == $params->get('formBehaviourAfterSendUse')) {
+        echo sprintf('<script>%s</script>', $params->get('formBehaviourAfterSend'));
+    }
 
     $strLocation = $params->get('location');
     if (1 == $params->get('locationbool') && !empty($strLocation)) {

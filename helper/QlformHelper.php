@@ -24,9 +24,6 @@ use JText;
 
 jimport('joomla.form.form');
 
-/**
- * @property modQlformPreprocessData $obj_processor
- */
 class QlformHelper
 {
 
