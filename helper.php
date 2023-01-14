@@ -6,10 +6,11 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 // namespace Modules\Mod_Qlform\Helper\QlformHelper;
-namespace QlformNamespace\Module\Qlform\Site;
+// namespace QlformNamespace\Module\Qlform\Site;
+
+require_once __DIR__ . '/helper/QlformHelper.php';
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
 // use Modules\Mod_Qlform\Helper\QlformHelper;
-// require_once __DIR__ . '/helper/QlformHelper.php';
 
 
 class ModQlformHelper
@@ -20,6 +21,6 @@ class ModQlformHelper
      */
     public static function recieveQlformAjax()
     {
-        QlformHelper::recieveQlformAjax();
+        QlformHelper::recieveQlformAjaxInternal();
     }
 }

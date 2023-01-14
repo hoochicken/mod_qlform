@@ -32,7 +32,7 @@ class modQlformDatabaseExternal extends modQlformDatabase
      *
      * @return  DatabaseDriver true on success, false on failure
      */
-    function getDatabase(): DatabaseDriver
+    function getDatabase()
     {
         return JDatabaseDriver::getInstance($this->params);
     }

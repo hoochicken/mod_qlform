@@ -17,7 +17,6 @@ defined('_JEXEC') or die;
   }
 
   function qlformAfterSend(moduleId) {
-    debugger;
     if (moduleId !== <?php echo $module->id ?? 0; ?>) return true;
     <?php if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) echo $params->get('formBehaviourAfterSend', ''); ?>
   }

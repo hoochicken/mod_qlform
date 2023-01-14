@@ -28,7 +28,7 @@ class modQlformDatabase
      *
      * @return  DatabaseDriver
      */
-    function getDatabase(): DatabaseDriver
+    function getDatabase()
     {
         return $this->db;
         // return Factory::getContainer()->get('DatabaseDriver');

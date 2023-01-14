@@ -7,9 +7,14 @@
  */
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
+use JCaptcha;
+use JHtml;
 use Joomla\CMS\Factory;
+use JResponseJson;
+use JText;
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
 use Joomla\CMS\Helper\ModuleHelper;
+
 
 require_once(__DIR__ . '/mod_qlform_require.php');
 
@@ -26,11 +31,12 @@ defined('_JEXEC') or die;
 if ($ajax) {
     jimport('joomla.application.module.helper');
 
+    QlformHelper::setJVersion(JVERSION);;
     $result = QlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
     $paramsRaw = $result->params ?? '';
 
     // create proper param object
-    $params = new JRegistry();
+    $params = new \JRegistry();
     $params->loadString($paramsRaw);
     $module = $result;
     $module->params = $params;
@@ -261,9 +267,6 @@ if (isset($validated) && 1 == $validated) {
         if ($objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
         $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
         $objHelper->mail($data[$params->get('sendcopyfieldname')], JText::_('MOD_QLFORM_COPY') . ': ' . JText::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $params->get('sendcopypretext'), $params->get('sendcopylabels', 1), 1);
-    }
-    if (1 == $params->get('formBehaviourAfterSendUse')) {
-        echo sprintf('<script>%s</script>', $params->get('formBehaviourAfterSend'));
     }
 
     $strLocation = $params->get('location');

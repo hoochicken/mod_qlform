@@ -7,8 +7,10 @@
  */
 // no direct access
 defined('_JEXEC') or die;
-if (empty($messages) || empty(strip_tags($messages))) return;
+$style = (empty($messages) || empty(strip_tags($messages)))
+    ? 'display:none'
+    : 'display:block';
 ?>
-<div class="qlform message alert alert-info">
+<div class="qlform message alert alert-info" style="<?php $style;?> ">
     <?php echo $messages; ?>
 </div>

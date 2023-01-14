@@ -65,11 +65,10 @@ class QlformHelper
     static public function getModuleParameters(int $moduleId)
     {
         $db = self::getDatabaseDriver(self::$jversion);
-        $query = $db->getQuery(true)
-            ->select('*')
+        $query = $db->getQuery(true);
+        $query->select('*')
             ->from('#__modules')
-            ->where('id = :moduleId')
-            ->bind(':moduleId', $moduleId);
+            ->where('id = ' . (int)$moduleId);
         return $db->setQuery($query)->loadObject();
     }
 
@@ -78,7 +77,7 @@ class QlformHelper
      * @return void
      * @throws Exception
      */
-    public static function recieveQlformAjax()
+    public static function recieveQlformAjaxInternal()
     {
         include_once(__DIR__ . '/../mod_qlform.php');
     }
@@ -1021,7 +1020,9 @@ class QlformHelper
      */
     static public function getDatabaseDriver($version = 4)
     {
-        return ((int) $version >= 4) ? Factory::getContainer()->get('DatabaseDriver'): JFactory::getDbo();
+        return ((int) $version <= 3)
+            ? JFactory::getDbo()
+            : Factory::getContainer()->get('DatabaseDriver');
     }
 
     /**
