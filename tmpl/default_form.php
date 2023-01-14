@@ -7,7 +7,7 @@
  */
 // no direct access
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Helper\ModuleHelper;
 defined('_JEXEC') or die;
 
 $objCaptchaEnabled = false;
@@ -73,7 +73,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
         endforeach;
         echo '</fieldset>';
     endforeach; ?>
-    <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require JModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
+    <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require ModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
     <div class="submit control-group">
         <div class="controls">
             <button class="btn btn-large btn-primary submit" onclick="qlformBeforeSend(<?php echo $module->id; ?>)"

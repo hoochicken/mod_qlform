@@ -6,7 +6,7 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Module\Qlform\Site\Helper;
+namespace QlformNamespace\Module\Qlform\Site\Helper;
 
 use JFactory;
 

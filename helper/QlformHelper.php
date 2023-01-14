@@ -5,7 +5,9 @@
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Modules\Mod_Qlform\Helper;
+namespace QlformNamespace\Module\Qlform\Site\Helper;
+
+// Class    'Joomla\Module\Qlform\Site\Helper\QlformHelper' not found
 // namespace Joomla\Module\Qlform\Site\Helper;
 use Exception;
 use JCaptcha;
@@ -21,17 +23,6 @@ use JTable;
 use JText;
 
 jimport('joomla.form.form');
-
-$arr_files = ['modelModqlform', 'modQlformMailer', 'modQlformDatabase', 'modQlformDatabaseExternal', 'modQlformMessager', 'modQlformSomethingElse', 'modQlformSomethingCompletelyDifferent', 'modQlformFiler', 'modQlformJmessages', 'modQlformValidation', 'modQlformPreprocessData',];
-$included = [];
-foreach ($arr_files as $k => $v) {
-    $classExists = class_exists($v);
-    $fileExists = file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php');
-    if (!file_exists($file = dirname(__FILE__) . '/../php/classes/' . $v . '.php')) {
-        continue;
-    }
-    require_once($file);
-}
 
 /**
  * @property modQlformPreprocessData $obj_processor
@@ -286,7 +277,7 @@ class QlformHelper
      */
     public function getForm(string $str_xml, $id)
     {
-        $this->obj_form = new modelModqlform();
+        $this->obj_form  = new modelModqlform();
         $this->obj_form->form_name = 'qlform' . $id;
         $this->obj_form->setFormControl($this->formControl);
         $this->obj_form->str_xml = $str_xml;

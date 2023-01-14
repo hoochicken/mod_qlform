@@ -5,9 +5,10 @@
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Modules\Mod_Qlform;
-
-use Modules\Mod_Qlform\Helper\QlformHelper;
+// namespace Modules\Mod_Qlform\Helper\QlformHelper;
+namespace QlformNamespace\Module\Qlform\Site;
+use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
+// use Modules\Mod_Qlform\Helper\QlformHelper;
 // require_once __DIR__ . '/helper/QlformHelper.php';
 
 

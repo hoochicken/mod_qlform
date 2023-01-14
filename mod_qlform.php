@@ -6,10 +6,12 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-if (!class_exists('Joomla\Module\Qlform\Site\Helper\QlformHelper') && !class_exists('QlformHelper')) require_once(__DIR__ . '/helper/QlformHelper.php');
-
+namespace QlformNamespace\Module\Qlform\Site\Helper;
 use Joomla\CMS\Factory;
-// use Joomla\Module\Qlform\Site\Helper\QlformHelper;
+use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+
+require_once(__DIR__ . '/mod_qlform_require.php');
 
 $objInput = QlformHelper::getInputByVersion(JVERSION);
 $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
@@ -289,4 +291,4 @@ $messages = '';
 if (is_array($objHelper->arrMessages) && 0 < count($objHelper->arrMessages)) {
     $messages = $objHelper->displayMessages($params->get('messageType'));
 }
-require JModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));
