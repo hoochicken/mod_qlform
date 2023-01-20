@@ -14,7 +14,6 @@ jQuery(document).ready(
           let objForm = jQuery(objButton.closest('form'));
           let objMessage = objForm.closest('.qlformContainer').find('.message.alert');
           let strData = objForm.serialize();
-          let moduleId = 146;
           if (false) {
               console.log(objForm);
               console.log(strData);
@@ -31,7 +30,8 @@ jQuery(document).ready(
               success: function (objResult) {
                   objMessage.html(objResult.message);
                   objMessage.removeClass('hidden');
-                  qlformAfterSend(moduleId);
+                  let moduleId = objResult.data.moduleId;
+                  window['qlformAfterSend_' + moduleId](moduleId);
               },
               error: function (objResult) {
                   console.log('fail');

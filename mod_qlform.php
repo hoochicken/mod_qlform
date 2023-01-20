@@ -275,6 +275,7 @@ if (isset($validated) && 1 == $validated) {
         header('location:' . JText::_($strLocation));
         exit;
     }
+    if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) echo '<script>' . $params->get('formBehaviourAfterSend', '') . '</script>';
     $objHelper->arrMessages[] = array('str' => $params->get('message'));
 }
 
@@ -282,11 +283,8 @@ if (isset($validated) && 1 == $validated) {
 // if (1 == $objInput->getInt('qlformAjax', 0)) {
 if ($ajax) {
     $arrReturn = array_column($objHelper->arrMessages, 'str');
-    if ($validated) {
-        $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn));
-    } else {
-        $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn), true);
-    }
+    $error = !$validated;
+    $json = new JResponseJson(['messages' => $arrReturn, 'moduleId' => $numModuleId], implode('. ', $arrReturn), $error);
     echo $json;
     exit;
 }

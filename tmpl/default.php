@@ -14,11 +14,8 @@ JHtml::_('behavior.formvalidator');
 use Joomla\CMS\Helper\ModuleHelper;
 
 $sfx = !empty($params->get('moduleclass_sfx')) ? htmlspecialchars($params->get('moduleclass_sfx')) : '';
-
-if (!defined('QLFORM_JAVASCRIPT_ALREADY_LOADED')) {
-    define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
-    require_once ModuleHelper::getLayoutPath('mod_qlform', 'default_javascript');
-}
+if (1 === (int)$params->get('formBehaviourBeforeSendUse', 0)) require_once ModuleHelper::getLayoutPath('mod_qlform', 'default_javascript_before');
+if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) require_once ModuleHelper::getLayoutPath('mod_qlform', 'default_javascript_after');
 ?>
 
 <div class="qlformContainer qlform<?php echo $sfx; ?>">

@@ -1166,11 +1166,12 @@
                         class="btn-group"
                         default="0"
                         label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_LABEL"
-                        description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_DESC">
+                        description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_DESC"
+                        rows="20">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
-                <field type="textarea" name="formBehaviourBeforeSend" default=""
+                <field type="textarea" name="formBehaviourBeforeSend" default="alert('before');console.log('before');"
                        label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_LABEL"
                        description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_DESC" />
                 <field name="formBehaviourAfterSendUse"
@@ -1178,11 +1179,12 @@
                        class="btn-group"
                        default="0"
                        label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_LABEL"
-                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_DESC">
+                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_DESC"
+                       rows="20">
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
-                <field type="textarea" name="formBehaviourAfterSend" default=""
+                <field type="textarea" name="formBehaviourAfterSend" default="alert('after');console.log('after');"
                        label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_LABEL"
                        description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_DESC" />
             </fieldset>

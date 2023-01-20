@@ -76,7 +76,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
     <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require ModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
     <div class="submit control-group">
         <div class="controls">
-            <button class="btn btn-large btn-primary submit" onclick="qlformBeforeSend(<?php echo $module->id; ?>)"
+            <button class="btn btn-large btn-primary submit" onclick="qlformBeforeSend_<?php echo $module->id; ?>(<?php echo $module->id; ?>)"
                     type="submit"><?php echo htmlspecialchars(JText::_($params->get('submit'))); ?></button>
         </div>
     </div>
