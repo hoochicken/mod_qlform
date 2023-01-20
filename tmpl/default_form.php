@@ -1,13 +1,13 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
 use Joomla\Registry\Registry;
-
+use Joomla\CMS\Helper\ModuleHelper;
 defined('_JEXEC') or die;
 
 $objCaptchaEnabled = false;
@@ -73,10 +73,10 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
         endforeach;
         echo '</fieldset>';
     endforeach; ?>
-    <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require JModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
+    <?php if (true === $boolShowCaptcha && $objCaptcha instanceof JCaptcha) require ModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
     <div class="submit control-group">
         <div class="controls">
-            <button class="btn btn-large btn-primary submit"
+            <button class="btn btn-large btn-primary submit" onclick="qlformBeforeSend_<?php echo $module->id; ?>(<?php echo $module->id; ?>)"
                     type="submit"><?php echo htmlspecialchars(JText::_($params->get('submit'))); ?></button>
         </div>
     </div>

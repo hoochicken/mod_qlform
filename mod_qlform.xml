@@ -5,12 +5,12 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2022-12-01</creationDate>
-    <copyright>Copyright (C) 2022 ql.de</copyright>
+    <creationDate>2023-01-20</creationDate>
+    <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>11.3.2</version>
+    <version>12.0.0</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>Joomla\Module\Qlform</namespace>
     <updateservers>
@@ -18,6 +18,7 @@
     </updateservers>
     <files>
         <filename module="mod_qlform">mod_qlform.php</filename>
+        <filename>mod_qlform_require.php</filename>
         <filename>index.html</filename>
         <filename>license.txt</filename>
         <filename>README.md</filename>
@@ -1158,6 +1159,35 @@
                 <field type="text" name="formControl" default="jform"
                        label="MOD_QLFORM_FORMCONTROL_LABEL"
                        description="MOD_QLFORM_FORMCONTROL_DESC" />
+            </fieldset>
+
+            <fieldset name="scripts">
+                <field name="formBehaviourBeforeSendUse"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_LABEL"
+                        description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_USE_DESC"
+                        rows="20">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field type="textarea" name="formBehaviourBeforeSend" default="alert('before');console.log('before');"
+                       label="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_BEFORESEND_DESC" />
+                <field name="formBehaviourAfterSendUse"
+                       type="radio"
+                       class="btn-group"
+                       default="0"
+                       label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_USE_DESC"
+                       rows="20">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field type="textarea" name="formBehaviourAfterSend" default="alert('after');console.log('after');"
+                       label="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_LABEL"
+                       description="MOD_QLFORM_FORMBEHAVIOUR_AFTERSEND_DESC" />
             </fieldset>
 
             <fieldset

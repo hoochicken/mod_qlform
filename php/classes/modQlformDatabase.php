@@ -1,12 +1,12 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-namespace Joomla\Module\Qlform\Site\Helper;
+namespace QlformNamespace\Module\Qlform\Site\Helper;
 
 defined('_JEXEC') or die;
 
@@ -28,7 +28,7 @@ class modQlformDatabase
      *
      * @return  DatabaseDriver
      */
-    function getDatabase(): DatabaseDriver
+    function getDatabase()
     {
         return $this->db;
         // return Factory::getContainer()->get('DatabaseDriver');

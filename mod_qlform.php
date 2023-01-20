@@ -1,15 +1,22 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-if (!class_exists('Joomla\Module\Qlform\Site\Helper\QlformHelper') && !class_exists('QlformHelper')) require_once(__DIR__ . '/helper/QlformHelper.php');
-
+namespace QlformNamespace\Module\Qlform\Site\Helper;
+use JCaptcha;
+use JHtml;
 use Joomla\CMS\Factory;
-use Joomla\Module\Qlform\Site\Helper\QlformHelper;
+use JResponseJson;
+use JText;
+use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+
+
+require_once(__DIR__ . '/mod_qlform_require.php');
 
 $objInput = QlformHelper::getInputByVersion(JVERSION);
 $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
@@ -24,11 +31,12 @@ defined('_JEXEC') or die;
 if ($ajax) {
     jimport('joomla.application.module.helper');
 
+    QlformHelper::setJVersion(JVERSION);;
     $result = QlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
     $paramsRaw = $result->params ?? '';
 
     // create proper param object
-    $params = new JRegistry();
+    $params = new \JRegistry();
     $params->loadString($paramsRaw);
     $module = $result;
     $module->params = $params;
@@ -267,6 +275,7 @@ if (isset($validated) && 1 == $validated) {
         header('location:' . JText::_($strLocation));
         exit;
     }
+    if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) echo '<script>' . $params->get('formBehaviourAfterSend', '') . '</script>';
     $objHelper->arrMessages[] = array('str' => $params->get('message'));
 }
 
@@ -274,11 +283,8 @@ if (isset($validated) && 1 == $validated) {
 // if (1 == $objInput->getInt('qlformAjax', 0)) {
 if ($ajax) {
     $arrReturn = array_column($objHelper->arrMessages, 'str');
-    if ($validated) {
-        $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn));
-    } else {
-        $json = new JResponseJson(['messages' => $arrReturn], implode('. ', $arrReturn), true);
-    }
+    $error = !$validated;
+    $json = new JResponseJson(['messages' => $arrReturn, 'moduleId' => $numModuleId], implode('. ', $arrReturn), $error);
     echo $json;
     exit;
 }
@@ -289,4 +295,4 @@ $messages = '';
 if (is_array($objHelper->arrMessages) && 0 < count($objHelper->arrMessages)) {
     $messages = $objHelper->displayMessages($params->get('messageType'));
 }
-require JModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_qlform', $params->get('layout', 'default'));

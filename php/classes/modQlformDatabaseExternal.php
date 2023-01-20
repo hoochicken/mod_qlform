@@ -1,11 +1,11 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-namespace Joomla\Module\Qlform\Site\Helper;
+namespace QlformNamespace\Module\Qlform\Site\Helper;
 use JDatabaseDriver;
 use Joomla\Database\DatabaseDriver;
 
@@ -32,7 +32,7 @@ class modQlformDatabaseExternal extends modQlformDatabase
      *
      * @return  DatabaseDriver true on success, false on failure
      */
-    function getDatabase(): DatabaseDriver
+    function getDatabase()
     {
         return JDatabaseDriver::getInstance($this->params);
     }

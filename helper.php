@@ -1,13 +1,19 @@
 <?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2022 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2023 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
-use Joomla\Module\Qlform\Site\Helper\QlformHelper;
+// namespace Modules\Mod_Qlform\Helper\QlformHelper;
+// namespace QlformNamespace\Module\Qlform\Site;
 
-class modQlformHelper
+require_once __DIR__ . '/helper/QlformHelper.php';
+use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
+// use Modules\Mod_Qlform\Helper\QlformHelper;
+
+
+class ModQlformHelper
 {
     /**
      * @return void
@@ -15,6 +21,6 @@ class modQlformHelper
      */
     public static function recieveQlformAjax()
     {
-        QlformHelper::recieveQlformAjax();
+        QlformHelper::recieveQlformAjaxInternal();
     }
 }
