@@ -5,12 +5,12 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2023-01-13</creationDate>
+    <creationDate>2023-01-20</creationDate>
     <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>11.3.2</version>
+    <version>11.4.0</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>Joomla\Module\Qlform</namespace>
     <updateservers>
