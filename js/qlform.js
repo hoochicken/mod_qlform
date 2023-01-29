@@ -31,7 +31,9 @@ jQuery(document).ready(
                   objMessage.html(objResult.message);
                   objMessage.removeClass('hidden');
                   let moduleId = objResult.data.moduleId;
-                  window['qlformAfterSend_' + moduleId](moduleId);
+                  let function_name = 'qlformAfterSend_' + moduleId;
+                  debugger;
+                  window[function_name](moduleId);
               },
               error: function (objResult) {
                   console.log('fail');

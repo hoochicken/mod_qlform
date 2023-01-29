@@ -275,7 +275,9 @@ if (isset($validated) && 1 == $validated) {
         header('location:' . JText::_($strLocation));
         exit;
     }
-    if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) echo '<script>' . $params->get('formBehaviourAfterSend', '') . '</script>';
+    if (!$ajax && 1 === (int)$params->get('formBehaviourAfterSendUse', 0)) {
+        echo '<script>' . $params->get('formBehaviourAfterSend', '') . '</script>';
+    }
     $objHelper->arrMessages[] = array('str' => $params->get('message'));
 }
 

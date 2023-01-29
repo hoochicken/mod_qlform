@@ -10,17 +10,19 @@ defined('_JEXEC') or die;
 /** @var JRegistry $params */
 /** @var stdClass $module */
 echo '<script>';
+
+  // initiate empty window array for moduleIds
   if (!defined('QLFORM_JAVASCRIPT_ALREADY_LOADED')) {
     define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
     echo 'window.qlformScriptsModuleIds = [];';
   }
+  // add current moduleId to that array
   echo sprintf('window.qlformScriptsModuleIds.push(%s);', $module->id);
 
-  if (1 === (int)$params->get('formBehaviourAfterSendUse', 0)) :
-    echo sprintf('function qlformAfterSend_%s(moduleId) {', $module->id);
-    echo 'if ("undefined" === window.qlformScriptsModuleIds || 0 > window.qlformScriptsModuleIds.indexOf(moduleId)) return true;';
-    echo $params->get('formBehaviourAfterSend', '');
-    echo '}';
-  endif;
+  // create new js function for especially THIS module
+  echo sprintf('function qlformAfterSend_%s(moduleId) {', $module->id);
+  echo 'if ("undefined" === window.qlformScriptsModuleIds || 0 > window.qlformScriptsModuleIds.indexOf(moduleId)) return true;';
+  echo $params->get('formBehaviourAfterSend', '');
+  echo '}';
 
 echo '</script>';
