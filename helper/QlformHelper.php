@@ -923,11 +923,117 @@ class QlformHelper
         if ($this->isJoomla4((int) JVERSION)) {
             $wam = Factory::getDocument()->getWebAssetManager();
             $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
+            if ($this->params->get('stylesActive', '0')) {
+                $wam->addInlineStyle($this->getStyles($this->params), ['name' => $this->module->id]);
+            }
         } else {
             JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
+            if ($this->params->get('stylesActive', '0')) {
+                JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+            }
         }
+    }
+
+    /**
+     *
+     */
+    public function addScript()
+    {
+        JHtml::_('jquery.framework');
+        $wam = Factory::getDocument()->getWebAssetManager();
+        if (1 === (int)$this->params->get('ajax', '0')) {
+            $wam->registerAndUseScript('mod_qlform', 'mod_qlform/qlform.js');
+        }
+        if ((1 === (int)$this->params->get('formBehaviourBeforeSendUse', 0) || 1 === (int)$this->params->get('formBehaviourAfterSendUse', 0))
+            && !defined('QLFORM_JAVASCRIPT_ALREADY_LOADED')) {
+            // initiate empty window array for moduleIds
+            define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
+            $wam->addInlineScript('window.qlformScriptsModuleIds = [];', ['name' => 'qlform_' . $this->module->id]);
+        }
+        if (1 === (int)$this->params->get('formBehaviourBeforeSendUse', 0)) {
+            $script = $this->getScriptBefore($this->module->id, $this->params->get('formBehaviourBeforeSend', ''));
+            $wam->addInlineScript($script);
+        }
+        if (1 === (int)$this->params->get('formBehaviourAfterSendUse', 0)) {
+            $script = $this->getScriptAfter($this->module->id, $this->params->get('formBehaviourAfterSend', ''));
+            $wam->addInlineScript($script);
+        }
+    }
+
+    private function getScriptBefore($moduleId, $beforeScript)
+    {
+        $eol = "\n";
+        $script = '';
+        $script .= $eol;
+
+        // add current moduleId to that array
+        $script .= sprintf('window.qlformScriptsModuleIds.push(%s);', $moduleId);
+        $script .= $eol;
+
+        // create new js function for especially THIS module
+        $script .= sprintf('function qlformBeforeSend_%s(moduleId) {', $moduleId);
+        $script .= $eol;
+        $script .= 'if ("undefined" === window.qlformScriptsModuleIds || 0 > window.qlformScriptsModuleIds.indexOf(moduleId)) return true;';
+        $script .= $eol;
+        // $script .= 'debugger;'; $script .= $eol;
+        $script .= $beforeScript;
+        $script .= $eol;
+        $script .= '}';
+
+        $script .= $eol;
+        return $script;
+    }
+
+    private function getScriptAfter($moduleId, $afterScript)
+    {
+        $eol = "\n";
+        $script = '';
+        $script .= $eol;
+
+        // add current moduleId to that array
+        $script .= sprintf('window.qlformScriptsModuleIds.push(%s);', $moduleId);
+        $script .= $eol;
+
+        // create new js function for especially THIS module
+        $script .= sprintf('function qlformAfterSend_%s(moduleId) {', $moduleId);
+        $script .= $eol;
+        $script .= 'if ("undefined" === window.qlformScriptsModuleIds || 0 > window.qlformScriptsModuleIds.indexOf(moduleId)) return true;';
+        $script .= $eol;
+        // $script .= 'debugger;'; $script .= $eol;
+        $script .= $afterScript;
+        $script .= $eol;
+        $script .= '}';
+
+        $script .= $eol;
+        return $script;
+    }
+
+    /**
+     *
+     */
+    public function addStylesJoomla3()
+    {
+        JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
         if ($this->params->get('stylesActive', '0')) {
             JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+        }
+    }
+
+    /**
+     *
+     */
+    public function addScriptJoomla3()
+    {
+        JHtml::_('jquery.framework');
+        if (1 === (int)$this->params->get('ajax', '0')) {
+            echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
+        }
+        if ((1 === (int)$this->params->get('formBehaviourBeforeSendUse', 0) || 1 === (int)$this->params->get('formBehaviourAfterSendUse', 0))
+            && !defined('QLFORM_JAVASCRIPT_ALREADY_LOADED')) {
+
+            // initiate empty window array for moduleIds
+            define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
+            JFactory::getDocument()->addScriptDeclaration('window.qlformScriptsModuleIds = [];');
         }
     }
 
@@ -937,24 +1043,6 @@ class QlformHelper
     public function isJoomla4($version)
     {
         return 4 <= $version;
-    }
-
-    /**
-     *
-     */
-    public function addScript()
-    {
-        if (1 === (int)$this->params->get('ajax', '0')) {
-            // $document->addScript('/media/mod_qlform/js/qlform.js');
-            echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
-        }
-        JHtml::_('jquery.framework');
-        // echo JHtml::_('script', 'media/mod_qlform/js/qlform.js', array('version' => 'auto', 'relative' => true));
-        // JHTML::script('qlform.js', 'media/mod_qlform/js/');
-        // echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
-        //JHtml::stylesheet('mod_qlform/qlform.css', false, true, false);
-        //JHtml::script('qlform.js');
-        //JHtml::_('script', 'qlform/qlform.js', array('version' => 'auto', 'relative' => true));
     }
 
     /**
