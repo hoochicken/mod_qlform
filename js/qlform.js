@@ -8,7 +8,7 @@ jQuery(document).ready(
       });
 
 
-      jQuery(document).on('click', '.qlform button.submit', function (e) {
+      jQuery(document).on('click', '.qlform button.ajax.submit', function (e) {
           e.preventDefault();
           let objButton = jQuery(e.target);
           let objForm = jQuery(objButton.closest('form'));
