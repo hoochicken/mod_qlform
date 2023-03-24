@@ -103,6 +103,7 @@ if ($params->get('stylesLabelswithin', false)) {
     $objForm = $objHelper->addPlaceholder($objForm);
 }
 
+$objCaptcha = null;
 // initiate captcha
 if ($boolShowCaptcha) {
     $objCaptcha = $objHelper->getCaptcha();
@@ -156,7 +157,7 @@ if
     $validatedForm = $objHelper->validate($dataToValidate);
     $objForm = $objHelper->form;
     $validatedCaptcha = false;
-    if (1 == $boolShowCaptcha && $objCaptcha instanceof JCaptcha) $validatedCaptcha = $objHelper->checkCaptcha($objCaptcha, $data);
+    if ($boolShowCaptcha && $objCaptcha instanceof JCaptcha) $validatedCaptcha = $objHelper->checkCaptcha($objCaptcha, $data);
     if ($validatedForm && (0 == $boolShowCaptcha || (1 == $boolShowCaptcha && $validatedCaptcha))) $validated = true;
     else {
         if (is_array($data) || is_object($data)) foreach ($data as $k => $v) if (is_string($v)) $data[$k] = strip_tags(html_entity_decode($v));
