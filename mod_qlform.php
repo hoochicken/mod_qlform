@@ -225,12 +225,14 @@ if (isset($validated) && 1 == $validated) {
                 unset($mailSent[$k]);
             }
         }
-        if (count($mailSent) == count($recipient)) {
-            if (1 == $params->get('emailsentdisplay', 0)) $objHelper->arrMessages[] = array('str' => JText::_('MOD_QLFORM_MAIL_SENT'));
+        $successful = count($mailSent);
+        $failed = count($recipient) - count($mailSent);
+        if (count($mailSent) === count($recipient)) {
+            if ($params->get('emailsentdisplay', 0)) {
+                $objHelper->arrMessages[] = ['str' => JText::sprintf('MOD_QLFORM_MAIL_SENT', $successful)];
+            }
         } else {
-            $successful = count($mailSent);
-            $failed = count($recipient) - count($mailSent);
-            $objHelper->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_MAIL_SENT_ERROR_COUNT'), $successful, $failed));
+            $objHelper->arrMessages[] = ['warning' => 1, 'str' => JText::sprintf('MOD_QLFORM_MAIL_SENT_ERROR_COUNT', $successful, $failed)];
         }
         if (isset($objHelper->files) && 1 == $params->get('fileemail_enabled', 0)) {
             foreach ($objHelper->files as $k => $v) {
