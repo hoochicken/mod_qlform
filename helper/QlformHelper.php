@@ -763,11 +763,11 @@ class QlformHelper
     function sendJmessageSingle(int $recipientId, array $data, int $senderId = 0): bool
     {
         if (empty($senderId)) {
-            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENOSENDER')];
+            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
             return false;
         }
         if (empty($recipientId)) {
-            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENORECIPIENT')];
+            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
             return false;
         }
 
