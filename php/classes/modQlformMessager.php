@@ -39,13 +39,16 @@ class modQlformMessager
     {
         //print_r($arrMessages);die;
         $app = JFactory::getApplication();
-        if (is_array($arrMessages) && 0 < count($arrMessages))
-            foreach ($arrMessages as $k => $v) {
-                if ('' != trim(strip_tags($v['str']))) {
-                    if (isset($v['warning']) && 1 == $v['warning']) $app->enqueueMessage($v['str'], 'error');
-                    else $app->enqueueMessage($v['str'], 'message');
-                }
+        if (!is_array($arrMessages) && 0 < count($arrMessages)) {
+            return;
+        }
+        foreach ($arrMessages as $k => $v) {
+            if (empty(trim(strip_tags($v['str'])))) {
+                continue;
             }
+            $type = (isset($v['warning']) && 1 == $v['warning']) ? 'error' : 'message';
+            $app->enqueueMessage($v['str'], $type);
+        }
     }
 
     /**

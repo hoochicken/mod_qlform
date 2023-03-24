@@ -209,13 +209,13 @@ if (isset($validated) && 1 == $validated) {
         $recipient = preg_split("?\n?", $params->get('emailrecipient'));
         $mailSent = [];
         try {
-            foreach ($recipient as $k => $v) {
-                $v = trim($v);
-                if ('' == $v) {
+            foreach ($recipient as $k => $emailAdress) {
+                $emailAdress = trim($emailAdress);
+                if ('' == $emailAdress) {
                     unset($recipient[$k]);
                     continue;
                 }
-                $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
+                $mailSent[$k] = $objHelper->mail($emailAdress, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
             }
         } catch (Exception $e) {
 

@@ -489,7 +489,7 @@ class QlformHelper
      * @return bool
      * @since    1.6
      */
-    public function mail($recipient, $subject, $data, $form, $pretext = '', $labels = 1, $copy = 0)
+    public function mail($recipient, $subject, $data, $form, $pretext = '', $labels = 1, $copy = 0): bool
     {
         $paramsMail = $this->mailPrepareParams($data, $copy);
         $data = $this->prepareDataWithXml($data, $form, $labels);
@@ -505,9 +505,10 @@ class QlformHelper
         foreach ($obj_mailer->arrMessages as $strMsg) {
             $this->arrMessages[] = ['str' => $strMsg];
         }
-        if (1 == $mailSent) return true;
-        else {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_MAIL_SENT_ERROR'));
+        if (1 == $mailSent) {
+            return true;
+        } else {
+            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MAIL_SENT_ERROR')];
             return false;
         }
     }
