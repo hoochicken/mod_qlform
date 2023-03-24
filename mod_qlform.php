@@ -267,7 +267,8 @@ if (isset($validated) && 1 == $validated) {
     }
     if (1 == $params->get('todoJmessage')) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'jmessage');
-        $objHelper->sendJmessage($data);
+        // $objHelper->sendJmessage($data);
+        $objHelper->sendJmessageAll($data);
     }
     if (1 == $params->get('todoSendcopy') && isset($_POST[$objHelper->formControl]) && isset($_POST[$objHelper->formControl]['sendcopy']) && 1 == $_POST[$objHelper->formControl]['sendcopy'] && !empty($data[$params->get('sendcopyfieldname')])) {
         $dataWithoutServer = $data;

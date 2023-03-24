@@ -39,6 +39,7 @@ class QlformHelper
     public string $captchaToBeUsed;
     public modelModqlform $obj_form;
     public $linebreak = "\n";
+    private $db = null;
 
     /**
      * constructor
@@ -50,6 +51,7 @@ class QlformHelper
         $this->params = $params;
         $this->module = $module;
         $this->arrMessages = [];
+        $this->db = new modQlformDatabase(self::getDatabaseDriver(self::getJVersion()));
     }
 
     static public function setJVersion($jversion)
@@ -736,25 +738,59 @@ class QlformHelper
      * @param $data
      * @return bool $array array containing subarray as jsonified strings
      */
-    function sendJmessage($data)
+    public function sendJmessageAll($data)
     {
-        $db = new modQlformDatabase(self::getDatabaseDriver(self::getJVersion()));
         $recipient = $this->params->get('jmessagerecipient', 0);
-        $sender = $this->params->get('jmessagesender', 0);
-        $obj_jmessager = new modQlformJmessages($db);
-        $data = $this->prepareDataWithXml($data, $this->form, $this->params->get('jmessagelabels', 1));
-        if (0 == $sender || 0 == $recipient) {
-            if (0 == $sender) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENOSENDER'));
-            if (0 == $recipient) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENORECIPIENT'));
+        $recipients_additional = $this->params->get('jmessagerecipients_additional', 0);
+        $userRecipients = [$recipient, ...explode(',', $recipients_additional)];
+        array_walk($userRecipients, function(&$item) {$item = (int)trim($item);});
+        // remove double users
+        $userRecipients = array_unique($userRecipients);
+        $senderId = $this->params->get('jmessagesender', 0);
+        foreach ($userRecipients as $userId) {
+            $this->sendJmessageSingle((int) $userId, $data, $senderId);
+        }
+    }
+
+    /**
+     * method to strip quotes in values of array
+     *
+     * @param int $recipientId
+     * @param array $data
+     * @param int $senderId
+     * @return bool $array array containing subarray as jsonified strings
+     */
+    function sendJmessageSingle(int $recipientId, array $data, int $senderId = 0): bool
+    {
+        if (empty($senderId)) {
+            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENOSENDER')];
             return false;
         }
-        $obj_jmessager = new modQlformJmessages($db);
+        if (empty($recipientId)) {
+            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_JMESSAGENORECIPIENT')];
+            return false;
+        }
+
+        $data = $this->prepareDataWithXml($data, $this->form, $this->params->get('jmessagelabels', 1));
+        $obj_jmessager = new modQlformJmessages($this->db);
         $message = $obj_jmessager->getDataAsString($data, $this->params->get('jmessagestringtype', 'json'), $this->params->get('jmessagestringseparator', '#'));
         $subject = JText::_($this->params->get('jmessagesubject', 'qlform message'));
         $subject = $obj_jmessager->getSubject($subject, $data, $this->params->get('jmessagesubject2', ''));
-        $dataToSave = $obj_jmessager->getData($recipient, $sender, $subject, $message);
-        $obj_jmessager->save($dataToSave);
+        $obj_jmessager->saveData($recipientId, $senderId, $subject, $message);
         return true;
+    }
+
+    /**
+     * method to strip quotes in values of array
+     *
+     * @param $data
+     * @return bool $array array containing subarray as jsonified strings
+     */
+    function sendJmessage($data): bool
+    {
+        $recipientId = $this->params->get('jmessagerecipient', 0);
+        $senderId = $this->params->get('jmessagesender', 0);
+        return $this->sendJmessageSingle($recipientId, $data, $senderId);
     }
 
     /**

@@ -258,6 +258,13 @@
                         >
                 </field>
                 <field
+                        name="jmessagesender"
+                        type="user"
+                        label="MOD_QLFORM_JMESSAGESENDER_LABEL"
+                        description="MOD_QLFORM_JMESSAGESENDER_DESC"
+                >
+                </field>
+                <field
                         name="jmessagerecipient"
                         type="user"
                         label="MOD_QLFORM_JMESSAGERECIPIENT_LABEL"
@@ -265,10 +272,9 @@
                         >
                 </field>
                 <field
-                        name="jmessagesender"
-                        type="user"
-                        label="MOD_QLFORM_JMESSAGESENDER_LABEL"
-                        description="MOD_QLFORM_JMESSAGESENDER_DESC"
+                        name="jmessagerecipients_additional"
+                        label="MOD_QLFORM_JMESSAGERECIPIENTS_ADDITIONAL_LABEL"
+                        description="MOD_QLFORM_JMESSAGERECIPIENTS_ADDITIONAL_DESC"
                         >
                 </field>
                 <field

@@ -42,6 +42,21 @@ class modQlformJmessages
     }
 
     /**
+     * method for mailing using JoomlaMailer
+     *
+     * @param integer $recipient
+     * @param integer $sender
+     * @param string $subject for mail
+     * @param string $message
+     * @return  bool  True on success, false on failure
+     */
+    public function saveData(int $recipient, int $sender, string $subject, string $message): bool
+    {
+        $this->save($this->getData($recipient, $sender, $subject, $message));
+        return true;
+    }
+
+    /**
      * method to generate headline and body of mail
      *
      * @param array $data
@@ -100,8 +115,12 @@ class modQlformJmessages
         if (!is_array($arr) || 0 == count($arr)) return $subject;
         foreach ($arr as $k => $v) if (isset($data[trim($v)])) {
             $v = trim($v);
-            if (isset($data[$v]) && is_string($data[$v]['data'])) $subject .= ' - ' . $data[$v]['data'];
-            else $subject .= ' - ' . json_encode($data[$v]);
+            if (isset($data[$v]) && is_string($data[$v]['data'])) {
+                $subject .= ' - ' . $data[$v]['data'];
+            }
+            else {
+                $subject .= ' - ' . json_encode($data[$v]);
+            }
         }
         return $subject;
     }
