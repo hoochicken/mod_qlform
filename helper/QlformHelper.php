@@ -742,7 +742,7 @@ class QlformHelper
     {
         $recipient = $this->params->get('jmessagerecipient', 0);
         $recipients_additional = $this->params->get('jmessagerecipients_additional', 0);
-        $userRecipients = [$recipient, ...explode(',', $recipients_additional)];
+        $userRecipients = array_filter([$recipient, ...explode(',', $recipients_additional)]);
         array_walk($userRecipients, function(&$item) {$item = (int)trim($item);});
         // remove double users
         $userRecipients = array_unique($userRecipients);
