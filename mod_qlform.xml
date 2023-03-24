@@ -97,6 +97,7 @@
                         type="radio"
                         class="btn-group"
                         default="0"
+                        validate="ajaxcaptcha"
                         label="MOD_QLFORM_AJAX_LABEL"
                         description="MOD_QLFORM_AJAX_DESC">
                     <option value="1">JYES</option>

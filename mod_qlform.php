@@ -209,13 +209,13 @@ if (isset($validated) && 1 == $validated) {
         $recipient = preg_split("?\n?", $params->get('emailrecipient'));
         $mailSent = [];
         try {
-            foreach ($recipient as $k => $v) {
-                $v = trim($v);
-                if ('' == $v) {
+            foreach ($recipient as $k => $emailAdress) {
+                $emailAdress = trim($emailAdress);
+                if ('' == $emailAdress) {
                     unset($recipient[$k]);
                     continue;
                 }
-                $mailSent[$k] = $objHelper->mail($v, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
+                $mailSent[$k] = $objHelper->mail($emailAdress, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
             }
         } catch (Exception $e) {
 
@@ -225,12 +225,14 @@ if (isset($validated) && 1 == $validated) {
                 unset($mailSent[$k]);
             }
         }
-        if (count($mailSent) == count($recipient)) {
-            if (1 == $params->get('emailsentdisplay', 0)) $objHelper->arrMessages[] = array('str' => JText::_('MOD_QLFORM_MAIL_SENT'));
+        $successful = count($mailSent);
+        $failed = count($recipient) - count($mailSent);
+        if (count($mailSent) === count($recipient)) {
+            if ($params->get('emailsentdisplay', 0)) {
+                $objHelper->arrMessages[] = ['str' => JText::sprintf('MOD_QLFORM_MAIL_SENT', $successful)];
+            }
         } else {
-            $successful = count($mailSent);
-            $failed = count($recipient) - count($mailSent);
-            $objHelper->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_MAIL_SENT_ERROR_COUNT'), $successful, $failed));
+            $objHelper->arrMessages[] = ['warning' => 1, 'str' => JText::sprintf('MOD_QLFORM_MAIL_SENT_ERROR_COUNT', $successful, $failed)];
         }
         if (isset($objHelper->files) && 1 == $params->get('fileemail_enabled', 0)) {
             foreach ($objHelper->files as $k => $v) {
