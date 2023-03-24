@@ -19,40 +19,37 @@ defined('JPATH_PLATFORM') or die;
 class JFormRuleXml extends JFormRule
 {
     /**
-     * The regular expression to use in testing a form field value.
-     *
-     * @var    string
-     * @since  11.1
-     */
-    //protected $regex = '^[\w.-]+(\+[\w.-]+)*@\w+[\w.-]*?\.\w{2,4}$';
-
-    /**
-     * Method to test the email address and optionally check for uniqueness.
+     * Method to check if given xml is valid xml
      *
      * @param SimpleXMLElement $element The SimpleXMLElement object representing the <field /> tag for the form field object.
      * @param mixed $value The form field value to validate.
-     * @param string $group The field name group control value. This acts as as an array container for the field.
+     * @param null $group The field name group control value. This acts as as an array container for the field.
      *                                      For example if the field has name="foo" and the group value is set to "bar" then the
      *                                      full field name would end up being "bar[foo]".
-     * @param JRegistry $input An optional JRegistry object with the entire data set to validate against the entire form.
-     * @param JForm $form The form object for which the field is being tested.
+     * @param JRegistry|null $input An optional JRegistry object with the entire data set to validate against the entire form.
+     * @param JForm|null $form The form object for which the field is being tested.
      *
      * @return  boolean  True if the value is valid, false otherwise.
      *
+     * @throws Exception
      * @since   11.1
      */
     public function test(SimpleXMLElement $element, $value, $group = null, JRegistry $input = null, JForm $form = null)
     {
         try {
             $strXml = $this->strToXml($value);
-            libxml_use_internal_errors(TRUE);
+            libxml_use_internal_errors(true);
             $valid = simplexml_load_string($strXml);
-            if (is_object($valid)) return true;
+            if (is_object($valid)) {
+                return true;
+            }
 
             /*get errors in case of failed test*/
             $arrErrors = libxml_get_errors();
             $xmlErrors = '<ul>';
-            foreach ($arrErrors as $v) $xmlErrors .= '<li>' . htmlentities($this->xmlToStr($v->message)) . '</li>';
+            foreach ($arrErrors as $v) {
+                $xmlErrors .= '<li>' . htmlentities($this->xmlToStr($v->message)) . '</li>';
+            }
             $xmlErrors .= '</ul>';
             $msgError = sprintf(JText::_('MOD_QLFORM_MSG_XMLINVALID'), $xmlErrors);
             throw new Exception($msgError);
@@ -63,6 +60,12 @@ class JFormRuleXml extends JFormRule
 
     }
 
+    /**
+     * replace [ => {, ] => }
+     * to generale valid xml
+     * @param $str
+     * @return array|string|string[]|null
+     */
     function strToXml($str)
     {
         $str = preg_replace("/\[/", '<', $str);
@@ -70,6 +73,12 @@ class JFormRuleXml extends JFormRule
         return $str;
     }
 
+    /**
+     * replace { => [, { => ]
+     * to generale a string, that can be displayed in html without being mistaken as tags
+     * @param $str
+     * @return array|string|string[]|null
+     */
     function xmlToStr($str)
     {
         $str = preg_replace("/\</", '[', $str);

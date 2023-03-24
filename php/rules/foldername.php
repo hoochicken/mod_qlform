@@ -19,25 +19,19 @@ defined('JPATH_PLATFORM') or die;
 class JFormRuleFoldername extends JFormRule
 {
     /**
-     * The regular expression to use in testing a form field value.
-     *
-     * @var    string
-     * @since  11.1
-     */
-
-    /**
-     * Method to test the email address and optionally check for uniqueness.
+     * Method to test, if foldername is valid and folder exists
      *
      * @param SimpleXMLElement $element The SimpleXMLElement object representing the <field /> tag for the form field object.
      * @param mixed $value The form field value to validate.
-     * @param string $group The field name group control value. This acts as as an array container for the field.
+     * @param null $group The field name group control value. This acts as as an array container for the field.
      *                                      For example if the field has name="foo" and the group value is set to "bar" then the
      *                                      full field name would end up being "bar[foo]".
-     * @param JRegistry $input An optional JRegistry object with the entire data set to validate against the entire form.
-     * @param JForm $form The form object for which the field is being tested.
+     * @param JRegistry|null $input An optional JRegistry object with the entire data set to validate against the entire form.
+     * @param JForm|null $form The form object for which the field is being tested.
      *
      * @return  boolean  True if the value is valid, false otherwise.
      *
+     * @throws Exception
      * @since   11.1
      */
     public function test(SimpleXMLElement $element, $value, $group = null, JRegistry $input = null, JForm $form = null)
@@ -45,15 +39,24 @@ class JFormRuleFoldername extends JFormRule
         try {
             $inputApp = JFactory::getApplication()->input;
             $jform = $inputApp->getData('jform');
-            if (!is_array($jform) || !isset($jform['params'])) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
-            if (!isset($jform['params']['fileupload_enabled'])) return true;
-            if (isset($jform['params']['fileupload_enabled']) && 0 == $jform['params']['fileupload_enabled']) return true;
-            if (!preg_match('?[a-zA-Z0-9_\-/]*$?', $value)) throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
-            //$config=JFactory::getConfig();
-            //$tmp=$config->get('tmp_path');
-            //$path=$tmp.'/'.$value;
+            if (!is_array($jform) || !isset($jform['params'])) {
+                throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
+            }
+            if (!isset($jform['params']['fileupload_enabled'])) {
+                return true;
+            }
+            if (isset($jform['params']['fileupload_enabled']) && 0 == $jform['params']['fileupload_enabled']) {
+                return true;
+            }
+            if (!preg_match('?[a-zA-Z0-9_\-/]*$?', $value)) {
+                throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
+            }
+
             $path = $value;
-            if (!is_dir($path) && 0 == $dirTrial = mkdir($path)) throw new Exception(JText::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE', $path));
+            $dirTrial = mkdir($path);
+            if (!is_dir($path) && empty($dirTrial)) {
+                throw new Exception(JText::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE', $path));
+            }
             return true;
         } catch (Exception $e) {
             JFactory::getApplication()->enqueueMessage($e->getMessage());
