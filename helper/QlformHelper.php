@@ -597,6 +597,7 @@ class QlformHelper
     {
         $plgn = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
         $objCaptcha = JCaptcha::getInstance($plgn, array('namespace' => 'mod_qlform'));
+        $objCaptcha = clone $objCaptcha;
         if (!$objCaptcha instanceof JCaptcha) $this->arrMessages[] = JText::_('MOD_QLFORM_MSG_CAPTCHANOTFOUND');
         return $objCaptcha;
     }
