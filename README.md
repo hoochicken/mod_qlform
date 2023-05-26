@@ -67,6 +67,49 @@ You can add additional fieldsets with (or without) labels, e. g.
 
 * *Fortunately mod_qlform sends  a l l  post data given to it, no further coding needed, strike! :-)
 
+## Send e-mail to multiple recipients
+
+**(1) to all recipients**
+
+* insert the e-mails into the e-mail recipient textarea
+* separate by line breaks
+
+~~~
+info@ql.de
+another-recipient@ql.de
+~~~
+
+**(2) use e-mail switch**
+
+2.1 You can choose to send an e-mail to a specific recipient.
+Imagine you have a form, that contains a dropdown list, let's say one as follows:
+
+~~~
+  [field name="room" label="Room" type="list" default="kitchen"]
+    [option value="kitchen"]Kitchen with the cook[/option]
+    [option value="bathroom"]Bathroom with funny and bunny[/option]
+  [/field]
+~~~
+
+2.2 Define switch field
+
+So you declare your "switch" field as `room`.
+
+2.3 Now adjust e-mail recipient textarea
+
+Add the mapping in the field
+
+* field value of switch field
+* colon :
+* e-mails address(es)
+* multiple e-mails are separated by ;
+
+~~~
+kitchen:cook@ql.de
+bathroom:funny@ql.de;bunny@ql.de
+FIELD_VALUE:EMAIL1;EMAIL2;EMAIL3
+~~~
+
 ## Standard form field types
 
 All form field types you find in the Joomla! docs:
