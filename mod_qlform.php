@@ -216,7 +216,7 @@ if (isset($validated) && 1 == $validated) {
             $emailMapping = $objHelper->getEmailMapping($emailMapping);
             $emailFieldname = $params->get('emailfieldname', '');
             $switchValue = $dataToValidate[$emailFieldname] ?? '';
-            $recipientAll = isset($emailMapping[$switchValue]) ? $emailMapping[$switchValue] : [$recipientDefault];
+            $recipientAll = isset($emailMapping[$switchValue]) ? $emailMapping[$switchValue] : $recipientAll;
         }
         $mailSent = [];
         try {
