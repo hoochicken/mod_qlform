@@ -478,6 +478,30 @@ class QlformHelper
         return $arr;
     }
 
+    public function getEmailAdressesFromMapping(array $mapping = []): array
+    {
+        $recipients = [];
+        foreach ($mapping as $mapAndEmail) {
+            $map = explode(':', $mapAndEmail);
+            $recipients[] = array_pop($map);
+        }
+        return $recipients;
+    }
+
+    public function getEmailMapping(array $mapping = []): array
+    {
+        $recipients = [];
+        foreach ($mapping as $mapAndEmail) {
+            $map = explode(':', $mapAndEmail);
+            if (2 !== count($map)) {
+                continue;
+            }
+            $key = $map[0];
+            $recipients[$key] = explode(';', $map[1] ?? '');
+        }
+        return $recipients;
+    }
+
     /**
      * Method to mail
      *

@@ -134,6 +134,22 @@
                         required="true">
                 </field>
                 <field
+                        name="emailswitch"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_EMAILSWITCH_LABEL"
+                        description="MOD_QLFORM_EMAILSWITCH_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field
+                        name="emailfieldname"
+                        type="text"
+                        label="MOD_QLFORM_EMAILFIELDNAME_LABEL"
+                        description="MOD_QLFORM_EMAILFIELDNAME_DESC">
+                </field>
+                <field
                         name="emaillabels"
                         type="list"
                         label="MOD_QLFORM_LABELS_LABEL"

@@ -7,6 +7,7 @@
  */
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
+use Exception;
 use JCaptcha;
 use JHtml;
 use Joomla\CMS\Factory;
@@ -50,12 +51,12 @@ $objHelper->formControl = $params->get('formControl', 'jform');
 $db = $objHelper->getDatabaseDriver(JVERSION);
 
 if (1 == $params->get('smtpCheck', 0)) {
-    $recipient = preg_split("?\n?", $params->get('emailrecipient'));
-    if (0 === count($recipient)) {
+    $recipientAll = preg_split("?\n?", $params->get('emailrecipient'));
+    if (0 === count($recipientAll)) {
         $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
         $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_ADJUST_CONFIG'));
     }
-    $to = $recipient[0];
+    $to = $recipientAll[0];
     $subject = JText::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_SUBJECT');
     $message = JText::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_MESSAGE');
     $mailParams = ['emailsender' => '', 'emailreplyto' => ''];
@@ -207,13 +208,22 @@ if (isset($validated) && 1 == $validated) {
 
     if (1 == $params->get('todoEmail')) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'email');
-        $recipient = preg_split("?\n?", $params->get('emailrecipient'));
+
+        $emailMapping = preg_split("?\n?", $params->get('emailrecipient'));
+        $recipientAll = $objHelper->getEmailAdressesFromMapping($emailMapping);
+        $recipientDefault = $recipientAll[0];
+        if ($params->get('emailswitch') && 0 < count($emailMapping)) {
+            $emailMapping = $objHelper->getEmailMapping($emailMapping);
+            $emailFieldname = $params->get('emailfieldname', '');
+            $switchValue = $dataToValidate[$emailFieldname] ?? '';
+            $recipientAll = isset($emailMapping[$switchValue]) ? $emailMapping[$switchValue] : $recipientAll;
+        }
         $mailSent = [];
         try {
-            foreach ($recipient as $k => $emailAdress) {
+            foreach ($recipientAll as $k => $emailAdress) {
                 $emailAdress = trim($emailAdress);
                 if ('' == $emailAdress) {
-                    unset($recipient[$k]);
+                    unset($recipientAll[$k]);
                     continue;
                 }
                 $mailSent[$k] = $objHelper->mail($emailAdress, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
@@ -227,8 +237,8 @@ if (isset($validated) && 1 == $validated) {
             }
         }
         $successful = count($mailSent);
-        $failed = count($recipient) - count($mailSent);
-        if (count($mailSent) === count($recipient)) {
+        $failed = count($recipientAll) - count($mailSent);
+        if (count($mailSent) === count($recipientAll)) {
             if ($params->get('emailsentdisplay', 0)) {
                 $objHelper->arrMessages[] = ['str' => JText::sprintf('MOD_QLFORM_MAIL_SENT', $successful)];
             }
