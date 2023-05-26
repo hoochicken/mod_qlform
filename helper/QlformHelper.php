@@ -497,8 +497,7 @@ class QlformHelper
                 continue;
             }
             $key = $map[0];
-            $recipient = explode(';', $map[1] ?? '');
-            $recipients[$key] = array_pop($recipient);
+            $recipients[$key] = explode(';', $map[1] ?? '');
         }
         return $recipients;
     }
