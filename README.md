@@ -433,3 +433,40 @@ mod_qlform : Db-form conflict:
 If intended, ignore message. (Tip: Set 'Display db-form conflict' to 'No' before going online.)"
 
 Here you can see right away, what's missing. In my case, the table is not found (therefore no table cols are found, too:-).
+
+## Preprocess data
+
+Available since version 10.1.3
+
+To preprocess data before storing to database or sending with e-mail etc, the data can be preprocessedd, To alter data before any further actions, the following actions have to be performed:
+
+**module configuration**
+* go to extensions > modules > mod_qlform
+* set parameter "preprocess data" to "yes"
+
+**file structrure**
+* go to your file system
+* go to modules/mod_qlform/php/classes/
+* rename "modQlformPreprocessData.php-rename-me" to "modQlformPreprocessData.php"
+* add your code to alter data
+* Several methods whose names are pretty well self-explanatory are available. Their structure ist quite simple: they retrieve data and return it. Further more, there are class variables like the module params, and the form object.
+
+~~~php
+<?php
+formDataBeforeValidation($data)
+formAndFileDataBeforeValidation($data)
+email($data)
+database($data)
+databaseExternal($data)
+somethingElse($data)
+completlyDifferent($data)
+jmessage($data)
+sendcopy($data)
+addionally you find the neat method p() with the following code:
+function p($data,$die=1)
+{
+echo '<pre>';print_r($data);echo '</pre>';
+if(1==$die)die('kia');
+}
+~~~
+
