@@ -982,18 +982,12 @@ class QlformHelper
      */
     public function addStyles()
     {
-        if ($this->isJoomla4((int) JVERSION)) {
-            $wam = Factory::getDocument()->getWebAssetManager();
-            $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
-            if ($this->params->get('stylesActive', '0')) {
-                $wam->addInlineStyle($this->getStyles($this->params), ['name' => $this->module->id]);
-            }
-        } else {
-            JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
-            if ($this->params->get('stylesActive', '0')) {
-                JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
-            }
+        $wam = Factory::getApplication()->getDocument()->getWebAssetManager();
+        $wam->registerAndUseStyle('mod_qlform', 'mod_qlform/qlform.css');
+        if ($this->params->get('stylesActive', '0')) {
+            $wam->addInlineStyle($this->getStyles($this->params), ['name' => 'mod_qlform-' . $this->module->id]);
         }
+
     }
 
     /**
@@ -1002,7 +996,7 @@ class QlformHelper
     public function addScript()
     {
         JHtml::_('jquery.framework');
-        $wam = Factory::getDocument()->getWebAssetManager();
+        $wam = Factory::getApplication()->getDocument()->getWebAssetManager();
         if (1 === (int)$this->params->get('ajax', '0')) {
             $wam->registerAndUseScript('mod_qlform', 'mod_qlform/qlform.js');
         }
