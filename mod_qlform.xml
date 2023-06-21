@@ -10,7 +10,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>12.2.0</version>
+    <version>12.2.1</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>Joomla\Module\Qlform</namespace>
     <updateservers>
