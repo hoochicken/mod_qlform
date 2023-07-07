@@ -55,7 +55,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
                 <div class="form-group control-group <?php echo $field->id; ?> <?php if (1 == $params->get('stylesLabelswithin', 0)) echo 'notlabelled'; else echo 'labelled'; ?> <?php echo $field->class; ?>">
                     <?php
                     // print_r($field);
-                    if (1 != $params->get('stylesLabelswithin', 0) || $objHelper->formControl . '_sendcopy' == trim($field->id) || 'spacer' == strtolower($field->type) || 'checkboxes' == strtolower($field->type)):
+                    if (1 != $params->get('stylesLabelswithin', 0) || $objHelper->formControl . '_sendcopy' == trim($field->id) || 'spacer' == strtolower($field->type) || 'checkboxes' == strtolower($field->type) || 'list' == strtolower($field->type)):
                         $label = $field->label;
                         $label = str_replace('}}', '>', str_replace('{{', '<', preg_replace('/class="/', 'class="control-label ', $label, 1)));
                         echo $label;
