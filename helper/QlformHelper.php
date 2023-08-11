@@ -95,7 +95,7 @@ class QlformHelper
      */
     public function doSomethingElse($data, $module, $form)
     {
-        if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
+        if (!$this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
         $obj = new modQlformSomethingElse($data, $this->params, $module, $form);
         if ($obj->doSomethingElse()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEDIDNOTWORK'));
@@ -110,7 +110,7 @@ class QlformHelper
      */
     public function doSomethingCompletelyDifferent($data, $module, $form)
     {
-        if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
+        if (!$this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
         $obj = new modQlFormSomethingCompletelyDifferent($data, $this->params, $module, $form);
         if ($obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE'));
         else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTDIDNOTWORK'));
@@ -301,7 +301,7 @@ class QlformHelper
         if (0 == $this->params->get('validate', 1)) return true;
         if (1 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) $validated = $this->obj_form->check($data);
         if (2 == $this->params->get('validate', 1) || 3 == $this->params->get('validate', 1)) {
-            if (!$this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformValidation')) return false;
+            if (!$this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlformValidation')) return false;
             $obj_validator = new modQlformValidation($data, $this->params, $this->module, $this->form);
             $validatedCustom = $obj_validator->validate();
         }
@@ -1144,7 +1144,7 @@ class QlformHelper
     function initPreprocessing($data, $module, $form)
     {
         $this->processData = false;
-        if ($this->checkIfCustomExists('Joomla\Module\Qlform\Site\Helper\modQlformPreprocessData')) $this->processData = true;
+        if ($this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlformPreprocessData')) $this->processData = true;
         else return false;
         $this->obj_processor = new modQlformPreprocessData($data, $this->params, $module, $form);
     }
