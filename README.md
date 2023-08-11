@@ -513,3 +513,358 @@ if(1==$die)die('kia');
 }
 ~~~
 
+## Add custom validation to qlform
+
+There are two ways of adding a validation to qlform: (1) as single rules to certain form fields, (2) Global form validation.
+
+## Custom validation for form field
+
+Basically in J! you have some validation predifinde, just like "email", e. g.
+
+~~~
+[field name="emailFieldName" validation="email" /]
+~~~
+
+Instead of 'validate="email"' you might need another validation. Maybe you would like to check, if a date is formatted properly. You would do this as follows:
+
+* Go to your xml and add the "addrulepath" attribute to the form tag:
+    * `[form addrulepath="/templates/yourTemplate/html/mod_qlform/rules"]` - if you put in your template you might edit it via template administration - OR
+    * `[form addrulepath="/modules/mod_qlform/php/rules"]` - only editable by ftp, no access by template, more secure
+* Add the field into your form: `[field name="someFieldName" type="text" validation="Xxxxx" /]` - ideally you use a more transparent name like "datevalid";-)
+* Add your rule file into this path, code is as follows:
+
+~~~ php
+<?php 
+defined('_JEXEC') or die;
+defined('JPATH_PLATFORM') or die;
+class JFormRuleXxxxx extends JFormRule
+     /**
+     * Method to test      *
+     * @param   SimpleXMLElement  $element  The SimpleXMLElement object representing the <field /> tag for the form field object.
+     * @param   mixed             $value    The form field value to validate.
+     * @param   string            $group    The field name group control value. This acts as as an array container for the field.
+     *                                      For example if the field has name="foo" and the group value is set to "bar" then the
+     *                                      full field name would end up being "bar[foo]".
+     * @param   JRegistry         $input    An optional JRegistry object with the entire data set to validate against the entire form.
+     * @param   JForm             $form     The form object for which the field is being tested.
+     *
+     * @return  boolean  True if the value is valid, false otherwise.
+     *
+     * @since   11.1
+     */
+     public function test(SimpleXMLElement $element, $value, $group = null, JRegistry $input = null, JForm $form = null)
+    {
+        try
+        {
+            //here check $value
+            //if false throw exception
+            if(1==2)throw new Exception(JText::_('Some error due to field Xxxxx occurred. Please insert correct syntax.'));
+            //if true return true;
+        }
+        catch (Exception $e)
+        {
+            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            return false;
+        }
+    }
+}
+~~~
+
+## Global validation to qlform
+
+* Go to modules/qlform/php/classes
+* Rename file modQlformValidation.php-rename-me to modQlformValidation.php
+* Insert your validation code and all methods you want into this class
+* return true or false
+* DONE
+
+## Custom field
+
+* Go to your xml and add the "addrulepath" attribute to the form tag:
+    * `[form addfieldpath="/templates/yourTemplate/html/mod_qlform/fields"]` - if you put in your template you might edit it via template administration - OR
+    * `[form addfieldpath="/modules/mod_qlform/php/fields"]` - only editable by ftp, no access by template, more secure
+* Add the field into your form: `[field name="someFieldName" type="Yyyyy" /]` - ideally you use a more transparent name like "commentary";-)
+* Add your field file into this path, code is as follows:
+
+~~~php
+<?php 
+defined('_JEXEC') or die;
+jimport('joomla.html.html');
+//import the necessary class definition for formfield
+jimport('joomla.form.formfield');
+class JFormFieldYyyyy extends JFormField
+{
+     /**
+     * The form field type.
+     *
+     * @var  string
+     * @since 1.6
+     */
+     protected $type = 'yyyyy'; //the form field type see the name is the same
+     /**
+     * Method to retrieve the lists that resides in your application using the API.
+     *
+     * @return array The field option objects.
+     * @since 1.6
+     */
+     protected function getInput()
+     {
+        $options = array();
+        $html='';
+        $html.='<textarea style="width:400px;height:400px;" name="'.$this->name.'" id="'.$this->id.'">';
+        $html.=$this->value;
+        $html.='</textarea>';
+        return $html;
+     }
+}
+~~~
+
+## Cascading form
+
+Assuming we got 3 forms cascaded. All 3 forms gather the data; only the last one does something (like saving to database or sending an e-mail)
+
+**1. Create articles and menu items**
+
+Create 3 articles
+
+1. create article "Form 1" with {loadposition formular1}
+2. create article "Form 2" with {loadposition formular2}
+3. create article "Form 3" with {loadposition formular3}
+
+**2. Create menu items**
+
+1. Menüpunkt pointing to article "Form 1", note down the url, e. g. /index.php/form-1
+2. Menüpunkt pointing to article "Form 2", note down the url, e. g. /index.php/form-2
+3. Menüpunkt pointing to article "Form 3", note down the url, e. g. /index.php/form-3
+
+**3. Create modules and menu items**
+
+* Formular 1
+  * is seated on page /index.php/form-1
+  * Settings:
+  * position: formular1
+  * Email>email (always required)
+  * Cascading Forms>action > "/index.php/form-2" (without quotes)
+* Formular 2
+  * is seated on page /index.php/form-2
+  * Settings:
+  * position: formular1
+  * Email>email (always required)
+  * Cascading Forms>action > "/index.php/form-3" (without quotes)
+  * Cascading Forms>addPostDataToForm > "yes"
+* Formular 3
+  * is seated on page /index.php/form-3
+  * Form that finally sends data to database and/or send e-mail
+  * Settings:
+  * position: formular1
+  * Email>email (always required)
+  * Cascading Forms>action > NO Action, adressing itself with "#" (without quotes)
+  * Cascading Forms>addPostDataToForm > "yes"
+  * Basic Options>send email >"yes" (if desired)
+  * Basic Options>safe to database >"yes" (if desired, watch out database settings)
+
+## Changing translations via language override
+
+For changes generate an override.ini. Works like that
+
+* generate folder languages/overrides
+* generate file languages/overrides/en-GB.override.ini
+* Enter the line you wish in the the file, e. g.:
+* MOD_QLFORM_SENDCOPY_LABEL="Here is your translation"
+* You can look up all placeholders in the following file
+* languages/en-GB/mod_qlform.ini
+* Do not change this very file; change the override.ini
+
+Explanation: In the module's template are only placeholders; if you change existing translations, you can adjust them by calling the placeholders in the override.ini.
+Thus you avoid that translations are unwillingly overridden when upgrading the module
+
+## Translating mod_qlform to new language
+
+All language data are stored in the language fiels installed. Simple generate your own language file. Let's asume its the Norvegian language you'd like to translate to.
+
+* go to folder "language/en-GB/"
+* copy files "en-GB.mod_qlform.ini" und "en-GB.mod_qlform.sys.ini"
+* go to folder "language/nn-NO/"
+* put both files there
+* rename files to "/nn-NO.mod_qlform.ini" und "/nn-NO.mod_qlform.sys.ini"
+* open "/nn-NO.mod_qlform.ini"
+* translate (tip: translate only what you really need, so just pick e. g. "Send copy to me":-), mind the syntax, so don't forget the opening =" and the ending"
+
+You have a full translation for mod_qlform? Why use it once? Why use it alone?
+Send it to me to add it to mod_qlform. Make it a real OpenSource!
+
+## Strange things happen to e-mail-addresses
+
+To suppress the cloaking change the setting in module's administration e-mail cloaking.
+
+Explanation: Joomla! is "cloaking" e-mail-addresses to avoid spamming - when used within a component.
+
+So when qlform is used within an article, an e-mail address in an input field is cloaked via javascript, and that gets alll wrong within a input field. So we switch e-mail-cloaking off and that's it:-)
+
+## "Do something else", e. g. fileupload (for devs)
+
+Mark: If you are a developer, if you can code, here is the "how to":-)
+If you are not, maybe you try to get the component "jdownloads" or some other form module.
+
+* Override templates files 
+  * go to modules/mod_qlform/tmpl
+  * copy all files in this folder
+  * create folder templates/yourTemplate/html/mod_qlform
+  * insert copied files here
+  * modifytemplates/yourTemplate/html/mod_qlform/default_form.php: add 'enctype="multipart/form-data"' in form tag
+* modify module and doSomethingElse
+  * set params "do Something Else" to "yes"
+  * rename "modules/mod_qlform/classes/modelQlSomethingElse.php-rename-me-when-you-use-me" to "modules/mod_qlform/classes/modelQlSomethingElse.php"
+  * add own code in modules/mod_qlform/classes/modelQlSomethingElse.php; here you can add saving files etc.
+
+## "Do something else", e. g. html e-mail
+
+* backend>modules>mod_qlform>basic settings>"do Something else" >"Yes"
+* activate "modelQlSomethingElse.php", thus read the pregoing paragraph about doing something else
+* copy all method (functions within class "modQlMailer") from "modelQlMailer.php"
+* paste all qlmailer methods into the class "modelQlSomethingElse" in "modelQlSomethingElse.php"
+* add the following lines into the doSomethingElse() method:
+
+~~~php
+<?php
+$recipient=preg_split("?\n?",$this->params->get('recipient'));
+$subject=$this->params->get('subject');
+$data=$this->data;
+foreach ($recipient as $k=>$to)
+{
+$this->mail($to, $subject, $data);
+}
+~~~
+
+* adjust method generateMail() to your html needs
+
+I haven't tried this very code yet, so there might be a syntax mistakes in it; nevertheles it should be clear, how it works:-) Good luck!
+
+## "Do something else" several times and different things
+
+There are 2 different ways of doing something else, if you want to do something else and something completely different and other things I might not guess.
+
+**(a) "hardcoded"**
+All module data - including the id - is passed to SomethingElse(); now just generate a "fork" like
+
+~~~php
+<?php
+function SomethingElse()
+{
+if (132==$this->module->id) $this->doThisVerySomething();
+if (133==$this->module->id OR 142==$this->module->id ) $this->doSomethingCompletlyDifferent();
+return true;
+}
+~~~
+
+I don't know, if the syntax is really proper (no editor here), but I think you get what I mean:-)
+
+**(b) more flexible (recommended)**
+
+Use the "note" field in your module give some extra information, e. g. emailSender or sms.
+This you can add new modules with the already existing functionality - without having to adjust the source code.
+
+~~~php
+<?php
+function SomethingElse()
+{
+$note=$this->getNote($this->module->id);   
+if ('sms'==$note) $this->sendSMS();
+if ('emailSender'=$note) $this->sendEmail();
+if ('databaseSpecial'=$note) $this->databaseSpecial();
+return true;
+}
+
+function getModuleNote($moduleId)
+{
+$db=JFactory::getDbo();
+$db->setQuery('SELECT `note` FROM `#__modules` WHERE `id`=\''.$moduleId.'\'');
+return trim($db->loadObject()->note);
+/*I don't know, if the syntax is proper (no editor here), but I think you get what I mean:-), you find how to do this query on Joomla! dev site*/
+}
+
+function sendSMS() {...}
+function sendEmail() {...}
+function databaseSpecial() {...}
+~~~
+
+Of course you could also perform several actions on only one module by using a if (preg_match('/sms/',$note) command or by $arrTasks=preg_split('/ /',$note); plus foreach ($arrTasks ...)
+
+## Add own html source code
+
+* Create an override of the mod_qlform
+  * generate folder templates/yourTemplate/html/mod_qlform/
+  * copy all file you can find in modules/mod_qlform/tmpl to the generated folder
+  * now work with these files
+* Manipulate overwriting file templates/yourTemplate/html/mod_qlform/default_form.php 
+  * add you html code here, e. g. table etc.
+  * strip that foreach stuff
+  * Getting field stuff with following commands 
+
+~~~php
+<?php getInput('fieldId'); ?>
+<?php getLabel('fieldId'); ?>
+
+// around the label you can add your links
+<a href="http://www.ql.de"><?php getInput('fieldId'); ?>
+~~~
+
+In this file you can do everything you like and know about html, css and forms. Just make sure, that everything works afterwards and that you haven't forgotten a maybe very important field.
+
+## Add own javsacript validation
+
+* Generate an override (see paragraph "Add own html source code")
+* add your own javascript code
+  * either in the override template files directly
+  * or via a file called within the override. Use the addScript() method to call the script (see http://docs.joomla.org/JDocument::addScript/11.1)
+
+## Set e-mail sender address as reply-to
+
+* go to extensions>modules>mod_qlform
+* click on tab "Email" settings
+* Enter into "Reply-to" field the very name of the field containing the inserted e-mail address.
+* If youtr e-mail field ist called "email", set tghis walue into the input
+* Save
+* Done
+
+## Error message "Mail-function could not be initalised."
+
+This message means, that everything is all right with mod_qlform.
+mod_qlform hands over all mail data to the J! mailer object ... and this object fails to send the mail.
+There might be several reasons why J! cannot send the message.
+I suppose that the server does not allow J! so send the e-mails.
+Do as follows:
+
+* go to configuration> server->mailing/e-mail setting
+* ask your provider for the parameters to be set in the fieldset "Mailing"; especially the smtp setting and the port.
+* Then it should work.
+
+Good luck!
+
+## Sendcopy-Feature: use placeholders
+
+Within the "send copy" params you can add a so-called pretext. This pretext will be displayed within the copy mail to the person who used the form.
+
+In the pretext you can use placeholders like {*salutation*} or {*secondname*}. The words within the {*...*} correspond with the field names used in the xml. A pretext like:
+
+~~~text
+Dear {*salutation*} {*secondname*}, bla bla
+~~~
+
+generates a sendcopy e-mail like this:
+
+~~~text
+Dear Ms. Greedberg, bla bla
+~~~
+
+Enjoy:-)
+
+## Add link in label
+
+Use {{ and }} instead of < and >. So you can generate a link as follows:
+
+~~~text
+[field name="someName" label="Label with {{a href='http://google.de'}}link to Google{{/a}} and a line{{br/}}break ...Halleluja and amen!!" /]
+~~~
+
+The history: One nice supportee asked me about the link. And I got so annoyed by the stripped off tags during the tests, that I programmed a workaround. So thank you, Marianna, for stepping on my toes:-)
