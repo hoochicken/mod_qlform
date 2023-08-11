@@ -40,9 +40,15 @@ class modQlformSomethingCompletelyDifferent
      * add any methods you need
      * @return bool
      */
-    public function doSomethingCompletelyDifferent()
+    public function doSomethingCompletelyDifferent(): bool
     {
-        //echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        return true;
+        echo "<pre>";
+        print_r($_POST);
+        print_r($this->params);
+        print_r($this->module);
+        echo "</pre>";
+        return true;
         //notice:
         //arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.
         //So use json_decode(preg_replace("/'/",'"',$dataOfField)); to get your array back

@@ -43,9 +43,14 @@ class modQlformSomethingElse
      * add any methods you need
      * @return bool true on success, false on failure
      */
-    public function doSomethingElse()
+    public function doSomethingElse(): bool
     {
-        //echo "<pre>";print_r($_POST);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
+        return true;
+        echo "<pre>";
+        print_r($_POST);
+        print_r($this->params);
+        print_r($this->module);
+        echo "</pre>";
         return true;
         //alle eintragen; dann die Verknuepgunfstabelle ausfuellen
         //notice:
