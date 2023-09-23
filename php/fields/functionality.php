@@ -22,8 +22,7 @@ class JFormFieldFunctionality extends JFormField
 
         $params = json_decode($params);
 
-        $arr_actions = array
-        (
+        $arr_actions = [
             'fileemail_enabled' => false,
             'fileupload_enabled' => false,
             'todoEmail' => false,
@@ -34,7 +33,7 @@ class JFormFieldFunctionality extends JFormField
             'todoSomethingCompletelyDifferent' => 'modQlformSomethingCompletelyDifferent',
             'validate' => 'modQlformValidation',
             'processData' => 'modQlformPreprocessData',
-        );
+        ];
         $used = [];
         $filesNeeded = [];
         foreach ($arr_actions as $k => $v) if (isset($params->$k) && (('validate' != $k && 1 == $params->$k) || ('validate' == $k && (2 == $params->$k || 3 == $params->$k)))) {
@@ -57,7 +56,7 @@ class JFormFieldFunctionality extends JFormField
         return $msg;
     }
 
-    function getModuleData($id, $selector = '*')
+    function getModuleData($id, $selector = '*'): string
     {
         $db = ((int)JVERSION >= 4) ? Factory::getContainer()->get('DatabaseDriver') : JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -66,8 +65,9 @@ class JFormFieldFunctionality extends JFormField
         $query->where('`id`=\'' . $id . '\'');
         $db->setQuery($query);
         $data = $db->loadObject();
+        if (!$data) return '';
         if ('*' == $selector || !isset($data->$selector)) return $data;
-        return $data->$selector;
+        return (string)($data->$selector ?? '');
     }
 
     function checkIfFileExists()
