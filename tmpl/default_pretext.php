@@ -7,7 +7,8 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+/** @var Joomla\Registry\Registry $params */
 ?>
 <div class="pretext">
-    <?php echo $params->get('pretext'); ?>
+    <?= $params->get('pretext'); ?>
 </div>

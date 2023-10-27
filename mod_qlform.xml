@@ -5,12 +5,12 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2023-09-23</creationDate>
+    <creationDate>2023-10-27</creationDate>
     <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>12.2.5</version>
+    <version>13.0.0</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>QlformNamespace\Module\Qlform\Site\Helper</namespace>
     <updateservers>
@@ -74,7 +74,7 @@
                         required="true">
                 </field>
                 <!--field
-                        name="emailcloak"
+                        name="jquery"
                         type="radio"
                         class="btn-group"
                         default="0"

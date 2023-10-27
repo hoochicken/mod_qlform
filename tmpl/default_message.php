@@ -12,5 +12,5 @@ $style = (empty($messages) || empty(strip_tags($messages)))
     : 'display:block';
 ?>
 <div class="qlform message alert alert-info" style="<?php $style;?> ">
-    <?php echo $messages; ?>
+    <?= $messages; ?>
 </div>

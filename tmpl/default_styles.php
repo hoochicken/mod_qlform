@@ -7,6 +7,9 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+/** @var stdClass $module */
+/** @var \Joomla\Registry\Registry $params */
+
 $strModuleId = 'mod_qlform_' . $module->id;
 $moduleIdSelector = '#' . $strModuleId;
 
@@ -76,6 +79,6 @@ if ('' != trim($params->get('stylesAdditionalstyles', ''))) $script .= $params->
 /*ADDITIONAL STYLES STOP*/
 ?>
 <style type="text/css">
-    <?php echo $script; ?>
+    <?= $script; ?>
     <?php //echo preg_replace("/\\n/",'<br />',$script);?>
 </style>

@@ -38,7 +38,7 @@ class QlformHelper
     public modQlformDatabaseExternal $objDatabaseexternal;
     public string $captchaToBeUsed;
     public modelModqlform $obj_form;
-    public $linebreak = "\n";
+    public string $linebreak = "\n";
     private $db = null;
 
     /**
