@@ -991,7 +991,7 @@ class QlformHelper
      */
     public function addScript()
     {
-        JHtml::_('jquery.framework');
+        HTMLHelper::_('jquery.framework');
         $wam = Factory::getApplication()->getDocument()->getWebAssetManager();
         if (1 === (int)$this->params->get('ajax', '0')) {
             $wam->registerAndUseScript('mod_qlform', 'mod_qlform/qlform.js');
@@ -1076,7 +1076,7 @@ class QlformHelper
      */
     public function addScriptJoomla3()
     {
-        JHtml::_('jquery.framework');
+        HTMLHelper::_('jquery.framework');
         if (1 === (int)$this->params->get('ajax', '0')) {
             echo '<script src="/media/mod_qlform/js/qlform.js" type="text/javascript"></script>';
         }

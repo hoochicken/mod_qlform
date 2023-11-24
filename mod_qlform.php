@@ -82,13 +82,8 @@ if (1 == $params->get('bootstrap', 0)) {
 // Xml: getting xml string from params
 
 if (!$ajax) {
-    if ($objHelper->isJoomla4(JVERSION)) {
-        $objHelper->addStyles();
-        $objHelper->addScript();
-    } else {
-        $objHelper->addStylesJoomla3();
-        $objHelper->addScriptJoomla3();
-    }
+    $objHelper->addStyles();
+    $objHelper->addScript();
 }
 $strXml = $objHelper->transformText($params->get('xml'));
 // simplexml_load_string($strXml);
