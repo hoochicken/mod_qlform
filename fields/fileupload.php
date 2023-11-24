@@ -21,7 +21,7 @@ class JFormFieldFileupload extends JFormField
         try {
             $this->errors = [];
 
-            $config = JFactory::getConfig();
+            $config = Factory::getConfig();
             $input = Factory::getApplication()->input;
             $params = json_decode($this->getModuleData($input->get('id'), 'params'));
             if (!is_object($params) || !isset($params->fileupload_enabled)) return $this->errors[] = Text::_('MOD_QLFORM_MSG_QLFORMCANTFINDITSPARAMS');;

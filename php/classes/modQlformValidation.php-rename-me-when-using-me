@@ -9,7 +9,7 @@
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
 use Exception;
-use JFactory;
+use Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
@@ -33,7 +33,7 @@ class modQlformValidation
         $this->module = $module;
         $this->form = $form;
         $formControl = $this->params->get('formControl', 'jform');
-        $this->files = JFactory::getApplication()->input->files->get($formControl);
+        $this->files = Factory::getApplication()->input->files->get($formControl);
     }
 
     /**
@@ -51,7 +51,7 @@ class modQlformValidation
                 throw new Exception(implode('<br />', $arrMessages));
             }
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+            Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
             return false;
         }
         //notice:

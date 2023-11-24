@@ -8,6 +8,7 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
+use Dompdf\Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use JText;
@@ -16,54 +17,43 @@ defined('_JEXEC') or die;
 
 class modQlformMailer
 {
-    public $separator;
-    public $separator2;
-    public $arrMessages = [];
+    public string $separator = '';
+    public string $separator2 = '';
+    public array $arrMessages = [];
+    public array $files = [];
 
-    /**
-     * method for mailing using JoomlaMailer
-     *
-     */
     public function __construct()
     {
         $this->separator = ': ';
         $this->separator2 = "\n";
     }
 
-    /**
-     * method for mailing using JoomlaMailer
-     *
-     * @param string $to recipient of mail
-     * @param string $subject for mail
-     * @param array $data post data from form
-     *
-     * @return  bool  True on success, false on failure
-     */
-    public function mail($to, $subject, $data, $params, $message = '', $emaildisplay = 0)
+    public function mail(string $to, string $subject, array $data, $params, string $message = '', bool $emaildisplay = false): bool
     {
-        //if(false!==strpos($to,'halbfrau.de'))return false;
-        $message = $this->generateMail($data, $subject, $message);
-        $mail = Factory::getMailer();
-        $mail->addRecipient($to);
-        $mail->setSubject($subject);
-        $mail->setBody($message);
-        $mail->setSender($params['emailsender']);
-        $mail->addReplyTo($params['emailreplyto']);
-        if (isset($this->files) && is_array($this->files) && 0 < count($this->files)) {
-            foreach ($this->files as $k => $v) if (1 == $v['fileChecked']) $mail->addAttachment($v['current'], $v['name'], 'base64', $v['type']);
-            unset($this->files);
+        try {
+            $message = $this->generateMail($data, $subject, $message);
+            $mail = Factory::getMailer();
+            $mail->addRecipient($to);
+            $mail->setSubject($subject);
+            $mail->setBody($message);
+            $mail->setSender($params['emailsender']);
+            $mail->addReplyTo($params['emailreplyto']);
+            if (isset($this->files) && is_array($this->files) && 0 < count($this->files)) {
+                foreach ($this->files as $k => $file) {
+                    if (!isset($file['fileChecked']) || !$file['fileChecked']) continue;
+                    $mail->addAttachment($file['current'], $file['name'], 'base64', $file['type']);
+                }
+                unset($this->files);
+            }
+            if ($emaildisplay) {
+                $this->arrMessages[] = $this->mailAsString($message, $mail);
+            }
+            return !is_object($mail->Send());
+        } catch (Exception $e) {
+            $this->arrMessages[] = $e->getMessage();
         }
-        if (1 == $emaildisplay) $this->arrMessages[] = $this->mailAsString($message, $mail);
-        if (!is_object($mail->Send())) return true; else return false;
     }
 
-    /**
-     * method to generate headline and body of mail
-     *
-     * @param $message
-     * @param string $mail
-     * @return string
-     */
     public function mailAsString($message, $mail = '')
     {
         return '<span style=\'font-family:courier\'>' . preg_replace("/\\n/", '<br />', $message) . '</span>';
@@ -72,30 +62,14 @@ class modQlformMailer
         echo '</pre>';
     }
 
-
-    /**
-     * method to generate headline and body of mail
-     *
-     * @param array $data
-     * @param string $subject
-     * @param string $body
-     * @return string
-     */
-    public function generateMail($data, $subject, $body = '')
+    public function generateMail(array $data, string $subject, string $body = '')
     {
         $headline = $this->generateMailHeadline($data, $subject);
         $body .= $this->generateMailBody($data);
         return $headline . $body;
     }
 
-    /**
-     * method to generate headline
-     *  takes module subject, form subject, name and email by default
-     * @param array $data
-     * @param string $subject
-     * @return string
-     */
-    public function generateMailHeadline($data, $subject)
+    public function generateMailHeadline(array $data, string $subject)
     {
         $headline = $subject . "\n\n";
         if (isset($data['subject']) && isset($data['subject']['data'])) $headline .= $data['subject']['data'] . "\n";
@@ -103,14 +77,7 @@ class modQlformMailer
         return $headline;
     }
 
-    /**
-     * Method to generate body
-     *
-     * takes post data and foreaches it to body
-     * @param array $data
-     * @return string
-     */
-    public function generateMailBody($data)
+    public function generateMailBody(array $data): string
     {
         $body = '';
         foreach ($data as $k => $v) {
@@ -124,12 +91,6 @@ class modQlformMailer
         return $body;
     }
 
-    /**
-     * Method to check validation of e-mail address
-     *
-     * @param string $str wouldbe-email address
-     * @return  bool    true on success; false on failure
-     */
     public function checkEmail(string $str): bool
     {
         return filter_var($str, FILTER_VALIDATE_EMAIL);

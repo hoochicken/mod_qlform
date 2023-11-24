@@ -8,7 +8,7 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use JFactory;
+use Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
@@ -32,7 +32,7 @@ class modQlformPreprocessData
         $this->module = $module;
         $this->form = $form;
         $formControl = $this->params->get('formControl', 'jform');
-        $this->files = JFactory::getApplication()->input->files->get($formControl);
+        $this->files = Factory::getApplication()->input->files->get($formControl);
         //echo "<pre>";print_r($this->data);print_r($this->params);print_r($this->module);print_r($this->form);echo "</pre>";die;
         //notice:
         //(1) arrays of multiple select fields have been jsonified via json_encode; " might have been replaced by '.

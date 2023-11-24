@@ -32,6 +32,7 @@ class QlformHelper
     private static string $jversion = '';
     public array $arrMessages = [];
     public array $files = [];
+    public bool $processData = false;
     public array $arrFields = [];
     public Registry $params;
     public Form $form;
@@ -39,6 +40,7 @@ class QlformHelper
     public string $formControl;
     public modQlformDatabase $objDatabase;
     public modQlformDatabaseExternal $objDatabaseexternal;
+    public $obj_processor;
     public string $captchaToBeUsed;
     public modelModqlform $obj_form;
     public string $linebreak = "\n";
@@ -505,32 +507,21 @@ class QlformHelper
         return $recipients;
     }
 
-    /**
-     * Method to mail
-     *
-     * @param string $recipient email address of recipient
-     * @param string $subject of email
-     * @param array $data array of post data to be sent
-     * @param $form
-     * @param string $pretext
-     * @param int $labels
-     * @param int $copy
-     * @return bool
-     * @since    1.6
-     */
-    public function mail($recipient, $subject, $data, $form, $pretext = '', $labels = 1, $copy = 0): bool
+    public function mail(string $recipient, string $subject, array $data, $form, string $pretext = '', bool $labels = true, bool $copy = false): bool
     {
         $paramsMail = $this->mailPrepareParams($data, $copy);
         $data = $this->prepareDataWithXml($data, $form, $labels);
         $obj_mailer = new modQlformMailer();
-        if (2 == $this->params->get('emailseparator', '1')) $obj_mailer->separator = "\n";
-        if (2 == $this->params->get('emailseparator2', '1')) $obj_mailer->separator2 = "\n\n";
+        if (2 === (int)$this->params->get('emailseparator', 1)) $obj_mailer->separator = "\n";
+        if (2 === (int)$this->params->get('emailseparator2', 1)) $obj_mailer->separator2 = "\n\n";
 
         if ('' != trim($pretext)) $pretext = $this->preparePretext(Text::_($pretext), $data);
-        if (1 == $this->params->get('fileemail_enabled', 0) && isset($this->files)) $obj_mailer->files = $this->files;
+        if ($this->params->get('fileemail_enabled', false) && isset($this->files)) {
+            $obj_mailer->files = $this->files;
+        }
 
         $subject .= $paramsMail['emailsubject2'];
-        $mailSent = $obj_mailer->mail($recipient, $subject, $data, $paramsMail, $pretext, $this->params->get('emaildisplay'));
+        $mailSent = $obj_mailer->mail($recipient, $subject, $data, $paramsMail, $pretext, (bool)$this->params->get('emaildisplay', false));
         foreach ($obj_mailer->arrMessages as $strMsg) {
             $this->arrMessages[] = ['str' => $strMsg];
         }

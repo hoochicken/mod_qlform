@@ -8,12 +8,16 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use JFactory;
+
+
+use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die;
 
 class modQlformMessager
 {
+
+    public string $message = '';
 
     /**
      * Method for raising messages via Joomla!
@@ -38,7 +42,7 @@ class modQlformMessager
     public function raiseJMessages($arrMessages)
     {
         //print_r($arrMessages);die;
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         if (!is_array($arrMessages) && 0 < count($arrMessages)) {
             return;
         }
@@ -51,11 +55,6 @@ class modQlformMessager
         }
     }
 
-    /**
-     * Method for generating messages
-     * @param array $arrMessages errors to be raised
-     * @return   string errors to be shown
-     */
     public function getMessage($arrMessages)
     {
         $message = '';
