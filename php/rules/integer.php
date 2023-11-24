@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -38,11 +41,11 @@ class JFormRuleInteger extends JFormRule
     {
         try {
             if (!is_numeric($value)) {
-                throw new Exception(JText::_('MOD_QLFORM_MSG_FILESIZENOINTEGER'));
+                throw new Exception(Text::_('MOD_QLFORM_MSG_FILESIZENOINTEGER'));
             }
             return true;
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
     }

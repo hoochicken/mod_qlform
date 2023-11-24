@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -45,10 +48,10 @@ class JFormRuleAjaxcaptcha extends JFormRule
             if (!$captcha) {
                 return true;
             }
-            JFactory::getApplication()->enqueueMessage(JText::_('MOD_QLFORM_MSG_AJAX_CAPTCHA_INCOMPATIBILITY'));
+            Factory::getApplication()->enqueueMessage(Text::_('MOD_QLFORM_MSG_AJAX_CAPTCHA_INCOMPATIBILITY'));
             return true;
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
     }

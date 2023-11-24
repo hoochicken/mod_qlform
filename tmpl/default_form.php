@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Registry\Registry;
 use Joomla\CMS\Helper\ModuleHelper;
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
@@ -23,15 +26,15 @@ $objCaptchaEnabled = false;
 /** @var JCaptcha $objCaptcha */
 /** @var int $numModuleId */
 
-$objCaptchaSet = $params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
-foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
+$objCaptchaSet = $params->get('captcha', Factory::getApplication()->get('captcha', '0'));
+foreach (PluginHelper::getPlugin('captcha') as $plugin) {
     if ($objCaptchaSet === $plugin->name) {
         $objCaptchaEnabled = true;
         break;
     }
 } ?>
 
-<form method="post" action="<?= JText::_(htmlspecialchars($params->get('action'))); ?>"
+<form method="post" action="<?= Text::_(htmlspecialchars($params->get('action'))); ?>"
       id="mod_qlform_<?= $module->id; ?>"
       class="<?= $params->get('formclass', 'form-horizontal'); ?> form-validate" <?php if (1 == $params->get('fileupload_enabled') || 1 == $params->get('fileemail_enabled')) echo ' enctype="multipart/form-data" '; ?>>
     <?php
@@ -53,7 +56,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
         echo '<fieldset id="' . $fieldset->name . '"';
         if (isset($fieldset->class)) echo ' class="' . $fieldset->class . '"';
         echo '>';
-        if (isset($fieldset->label) && '' != $fieldset->label) echo '<legend id="legend' . $fieldset->name . '">' . JText::_($fieldset->label) . '</legend>';
+        if (isset($fieldset->label) && '' != $fieldset->label) echo '<legend id="legend' . $fieldset->name . '">' . Text::_($fieldset->label) . '</legend>';
         foreach ($fields as $field):
             if ($field->__get('hidden', '') && false !== strpos($field->input, 'MAX_FILE_SIZE')): echo $field->value . '<input type="hidden" name="MAX_FILE_SIZE" value="' . $params->get('fileupload_maxfilesize', 0) . '" />';
             elseif ($field->__get('hidden', '')): echo $field->__get('input', null);
@@ -82,7 +85,7 @@ foreach (JPluginHelper::getPlugin('captcha') as $plugin) {
     <div class="submit control-group">
         <div class="controls">
             <button class="btn btn-large btn-primary submit <?php if (1 == $params->get('ajax', 0)) echo 'ajax'; ?>" onclick="<?= $onclick; ?>"
-                    type="submit"><?= htmlspecialchars(JText::_($params->get('submit'))); ?></button>
+                    type="submit"><?= htmlspecialchars(Text::_($params->get('submit'))); ?></button>
         </div>
     </div>
     <?php if ($boolFieldModuleId || 1 == $params->get('ajax', 0)) : ?>

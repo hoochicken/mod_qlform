@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -45,7 +48,7 @@ class JFormRuleJmessage extends JFormRule
         if (is_numeric($jmessagerecipient) && 0 < $jmessagerecipient && is_numeric($jmessagesender) && 0 < $jmessagesender) {
             return true;
         }
-        JFactory::getApplication()->enqueueMessage(JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER'));
+        Factory::getApplication()->enqueueMessage(Text::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER'));
         return false;
     }
 }

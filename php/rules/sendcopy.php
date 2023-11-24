@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -49,9 +52,9 @@ class JFormRuleSendcopy extends JFormRule
             if (0 < $exits) {
                 return true;
             }
-            throw new Exception(JText::sprintf('MOD_QLFORM_MSG_SENDCOPYFIELDNAME', $fieldname));
+            throw new Exception(Text::sprintf('MOD_QLFORM_MSG_SENDCOPYFIELDNAME', $fieldname));
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
     }

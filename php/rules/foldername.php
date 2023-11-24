@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -37,10 +40,10 @@ class JFormRuleFoldername extends JFormRule
     public function test(SimpleXMLElement $element, $value, $group = null, JRegistry $input = null, JForm $form = null)
     {
         try {
-            $inputApp = JFactory::getApplication()->input;
+            $inputApp = Factory::getApplication()->input;
             $jform = $inputApp->getData('jform');
             if (!is_array($jform) || !isset($jform['params'])) {
-                throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
+                throw new Exception(Text::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
             }
             if (!isset($jform['params']['fileupload_enabled'])) {
                 return true;
@@ -49,17 +52,19 @@ class JFormRuleFoldername extends JFormRule
                 return true;
             }
             if (!preg_match('?[a-zA-Z0-9_\-/]*$?', $value)) {
-                throw new Exception(JText::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
+                throw new Exception(Text::_('MOD_QLFORM_MSG_FOLDERNAMEINVALID'));
             }
 
-            $path = $value;
-            $dirTrial = mkdir($path);
-            if (!is_dir($path) && empty($dirTrial)) {
-                throw new Exception(JText::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE', $path));
+            $destination = $value;
+            $destination = str_replace('JPATH_ROOT', JPATH_ROOT, $destination);
+
+            $dirTrial = mkdir($destination);
+            if (!is_dir($destination) && !$dirTrial) {
+                throw new Exception(Text::sprintf('MOD_QLFORM_MSG_FOLDERMKDIRFAILURE', $destination));
             }
             return true;
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
     }

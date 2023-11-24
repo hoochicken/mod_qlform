@@ -7,6 +7,7 @@
  */
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 jimport('joomla.html.html');
@@ -21,25 +22,25 @@ class JFormFieldFileupload extends JFormField
             $this->errors = [];
 
             $config = JFactory::getConfig();
-            $input = JFactory::getApplication()->input;
+            $input = Factory::getApplication()->input;
             $params = json_decode($this->getModuleData($input->get('id'), 'params'));
-            if (!is_object($params) || !isset($params->fileupload_enabled)) return $this->errors[] = JText::_('MOD_QLFORM_MSG_QLFORMCANTFINDITSPARAMS');;
+            if (!is_object($params) || !isset($params->fileupload_enabled)) return $this->errors[] = Text::_('MOD_QLFORM_MSG_QLFORMCANTFINDITSPARAMS');;
             /*if deactivated anyway=>no checking*/
             if (0 == $params->fileupload_enabled && 0 == $params->fileemail_enabled) return;
 
             /*else check phpinfo anmd plugin stuff*/
-            if (true != $this->checkPhpfileinfo()) $this->errors[] = array(JText::_('MOD_QLFORM_MSG_PHPEXTENSIONFILEINFONOTLOADED'), 'notice');
-            if (true != $this->checkPluginQlform()) $this->errors[] = array(JText::_('MOD_QLFORM_MSG_PLGQLFORMREQUIRED'), 'warning');
-            if (true != $this->checkPluginQlformEnabled()) $this->errors[] = array(JText::_('MOD_QLFORM_MSG_PLGQLFORMTOBEENABLED'), 'warning');
+            if (true != $this->checkPhpfileinfo()) $this->errors[] = array(Text::_('MOD_QLFORM_MSG_PHPEXTENSIONFILEINFONOTLOADED'), 'notice');
+            if (true != $this->checkPluginQlform()) $this->errors[] = array(Text::_('MOD_QLFORM_MSG_PLGQLFORMREQUIRED'), 'warning');
+            if (true != $this->checkPluginQlformEnabled()) $this->errors[] = array(Text::_('MOD_QLFORM_MSG_PLGQLFORMTOBEENABLED'), 'warning');
             if (0 < count($this->errors)) throw new Exception('');
         } catch (Exception $e) {
             foreach ($this->errors as $k => $v) {
-                JFactory::getApplication()->enqueueMessage($v[0], $v[1]);
+                Factory::getApplication()->enqueueMessage($v[0], $v[1]);
             }
-            if (isset($this->plgSystemQlformInstalled) && false == $this->plgSystemQlformInstalled) echo '<br />' . JText::_('MOD_QLFORM_FILEUPLOADCOMMENT');
-            return JText::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS', $config->get('tmp_path'));
+            if (isset($this->plgSystemQlformInstalled) && false == $this->plgSystemQlformInstalled) echo '<br />' . Text::_('MOD_QLFORM_FILEUPLOADCOMMENT');
+            return Text::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS', $config->get('tmp_path'), JPATH_BASE);
         }
-        return JText::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS', $config->get('tmp_path'));
+        return Text::sprintf('MOD_QLFORM_MSG_YOURTMPFOLDERIS', $config->get('tmp_path'), JPATH_BASE);
     }
 
     function getModuleData($id, $selector = '*')

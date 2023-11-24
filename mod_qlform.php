@@ -11,6 +11,7 @@ use Exception;
 use JCaptcha;
 use JHtml;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use JResponseJson;
 use JText;
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
@@ -53,18 +54,18 @@ $db = $objHelper->getDatabaseDriver(JVERSION);
 if (1 == $params->get('smtpCheck', 0)) {
     $recipientAll = preg_split("?\n?", $params->get('emailrecipient'));
     if (0 === count($recipientAll)) {
-        $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
-        $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_ADJUST_CONFIG'));
+        $objHelper->setMessage(Text::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
+        $objHelper->setMessage(Text::_('MOD_QLFORM_MSG_SMTP_ADJUST_CONFIG'));
     }
     $to = $recipientAll[0];
-    $subject = JText::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_SUBJECT');
-    $message = JText::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_MESSAGE');
+    $subject = Text::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_SUBJECT');
+    $message = Text::_('MOD_QLFORM_MSG_SMTP_TESTMAIL_MESSAGE');
     $mailParams = ['emailsender' => '', 'emailreplyto' => ''];
     $obj_mailer = new modQlformMailer();
     $mailSent = $obj_mailer->mail($to, $subject, [], $mailParams, $message);
     if (!$mailSent) {
-        $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
-        $objHelper->setMessage(JText::_('MOD_QLFORM_MSG_SMTP_ADJUST_CONFIG'));
+        $objHelper->setMessage(Text::_('MOD_QLFORM_MSG_SMTP_CONNECTION_NOT_WORKING'));
+        $objHelper->setMessage(Text::_('MOD_QLFORM_MSG_SMTP_ADJUST_CONFIG'));
     }
 }
 
@@ -182,14 +183,15 @@ if (1 == $params->get('addPostToForm', 0)) {
 if (isset($validated) && 1 == $validated) {
     /*FILE_UPLOAD START*/
     $objHelper->files = $objInput->files->get($objHelper->formControl);
-    if ((1 == $params->get('fileupload_enabled', 0) || 1 == $params->get('fileemail_enabled', 0)) && true == $objHelper->checkPlgQlformuploaderExists() && is_array($objHelper->files) && 0 < count($objHelper->files)) {
+    if ($params->get('fileupload_enabled', 0 || $params->get('fileemail_enabled', 0)) && $objHelper->checkPlgQlformuploaderExists() && is_array($objHelper->files) && 0 < count($objHelper->files)) {
         require_once(JPATH_BASE . '/plugins/system/qlformuploader/php/classes/plgQlformuploaderFiler.php');
         foreach ($objHelper->files as $k => $v) {
             $objHelper->files[$k]['current'] = $objHelper->files[$k]['tmp_name'];
             $objHelper->files[$k]['fieldname'] = $k;
         }
         $objHelper->checkFiles();
-        if (1 == $params->get('fileupload_enabled')) {
+
+        if ($params->get('fileupload_enabled')) {
             $objHelper->saveFiles();
             $data['filesUploaded'] = $objHelper->getFilesUploadedData();
         }
@@ -202,7 +204,7 @@ if (isset($validated) && 1 == $validated) {
     }
 
     if (1 == $params->get('show_data_sent')) {
-        $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASENT_LABEL') . '</strong><br />' . $objHelper->dump($data));
+        $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASENT_LABEL') . '</strong><br />' . $objHelper->dump($data));
     }
     $dataJsonified = $objHelper->subarrayToJson($data);
 
@@ -226,7 +228,7 @@ if (isset($validated) && 1 == $validated) {
                     unset($recipientAll[$k]);
                     continue;
                 }
-                $mailSent[$k] = $objHelper->mail($emailAdress, JText::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
+                $mailSent[$k] = $objHelper->mail($emailAdress, Text::_($params->get('emailsubject')), $dataJsonified, $objForm, '', $params->get('emaillabels', 1));
             }
         } catch (Exception $e) {
 
@@ -259,13 +261,13 @@ if (isset($validated) && 1 == $validated) {
     if (1 == $params->get('todoDatabase') && $boolCheckDatabase) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
         if (1 == $params->get('databaseaddcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
-        if (1 == $params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
+        if (1 == $params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databasetable'), $dataJsonified);
     }
     if (1 == $params->get('todoDatabaseExternal') && $boolCheckDatabaseExternal) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
         if (1 == $params->get('databaseexternaladdcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
-        if (1 == $params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . JText::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
+        if (1 == $params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
         $objHelper->saveToDatabase($params->get('databaseexternaltable'), $dataJsonified, $arrParamsDatabaseExternal);
     }
     if (1 == $params->get('todoSomethingElse')) {
@@ -286,13 +288,13 @@ if (isset($validated) && 1 == $validated) {
         if (isset($dataWithoutServer['server'])) unset($dataWithoutServer['server']);
         if ($objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
         $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
-        $objHelper->mail($data[$params->get('sendcopyfieldname')], JText::_('MOD_QLFORM_COPY') . ': ' . JText::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $params->get('sendcopypretext'), $params->get('sendcopylabels', 1), 1);
+        $objHelper->mail($data[$params->get('sendcopyfieldname')], Text::_('MOD_QLFORM_COPY') . ': ' . Text::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $params->get('sendcopypretext'), $params->get('sendcopylabels', 1), 1);
     }
 
     $strLocation = $params->get('location');
     if (1 == $params->get('locationbool') && !empty($strLocation)) {
         header('HTTP/1.0 302 Found');
-        header('location:' . JText::_($strLocation));
+        header('location:' . Text::_($strLocation));
         exit;
     }
     if (!$ajax && 1 === (int)$params->get('formBehaviourAfterSendUse', 0)) {

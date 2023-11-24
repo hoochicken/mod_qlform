@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+
 defined('_JEXEC') or die;
 defined('JPATH_PLATFORM') or die;
 
@@ -51,10 +54,10 @@ class JFormRuleXml extends JFormRule
                 $xmlErrors .= '<li>' . htmlentities($this->xmlToStr($v->message)) . '</li>';
             }
             $xmlErrors .= '</ul>';
-            $msgError = sprintf(JText::_('MOD_QLFORM_MSG_XMLINVALID'), $xmlErrors);
+            $msgError = sprintf(Text::_('MOD_QLFORM_MSG_XMLINVALID'), $xmlErrors);
             throw new Exception($msgError);
         } catch (Exception $e) {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
 

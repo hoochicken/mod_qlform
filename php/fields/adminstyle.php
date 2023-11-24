@@ -6,6 +6,9 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+
 defined('_JEXEC') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
@@ -29,8 +32,8 @@ class JFormFieldAdminstyle extends JFormField
     protected function getInput()
     {
 
-        if (0 == $this->getAttribute('value')) JFactory::getDocument()->addStyleSheet(JUri::root() . '/modules/mod_qlform/css/adminBasic.css');
-        elseif (1 == $this->getAttribute('value')) JFactory::getDocument()->addStyleSheet(JUri::root() . '/modules/mod_qlform/css/adminPro.css');
+        if (0 == $this->getAttribute('value')) Factory::getDocument()->addStyleSheet(Uri::root() . '/modules/mod_qlform/css/adminBasic.css');
+        elseif (1 == $this->getAttribute('value')) Factory::getDocument()->addStyleSheet(Uri::root() . '/modules/mod_qlform/css/adminPro.css');
         return '<input type="hidden" id="' . $this->id . '" name="' . $this->name . '" value="' . $this->value . '"/>';
     }
 }

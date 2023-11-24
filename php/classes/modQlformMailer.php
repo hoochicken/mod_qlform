@@ -8,7 +8,8 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use JFactory;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use JText;
 
 defined('_JEXEC') or die;
@@ -42,7 +43,7 @@ class modQlformMailer
     {
         //if(false!==strpos($to,'halbfrau.de'))return false;
         $message = $this->generateMail($data, $subject, $message);
-        $mail = JFactory::getMailer();
+        $mail = Factory::getMailer();
         $mail->addRecipient($to);
         $mail->setSubject($subject);
         $mail->setBody($message);
@@ -118,7 +119,7 @@ class modQlformMailer
             $vData = $v['data'];
             if (is_array($vData)) {
                 $body .= $label . $this->separator . (string)json_encode($vData) . $this->separator2;
-            } else $body .= $label . $this->separator . JText::_((string)strip_tags($vData)) . $this->separator2;
+            } else $body .= $label . $this->separator . Text::_((string)strip_tags($vData)) . $this->separator2;
         }
         return $body;
     }
@@ -129,9 +130,8 @@ class modQlformMailer
      * @param string $str wouldbe-email address
      * @return  bool    true on success; false on failure
      */
-    public function checkEmail($str)
+    public function checkEmail(string $str): bool
     {
-        if (filter_var($str, FILTER_VALIDATE_EMAIL)) return true;
-        else return false;
+        return filter_var($str, FILTER_VALIDATE_EMAIL);
     }
 }

@@ -563,7 +563,7 @@ class JFormRuleXxxxx extends JFormRule
         }
         catch (Exception $e)
         {
-            JFactory::getApplication()->enqueueMessage($e->getMessage());
+            Factory::getApplication()->enqueueMessage($e->getMessage());
             return false;
         }
     }
@@ -777,7 +777,7 @@ return true;
 
 function getModuleNote($moduleId)
 {
-$db=JFactory::getDbo();
+$db = Factory::getContainer()->get('DatabaseDriver');
 $db->setQuery('SELECT `note` FROM `#__modules` WHERE `id`=\''.$moduleId.'\'');
 return trim($db->loadObject()->note);
 /*I don't know, if the syntax is proper (no editor here), but I think you get what I mean:-), you find how to do this query on Joomla! dev site*/

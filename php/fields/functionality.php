@@ -7,6 +7,7 @@
  */
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
 jimport('joomla.html.html');
@@ -17,7 +18,7 @@ class JFormFieldFunctionality extends JFormField
 {
     protected function getInput()
     {
-        $input = JFactory::getApplication()->input;
+        $input = Factory::getApplication()->input;
         $params = $this->getModuleData($input->get('id'), 'params');
 
         $params = json_decode($params);
@@ -37,21 +38,21 @@ class JFormFieldFunctionality extends JFormField
         $used = [];
         $filesNeeded = [];
         foreach ($arr_actions as $k => $v) if (isset($params->$k) && (('validate' != $k && 1 == $params->$k) || ('validate' == $k && (2 == $params->$k || 3 == $params->$k)))) {
-            $used[] = JText::_('MOD_QLFORM_' . strtoupper(str_replace('_enabled', '', $k)) . '_LABEL');
+            $used[] = Text::_('MOD_QLFORM_' . strtoupper(str_replace('_enabled', '', $k)) . '_LABEL');
             if (false == $v) continue;
             $file = 'modules/mod_qlform/php/classes/' . $v . '.php';
             if (!file_exists(JPATH_ROOT . '/' . $file)) $filesNeeded[$k] = $file;
         }
         foreach ($filesNeeded as $k => $v) {
-            JFactory::getApplication()->enqueueMessage(JText::sprintf('MOD_QLFORM_MSG_FUNCTIONALITY_FILESNEEDED', $k, $v), 'error');
+            Factory::getApplication()->enqueueMessage(Text::sprintf('MOD_QLFORM_MSG_FUNCTIONALITY_FILESNEEDED', $k, $v), 'error');
         }
         //else echo '<br />'.$v.' is no functionality';
-        if (0 >= count($used)) $msg = JText::_('MOD_QLFORM_FUNCTIONALITY_UNUSED');
+        if (0 >= count($used)) $msg = Text::_('MOD_QLFORM_FUNCTIONALITY_UNUSED');
         else {
             $strUl = '<ul>';
             foreach ($used as $k => $v) $strUl .= '<li>' . $v . '</li>';
             $strUl .= '</ul>';
-            $msg = sprintf(JText::_('MOD_QLFORM_FUNCTIONALITY_USAGES'), count($used), $strUl);
+            $msg = sprintf(Text::_('MOD_QLFORM_FUNCTIONALITY_USAGES'), count($used), $strUl);
         }
         return $msg;
     }

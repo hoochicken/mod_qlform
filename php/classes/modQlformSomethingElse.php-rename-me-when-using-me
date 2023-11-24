@@ -8,7 +8,7 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use JFactory;
+use Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\Registry\Registry;
 
@@ -33,7 +33,7 @@ class modQlformSomethingElse
         $this->module = $module;
         $this->form = $form;
         $formControl = $this->params->get('formControl', 'jform');
-        $this->files = JFactory::getApplication()->input->files->get($formControl);
+        $this->files = Factory::getApplication()->input->files->get($formControl);
 
     }
 

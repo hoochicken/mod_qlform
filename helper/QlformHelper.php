@@ -14,13 +14,15 @@ use JCaptcha;
 use JConfig;
 use JFactory;
 use JHtml;
+use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Registry\Registry;
 use JTable;
-use JText;
+use plgQlformuploaderFiler;
 
 jimport('joomla.form.form');
 
@@ -29,6 +31,7 @@ class QlformHelper
 
     private static string $jversion = '';
     public array $arrMessages = [];
+    public array $files = [];
     public array $arrFields = [];
     public Registry $params;
     public Form $form;
@@ -97,8 +100,8 @@ class QlformHelper
     {
         if (!$this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlformSomethingElse')) return false;
         $obj = new modQlformSomethingElse($data, $this->params, $module, $form);
-        if ($obj->doSomethingElse()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE'));
-        else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGELSEDIDNOTWORK'));
+        if ($obj->doSomethingElse()) $this->arrMessages[] = ['warning' => 0, 'str' => Text::_('MOD_QLFORM_SOMETHINGELSEWORKEDOUTFINE')];
+        else $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_SOMETHINGELSEDIDNOTWORK')];
     }
 
     /**
@@ -112,8 +115,8 @@ class QlformHelper
     {
         if (!$this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlFormSomethingCompletelyDifferent')) return false;
         $obj = new modQlFormSomethingCompletelyDifferent($data, $this->params, $module, $form);
-        if ($obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = array('warning' => 0, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE'));
-        else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTDIDNOTWORK'));
+        if ($obj->doSomethingCompletelyDifferent()) $this->arrMessages[] = ['warning' => 0, 'str' => Text::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTWORKEDOUTFINE')];
+        else $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_SOMETHINGCOMPLETELYDIFFERENTDIDNOTWORK')];
     }
 
     /**
@@ -174,24 +177,24 @@ class QlformHelper
     public function createAdditionalFields()
     {
         /*adding fields*/
-        if (1 == $this->params->get('user_id', 0)) $this->arrFields[] = array('name' => 'user_id', 'type' => 'hidden', 'default' => $this->getUserData('id'),);
-        if (1 == $this->params->get('user_email', 0)) $this->arrFields[] = array('name' => 'user_email', 'type' => 'hidden', 'default' => $this->getUserData('email'),);
-        if (1 == $this->params->get('article_id', 0)) $this->arrFields[] = array('name' => 'article_id', 'type' => 'hidden', 'default' => $this->getArticleData('id'),);
-        if (1 == $this->params->get('article_title', 0)) $this->arrFields[] = array('name' => 'article_title', 'type' => 'hidden', 'default' => $this->getArticleData('title'),);
-        if (1 == $this->params->get('captcha2', 0)) $this->arrFields[] = array('name' => 'captcha', 'type' => 'captcha', 'label' => JText::_($this->params->get('captchalabel', 'MOD_QLFORM_CAPTCHA_LABEL')), 'validate' => 'captcha');
+        if (1 == $this->params->get('user_id', 0)) $this->arrFields[] = ['name' => 'user_id', 'type' => 'hidden', 'default' => $this->getUserData('id'),];
+        if (1 == $this->params->get('user_email', 0)) $this->arrFields[] = ['name' => 'user_email', 'type' => 'hidden', 'default' => $this->getUserData('email'),];
+        if (1 == $this->params->get('article_id', 0)) $this->arrFields[] = ['name' => 'article_id', 'type' => 'hidden', 'default' => $this->getArticleData('id'),];
+        if (1 == $this->params->get('article_title', 0)) $this->arrFields[] = ['name' => 'article_title', 'type' => 'hidden', 'default' => $this->getArticleData('title'),];
+        if (1 == $this->params->get('captcha2', 0)) $this->arrFields[] = ['name' => 'captcha', 'type' => 'captcha', 'label' => Text::_($this->params->get('captchalabel', 'MOD_QLFORM_CAPTCHA_LABEL')), 'validate' => 'captcha'];
         if (1 != $this->params->get('todoSendcopy')) return;
         switch ($this->params->get('sendcopyType', 1)) {
             /*checkbox, unchecked*/
             case 1:
-                $this->arrFields[] = array('name' => 'sendcopy', 'type' => 'checkbox', 'label' => JText::_('MOD_QLFORM_SENDCOPY_LABEL'), 'value' => '1',);
+                $this->arrFields[] = ['name' => 'sendcopy', 'type' => 'checkbox', 'label' => Text::_('MOD_QLFORM_SENDCOPY_LABEL'), 'value' => '1',];
                 break;
             /*checkbox checked*/
             case 2:
-                $this->arrFields[] = array('name' => 'sendcopy', 'type' => 'checkbox', 'label' => JText::_('MOD_QLFORM_SENDCOPY_LABEL'), 'value' => '1', 'checked' => 'true',);
+                $this->arrFields[] = ['name' => 'sendcopy', 'type' => 'checkbox', 'label' => Text::_('MOD_QLFORM_SENDCOPY_LABEL'), 'value' => '1', 'checked' => 'true',];
                 break;
             /*hidden field, always*/
             case 3:
-                $this->arrFields[] = array('name' => 'sendcopy', 'type' => 'hidden', 'default' => '1',);
+                $this->arrFields[] = ['name' => 'sendcopy', 'type' => 'hidden', 'default' => '1',];
                 break;
         }
     }
@@ -230,7 +233,7 @@ class QlformHelper
      */
     private function getArticleData($field)
     {
-        $app = JFactory::getApplication();
+        $app = Factory::getApplication();
         $option = $app->input->getData('option');
         $view = $app->input->getData('view');
         $article_id = (string)$app->input->getData('id');
@@ -281,7 +284,7 @@ class QlformHelper
         $this->obj_form->str_xml = $str_xml;
         $form = $this->obj_form->getForm();
         if (is_object($form)) return $this->form = $form;
-        else $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_NO_FORM_GIVEN'));
+        else $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_NO_FORM_GIVEN')];
         return false;
     }
 
@@ -306,8 +309,8 @@ class QlformHelper
             $validatedCustom = $obj_validator->validate();
         }
         if ((isset($validated) && false == $validated) || (isset($validatedCustom) && false == $validatedCustom)) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_VALIDATION_FAILED'));
-            foreach ($this->form->getErrors() as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => $v->getMessage());
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_VALIDATION_FAILED')];
+            foreach ($this->form->getErrors() as $k => $v) $this->arrMessages[] = ['warning' => 1, 'str' => $v->getMessage()];
             $validated = false;
         }
         return $validated;
@@ -316,7 +319,7 @@ class QlformHelper
     private function checkIfCustomExists($str)
     {
         if (class_exists($str)) return true;
-        $this->arrMessages[] = ['warning' => 1, 'str' => JText::sprintf('MOD_QLFORM_MSG_CLASSNOTFOUND', $str)];
+        $this->arrMessages[] = ['warning' => 1, 'str' => Text::sprintf('MOD_QLFORM_MSG_CLASSNOTFOUND', $str)];
         return false;
     }
 
@@ -328,7 +331,7 @@ class QlformHelper
     public function raiseFormErrors()
     {
         if (isset($this->obj_form->formErrors) && is_array($this->obj_form->formErrors))
-            foreach ($this->obj_form->formErrors as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => $v->getMessage());
+            foreach ($this->obj_form->formErrors as $k => $v) $this->arrMessages[] = ['warning' => 1, 'str' => $v->getMessage()];
     }
 
     /**
@@ -420,7 +423,7 @@ class QlformHelper
     {
         $strDatabase = $objDatabase->getDatabaseName();
         if (false == $objDatabase->databaseExists($strDatabase)) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBNOTFOUND'), $strDatabase));
+            $this->arrMessages[] = ['warning' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_DBNOTFOUND'), $strDatabase)];
             return false;
         }
         $table = $objDatabase->getTableName($table);
@@ -428,7 +431,7 @@ class QlformHelper
 
         $this->arrTableFields = [];
         if (false == $tableExists && 1 == $showErrors) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBTABLENOTFOUND'), $table, $strDatabase));
+            $this->arrMessages[] = ['warning' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_DBTABLENOTFOUND'), $table, $strDatabase)];
         }
         if (false == $tableExists) return false;
         $arrDatabase = $objDatabase->getDatabaseFields($strDatabase, $table);
@@ -454,10 +457,10 @@ class QlformHelper
         $arrDifference2 = array_diff_key($arrTableFields, $arrFormFields);
         $this->arrClean = array_intersect_key($arrFormFields, $arrTableFields);
         if (1 == $showErrors) {
-            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_TITLE'));
-            foreach ($arrDifference1 as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBFORM_ERROR_DATABASE'), $k, $table, $strDatabase));
-            foreach ($arrDifference2 as $k => $v) $this->arrMessages[] = array('warning' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_DBFORM_ERROR_FORM'), $k, $table, $strDatabase));
-            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_DBFORM_ERROR_GENERAL'));
+            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_DBFORM_ERROR_TITLE')];
+            foreach ($arrDifference1 as $k => $v) $this->arrMessages[] = ['warning' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_DBFORM_ERROR_DATABASE'), $k, $table, $strDatabase)];
+            foreach ($arrDifference2 as $k => $v) $this->arrMessages[] = ['warning' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_DBFORM_ERROR_FORM'), $k, $table, $strDatabase)];
+            if (1 <= count($arrDifference1) || 1 <= count($arrDifference2)) $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_DBFORM_ERROR_GENERAL')];
         }
         return true;
     }
@@ -523,7 +526,7 @@ class QlformHelper
         if (2 == $this->params->get('emailseparator', '1')) $obj_mailer->separator = "\n";
         if (2 == $this->params->get('emailseparator2', '1')) $obj_mailer->separator2 = "\n\n";
 
-        if ('' != trim($pretext)) $pretext = $this->preparePretext(JText::_($pretext), $data);
+        if ('' != trim($pretext)) $pretext = $this->preparePretext(Text::_($pretext), $data);
         if (1 == $this->params->get('fileemail_enabled', 0) && isset($this->files)) $obj_mailer->files = $this->files;
 
         $subject .= $paramsMail['emailsubject2'];
@@ -534,7 +537,7 @@ class QlformHelper
         if (1 == $mailSent) {
             return true;
         } else {
-            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MAIL_SENT_ERROR')];
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_MAIL_SENT_ERROR')];
             return false;
         }
     }
@@ -557,7 +560,7 @@ class QlformHelper
             $dataWithLabel[$k]['label'] = trim($label);
             $data = $v;
             if (is_object($data) || is_array($data)) $data = json_encode($data);
-            $dataWithLabel[$k]['data'] = JText::_((string)$data);
+            $dataWithLabel[$k]['data'] = Text::_((string)$data);
         }
         return $dataWithLabel;
     }
@@ -593,14 +596,14 @@ class QlformHelper
 
         /*set e-mail sender*/
         $emailSender = $this->params->get('emailsender', '');
-        if ('' != trim($emailSender) && isset($data[trim($emailSender)]) && true == $this->checkEmail($data[$emailSender])) $emailSender = $data[$emailSender];
+        if ('' !== trim($emailSender) && isset($data[trim($emailSender)]) && $this->checkEmail($data[$emailSender])) $emailSender = $data[$emailSender];
         else $emailSender = $config->mailfrom;
         $arrMailParams['emailsender'] = $emailSender;
 
         /*set replyTo*/
         if (0 == $copy) {
             $emailReplyTo = $this->params->get('emailreplyto', '');
-            if ('' != trim($emailReplyTo) && isset($data[$emailReplyTo]) && true == $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
+            if ('' != trim($emailReplyTo) && isset($data[$emailReplyTo]) && $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
             else $emailReplyTo = $config->mailfrom;
             $arrMailParams['emailreplyto'] = $emailReplyTo;
         } else {
@@ -619,10 +622,10 @@ class QlformHelper
      */
     public function getCaptcha()
     {
-        $plgn = $this->params->get('captcha', JFactory::getApplication()->get('captcha', '0'));
-        $objCaptcha = JCaptcha::getInstance($plgn, array('namespace' => 'mod_qlform'));
+        $plgn = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
+        $objCaptcha = Captcha::getInstance($plgn, ['namespace' => 'mod_qlform']);
         $objCaptcha = clone $objCaptcha;
-        if (!$objCaptcha instanceof JCaptcha) $this->arrMessages[] = JText::_('MOD_QLFORM_MSG_CAPTCHANOTFOUND');
+        if (!$objCaptcha instanceof Captcha) $this->arrMessages[] = Text::_('MOD_QLFORM_MSG_CAPTCHANOTFOUND');
         return $objCaptcha;
     }
 
@@ -684,9 +687,9 @@ class QlformHelper
      */
     public function checkCaptcha($objCaptcha, $data)
     {
-        if (!$objCaptcha instanceof JCaptcha) return false;
+        if (!$objCaptcha instanceof Captcha) return false;
         if (!$objCaptcha->checkAnswer(isset($data['captcha']) ? $data['captcha'] : null)) {
-            $this->arrMessages[] = array('str' => JText::_('MOD_QLFORM_MSG_CAPTCHAVALIDATIONFAILED'));
+            $this->arrMessages[] = ['str' => Text::_('MOD_QLFORM_MSG_CAPTCHAVALIDATIONFAILED')];
             return false;
         }
         return true;
@@ -788,18 +791,18 @@ class QlformHelper
     function sendJmessageSingle(int $recipientId, array $data, int $senderId = 0): bool
     {
         if (empty($senderId)) {
-            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
             return false;
         }
         if (empty($recipientId)) {
-            $this->arrMessages[] = ['warning' => 1, 'str' => JText::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_MSG_JMESSAGEINSERTSENDERANDRECIPIENTSENDER')];
             return false;
         }
 
         $data = $this->prepareDataWithXml($data, $this->form, $this->params->get('jmessagelabels', 1));
         $obj_jmessager = new modQlformJmessages($this->db);
         $message = $obj_jmessager->getDataAsString($data, $this->params->get('jmessagestringtype', 'json'), $this->params->get('jmessagestringseparator', '#'));
-        $subject = JText::_($this->params->get('jmessagesubject', 'qlform message'));
+        $subject = Text::_($this->params->get('jmessagesubject', 'qlform message'));
         $subject = $obj_jmessager->getSubject($subject, $data, $this->params->get('jmessagesubject2', ''));
         $obj_jmessager->saveData($recipientId, $senderId, $subject, $message);
         return true;
@@ -818,20 +821,13 @@ class QlformHelper
         return $this->sendJmessageSingle($recipientId, $data, $senderId);
     }
 
-    /**
-     * method to prepare pretext by addingparagraphs and replace data value for placeholders
-     *
-     * @param string $str given as message
-     * @return array $data is array containing the data
-     */
-    function preparePretext($str, $data)
+    function preparePretext($str, $data): string
     {
         $str .= "\n\n";
         if (!isset($data) || !is_array($data)) return $str;
 
         foreach ($data as $k => $v) {
             if (isset($v['data'])) $str = str_replace('{*' . $k . '*}', (string)$v['data'], $str);
-
         }
         return $str;
     }
@@ -842,7 +838,7 @@ class QlformHelper
      * @param string $str wouldbe-email address
      * @return  bool    true on success; false on failure
      */
-    public function checkEmail($str)
+    public function checkEmail($str): bool
     {
         $obj_mailer = new modQlformMailer();
         return $obj_mailer->checkEmail($str);
@@ -860,13 +856,15 @@ class QlformHelper
         But thanks for having a look at my code:-)*/
         $obj_plgQlformuploaderFiler = new plgQlformuploaderFiler($this->module, $this->params, $this->form);
         if (!is_array($this->files)) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_FILESARRAYISNOARRAY'));
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_FILEUPLOAD_FILESARRAYISNOARRAY')];
             return false;
         }
-        if (0 == count($this->files)) return true;
-        //$tmp='tmp';
-        //$destination=$tmp.'/'.$this->params->get('fileupload_destination','qlformuploader');
-        $destination = $this->params->get('fileupload_destination', 'qlformuploader');
+        if (0 === count($this->files)) return true;
+
+        $destination = $this->params->get('fileupload_destination', 'JPATH_ROOT/tmp/qlformuploader');
+        $destination = str_replace('JPATH_ROOT', JPATH_ROOT, $destination);
+
+        $obj_plgQlformuploaderFiler->mkDir($destination);
 
         $filesUploaded = 0;;
         foreach ($this->files as $k => $v) {
@@ -875,12 +873,14 @@ class QlformHelper
                 continue;
             }
             $arr_fileuploaded = $obj_plgQlformuploaderFiler->saveFile($v, $destination);
-            $filesUploaded++;
+            if ($arr_fileuploaded['fileUploaded']) {
+                $filesUploaded++;
+            }
             $this->files[$k] = $arr_fileuploaded;
             if (4 != $v['error']) $obj_plgQlformuploaderFiler->logg($v, $destination, $this->module, $this->params);
         }
 
-        $this->arrMessages[] = array('notice' => 1, 'str' => sprintf(JText::_('MOD_QLFORM_FILEUPLOAD_UPLOADSUCCESSFUL'), $filesUploaded));
+        $this->arrMessages[] = ['notice' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_FILEUPLOAD_UPLOADSUCCESSFUL'), $filesUploaded)];
         return true;
     }
 
@@ -916,27 +916,23 @@ class QlformHelper
         But thanks for having a look at my code:-)*/
         $obj_plgQlformuploaderFiler = new plgQlformuploaderFiler($this->module, $this->params, $this->form);
 
-        /*for licence*/
-        if (1 != $obj_plgQlformuploaderFiler->checkLicenceAllowed()) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_NOTALLOWED'));
-            if (isset($obj_plgQlformuploaderFiler->arrMessages) && 0 < count($obj_plgQlformuploaderFiler->arrMessages)) foreach ($obj_plgQlformuploaderFiler->arrMessages as $v) $this->arrMessages = $v;
-            return false;
-        }
         if (!is_array($this->files)) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_FILESARRAYISNOARRAY'));
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_FILEUPLOAD_FILESARRAYISNOARRAY')];
             return false;
         }
-        if (0 == count($this->files)) return true;
+        if (0 === count($this->files)) return true;
         $arrCheck = [];
         $arrCheck['filemaxsize'] = $this->params->get('fileupload_maxfilesize', 10000);
         $arrCheck['filetypeallowed'] = explode(',', (string)$this->params->get('fileupload_filetypeallowed', ''));
         foreach ($this->files as $k => $v) {
-            $mixChecked = $obj_plgQlformuploaderFiler->checkFile($v, $arrCheck);
+            $checked = $obj_plgQlformuploaderFiler->checkFile($v, $arrCheck);
             $this->files[$k]['errorMsg'] = '';
-            if (true === $mixChecked) $this->files[$k]['fileChecked'] = true;
-            else {
-                $this->files[$k]['errorMsg'] = $mixChecked;
+            $this->files[$k]['fileChecked'] = $checked;
+            if (!$checked) {
+                $this->files[$k]['errorMsg'] = $obj_plgQlformuploaderFiler->getException()->getMessage();
                 $this->files[$k]['fileChecked'] = false;
+                $this->setMessage($obj_plgQlformuploaderFiler->getException()->getMessage());
+                $obj_plgQlformuploaderFiler->clearException();
             }
         }
     }
@@ -946,15 +942,15 @@ class QlformHelper
      */
     public function checkPlgQlformuploaderExists()
     {
-        $db = JFactory::getDbo();
+        $db = Factory::getContainer()->get('DatabaseDriver');
         $db->setQuery('SELECT * FROM `#__extensions` WHERE `element`=\'qlformuploader\'');
         $qlformuploader = $db->loadObject();
         if (!isset($qlformuploader->extension_id)) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_NOEXTENSIONFOUND'));
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_FILEUPLOAD_NOEXTENSIONFOUND')];
             return false;
         }
         if (1 != $qlformuploader->enabled) {
-            $this->arrMessages[] = array('warning' => 1, 'str' => JText::_('MOD_QLFORM_FILEUPLOAD_EXTENSIONNOTENABLED'));
+            $this->arrMessages[] = ['warning' => 1, 'str' => Text::_('MOD_QLFORM_FILEUPLOAD_EXTENSIONNOTENABLED')];
             return false;
         }
         return true;
@@ -969,7 +965,7 @@ class QlformHelper
         foreach ($form->getFieldsets() as $fieldset) {
             $fields = $form->getFieldset($fieldset->name);
             foreach ($fields as $field) {
-                $fieldLabel = JText::_($field->getAttribute('label'));
+                $fieldLabel = Text::_($field->getAttribute('label'));
                 if ('true' == $field->getAttribute('required')) $fieldLabel .= ' *';
                 $form->setFieldAttribute($field->getAttribute('name'), 'hint', $fieldLabel);
             }
@@ -1069,9 +1065,9 @@ class QlformHelper
      */
     public function addStylesJoomla3()
     {
-        JFactory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
+        Factory::getDocument()->addStyleSheet('mod_qlform/qlform.css');
         if ($this->params->get('stylesActive', '0')) {
-            JFactory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
+            Factory::getDocument()->addStyleDeclaration($this->getStyles($this->params));
         }
     }
 
@@ -1089,7 +1085,7 @@ class QlformHelper
 
             // initiate empty window array for moduleIds
             define('QLFORM_JAVASCRIPT_ALREADY_LOADED', true);
-            JFactory::getDocument()->addScriptDeclaration('window.qlformScriptsModuleIds = [];');
+            Factory::getDocument()->addScriptDeclaration('window.qlformScriptsModuleIds = [];');
         }
     }
 

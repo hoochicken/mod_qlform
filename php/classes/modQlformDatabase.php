@@ -10,7 +10,7 @@ namespace QlformNamespace\Module\Qlform\Site\Helper;
 
 defined('_JEXEC') or die;
 
-use JFactory;
+use Joomla\CMS\Factory;
 use Joomla\Database\DatabaseDriver;
 
 class modQlformDatabase
@@ -117,7 +117,7 @@ class modQlformDatabase
      */
     function getDatabaseName()
     {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         return $config->get('db');
     }
 
@@ -129,7 +129,7 @@ class modQlformDatabase
      */
     function getPrefix()
     {
-        $config = JFactory::getConfig();
+        $config = Factory::getConfig();
         return $config->get('dbprefix');
     }
 
