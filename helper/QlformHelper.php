@@ -10,15 +10,13 @@ namespace QlformNamespace\Module\Qlform\Site\Helper;
 // Class    'Joomla\Module\Qlform\Site\Helper\QlformHelper' not found
 // namespace Joomla\Module\Qlform\Site\Helper;
 use Exception;
-use JCaptcha;
 use JConfig;
-use JFactory;
-use JHtml;
 use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Registry\Registry;
 use JTable;
@@ -226,36 +224,24 @@ class QlformHelper
         return substr_replace($str_xml, '</fieldset>' . $this->linebreak . $formCloseTag, $offset);
     }
 
-    /**
-     * method to get fields from current article
-     * @param string $field
-     * @return result field value
-     * see http://forum.joomla.org/viewtopic.php?t=525350
-     * @throws Exception
-     */
     private function getArticleData($field)
     {
         $app = Factory::getApplication();
-        $option = $app->input->getData('option');
-        $view = $app->input->getData('view');
-        $article_id = (string)$app->input->getData('id');
-        if ($option == 'com_content' && $view == 'article') {
-            $article = JTable::getInstance('content');
-            $article->load($article_id);
-            return $article->get($field);
-        } else return false;
+        $option = $app->input->getString('option', '');
+        $view = $app->input->getString('view', '');
+        $articleId = (string)$app->input->getInt('id', 0);
+        if ($option !== 'com_content' || $view !== 'article') {
+            return null;
+        }
+        $articleTable = Table::getInstance('content');
+        $articleTable->load($articleId);
+        return $articleTable->get($field);
     }
 
-    /**
-     * method to get fields from current user
-     * @param string $field
-     * @return result field value
-     */
     private function getUserData($field)
     {
-        $user = JFactory::getUser();
-        if ("" != $user->get($field)) return $user->get($field);
-        else return false;
+        $user = Factory::getApplication()->getIdentity();
+        return $user->get($field, false);
     }
 
     /**
@@ -607,12 +593,6 @@ class QlformHelper
         return $arrMailParams;
     }
 
-    /**
-     * Get captcha instance or null if not available
-     *
-     * @return  JCaptcha|null
-     * @throws Exception|\Exception
-     */
     public function getCaptcha()
     {
         $plgn = $this->params->get('captcha', Factory::getApplication()->get('captcha', '0'));
@@ -624,7 +604,7 @@ class QlformHelper
 
     public function captchaDefault()
     {
-        $config = JFactory::getConfig();
+        $config = Factory::getApplication()->getConfig();
         $objCaptchaToBeUsed = $objCaptchaConfig = $config->get('captcha');
         $showCaptcha = 0;
         if ('' != $objCaptchaConfig && '' == $this->params->get('captcha', '0')) {
@@ -1144,25 +1124,14 @@ class QlformHelper
         return $this->obj_processor->$for($data);
     }
 
-    /**
-     * @return mixed
-     */
     static public function getDatabaseDriver($version = 4)
     {
-        return ((int) $version <= 3)
-            ? JFactory::getDbo()
-            : Factory::getContainer()->get('DatabaseDriver');
+        return Factory::getContainer()->get('DatabaseDriver');
     }
 
-    /**
-     * @return mixed
-     * @throws Exception
-     */
     static public function getInputByVersion($version = 4)
     {
-        return ((int) $version >= 4)
-            ? Factory::getApplication()->input
-            : JFactory::getApplication()->input;
+        return Factory::getApplication()->input;
     }
 
     static public function unfoldByPretextSwitch(string $pretext, string $fieldvalue = '')
