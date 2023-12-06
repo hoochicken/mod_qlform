@@ -655,6 +655,22 @@
                         description="MOD_QLFORM_SENDCOPYPRETEXT_DESC">
                 </field>
                 <field
+                        name="sendcopyswitch"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_SENDCOPYPRETEXTSWITCH_LABEL"
+                        description="MOD_QLFORM_SENDCOPYPRETEXTSWITCH_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                <field
+                        name="switchsendcopyfieldname"
+                        type="text"
+                        label="MOD_QLFORM_SENDCOPYPRETEXTSWITCHFIELDNAME_LABEL"
+                        description="MOD_QLFORM_SENDCOPYPRETEXTSWITCHFIELDNAME_DESC">
+                </field>
+                <field
                         name="sendcopylabels"
                         type="list"
                         label="MOD_QLFORM_LABELS_LABEL"

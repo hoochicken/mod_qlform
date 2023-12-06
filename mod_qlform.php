@@ -182,7 +182,7 @@ if ($params->get('addPostToForm', 0)) {
     }
 }
 
-if (isset($validated) && $validated) {
+if ($validated) {
     /*FILE_UPLOAD START*/
     $objHelper->files = $objInput->files->get($objHelper->formControl);
     if ($params->get('fileupload_enabled', 0 || $params->get('fileemail_enabled', 0)) && $objHelper->checkPlgQlformuploaderExists() && is_array($objHelper->files) && 0 < count($objHelper->files)) {
@@ -295,7 +295,12 @@ if (isset($validated) && $validated) {
         if (isset($dataWithoutServer['server'])) unset($dataWithoutServer['server']);
         if ($objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
         $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
-        $objHelper->mail($data[$params->get('sendcopyfieldname')], Text::_('MOD_QLFORM_COPY') . ': ' . Text::_($params->get('emailsubject')), $dataWithoutServer, $objForm, (bool)$params->get('sendcopypretext', false), (bool)$params->get('sendcopylabels', true), true);
+        $pretext = (string)$params->get('sendcopypretext', false);
+        if ($params->get('sendcopyswitch', false)) {
+            $fieldvalue = $data[$params->get('switchsendcopyfieldname', '')] ?? '';
+            $pretext = $objHelper->unfoldByPretextSwitch($pretext, $fieldvalue) ;
+        }
+        $objHelper->mail($data[$params->get('sendcopyfieldname')], Text::_('MOD_QLFORM_COPY') . ': ' . Text::_($params->get('emailsubject')), $dataWithoutServer, $objForm, $pretext, (bool)$params->get('sendcopylabels', true), true);
     }
 
     $strLocation = $params->get('location');

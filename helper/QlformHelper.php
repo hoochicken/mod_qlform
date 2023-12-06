@@ -820,7 +820,10 @@ class QlformHelper
         if (!isset($data) || !is_array($data)) return $str;
 
         foreach ($data as $k => $v) {
-            if (isset($v['data'])) $str = str_replace('{*' . $k . '*}', (string)$v['data'], $str);
+            if (!isset($v['data'])) {
+                continue;
+            }
+            $str = str_replace('{*' . $k . '*}', (string)$v['data'], $str);
         }
         return $str;
     }
@@ -1160,5 +1163,18 @@ class QlformHelper
         return ((int) $version >= 4)
             ? Factory::getApplication()->input
             : JFactory::getApplication()->input;
+    }
+
+    static public function unfoldByPretextSwitch(string $pretext, string $fieldvalue = '')
+    {
+        $tag = '~~' . $fieldvalue . '~~';
+        if (empty($fieldvalue) || !str_contains($pretext, $tag)) {
+            return $pretext;
+        }
+        $pretext = trim(substr($pretext, strpos($pretext, $tag) + strlen($tag)));
+        $pretext = str_contains($pretext, '~~')
+            ? trim(substr($pretext, 0, strpos($pretext, '~~')))
+            : $pretext;
+        return $pretext;
     }
 }
