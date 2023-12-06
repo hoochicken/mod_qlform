@@ -483,11 +483,11 @@ class QlformHelper
         return $arr;
     }
 
-    public function getEmailAdressesFromMapping(array $mapping = []): array
+    public function getEmailAdressesFromMapping(array $mapping = [], string $separator = ':'): array
     {
         $recipients = [];
         foreach ($mapping as $mapAndEmail) {
-            $map = explode(':', $mapAndEmail);
+            $map = explode($separator, $mapAndEmail);
             $recipients[] = array_pop($map);
         }
         return $recipients;
@@ -502,7 +502,9 @@ class QlformHelper
                 continue;
             }
             $key = $map[0];
-            $recipients[$key] = explode(';', $map[1] ?? '');
+            $tmp = explode(';', $map[1] ?? '');
+            array_walk($tmp, function(&$item) {$item = trim($item);});
+            $recipients[$key] = array_filter($tmp);
         }
         return $recipients;
     }
@@ -857,49 +859,42 @@ class QlformHelper
 
         $obj_plgQlformuploaderFiler->mkDir($destination);
 
-        $filesUploaded = 0;;
-        foreach ($this->files as $k => $v) {
-            if (!isset($v['fileChecked']) || true !== $v['fileChecked']) {
-                $obj_plgQlformuploaderFiler->logg($v, $destination, $this->module, $this->params);
+        $filesUploaded = 0;
+        foreach ($this->files as $k => $file) {
+            if (!isset($file['fileChecked']) || !$file['fileChecked']) {
+                $obj_plgQlformuploaderFiler->logg($file, $destination, $this->module, $this->params);
                 continue;
             }
-            $arr_fileuploaded = $obj_plgQlformuploaderFiler->saveFile($v, $destination);
-            if ($arr_fileuploaded['fileUploaded']) {
+            $arr_fileuploaded = $obj_plgQlformuploaderFiler->saveFile($file, $destination);
+            if ($arr_fileuploaded['fileUploaded'] ?? false) {
                 $filesUploaded++;
             }
             $this->files[$k] = $arr_fileuploaded;
-            if (4 != $v['error']) $obj_plgQlformuploaderFiler->logg($v, $destination, $this->module, $this->params);
+            if (4 !== $file['error']) $obj_plgQlformuploaderFiler->logg($file, $destination, $this->module, $this->params);
         }
 
         $this->arrMessages[] = ['notice' => 1, 'str' => sprintf(Text::_('MOD_QLFORM_FILEUPLOAD_UPLOADSUCCESSFUL'), $filesUploaded)];
         return true;
     }
 
-    /**
-     * @return array
-     */
     function getFilesUploadedData()
     {
         $dataFilesUpload = [];
-        foreach ($this->files as $k => $v) {
+        foreach ($this->files as $k => $file) {
             $dataFilesUpload[$k] = [];
-            $dataFilesUpload[$k]['name'] = $v['name'];
-            $dataFilesUpload[$k]['savedTo'] = $v['current'];
-            $dataFilesUpload[$k]['errorUploadServer'] = $v['error'];
-            $dataFilesUpload[$k]['errorUploadFileCheck'] = 0;
-            if (!empty($v['errorMsg'])) {
-                $dataFilesUpload[$k]['errorUploadFileCheck'] = 1;
-                $dataFilesUpload[$k]['errorUploadFileCheckMsg'] = $v['errorMsg'];
+            $dataFilesUpload[$k]['name'] = $file['name'];
+            $dataFilesUpload[$k]['savedTo'] = $file['current'];
+            $dataFilesUpload[$k]['hyperlink'] = $file['hyperlink'];
+            $dataFilesUpload[$k]['errorUploadServer'] = $file['error'];
+            $dataFilesUpload[$k]['errorUploadFileCheck'] = false;
+            if (!empty($file['errorMsg'])) {
+                $dataFilesUpload[$k]['errorUploadFileCheck'] = true;
+                $dataFilesUpload[$k]['errorUploadFileCheckMsg'] = $file['errorMsg'];
             }
         }
         return $dataFilesUpload;
     }
 
-    /**
-     * Method to check validation of e-mail address
-     *
-     * @return  bool    true on success; false on failure
-     */
     public function checkFiles()
     {
         /*No, you cannot make this work without the plugin.

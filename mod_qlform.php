@@ -7,13 +7,16 @@
  */
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
+
 use Exception;
 use JCaptcha;
 use JHtml;
 use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
+use Joomla\Registry\Registry;
 use JResponseJson;
 use JText;
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
@@ -41,7 +44,7 @@ if ($ajax) {
     $paramsRaw = $result->params ?? '';
 
     // create proper param object
-    $params = new \JRegistry();
+    $params = new Registry();
     $params->loadString($paramsRaw);
     $module = $result;
     $module->params = $params;
@@ -79,7 +82,7 @@ $boolFieldModuleId = (bool)$params->get('fieldModuleId');
 //var_dump($boolFieldModuleId);echo '<pre>'; print_r($params); echo '</pre>'; die;
 
 if ($params->get('bootstrap', 0)) {
-    JHtml::_('bootstrap.framework');
+    HTMLHelper::_('bootstrap.framework');
 }
 
 // Xml: getting xml string from params
@@ -148,9 +151,9 @@ if
 ) {
     $data = $objInput->getData($objHelper->formControl);
     $objHelper->processData = false;
-    if (1 == $params->get('processData', 0)) $objHelper->initPreprocessing($data, $module, $objForm);
+    if ($params->get('processData', 0)) $objHelper->initPreprocessing($data, $module, $objForm);
     if ($objHelper->processData) $data = $objHelper->processFor($data, 'formDataBeforeValidation');
-    if (1 == $params->get('captchaadded') && 0 != $boolShowCaptcha && isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
+    if ($params->get('captchaadded') && 0 != $boolShowCaptcha && isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
     $dataToValidate = $data;
     $dataFiles = $objInput->files->get($objHelper->formControl);
     if (is_array($dataFiles)) $dataToValidate = array_merge($dataFiles, $dataToValidate);
@@ -162,7 +165,7 @@ if
     if ($validatedForm && (!$boolShowCaptcha || ($boolShowCaptcha && $validatedCaptcha))) $validated = true;
     else {
         if (is_array($data) || is_object($data)) foreach ($data as $k => $v) if (is_string($v)) $data[$k] = strip_tags(html_entity_decode($v));
-        if (true == $objHelper->processData) $data = $objHelper->processFor($data, 'beforeBindToForm');
+        if ($objHelper->processData) $data = $objHelper->processFor($data, 'beforeBindToForm');
         $success = $objForm->bind($data);
         $validated = false;
     }
@@ -193,6 +196,7 @@ if (isset($validated) && $validated) {
         if ($params->get('fileupload_enabled')) {
             $objHelper->saveFiles();
             $data['filesUploaded'] = $objHelper->getFilesUploadedData();
+            $data['hyperlinks'] = implode('<br />', array_column($data['filesUploaded'], 'hyperlink'));
         }
 
     }
@@ -203,7 +207,7 @@ if (isset($validated) && $validated) {
     }
 
     if ($params->get('show_data_sent')) {
-        $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASENT_LABEL') . '</strong><br />' . $objHelper->dump($data));
+        $objHelper->arrMessages[] = ['str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASENT_LABEL') . '</strong><br />' . $objHelper->dump($data)];
     }
     $dataJsonified = $objHelper->subarrayToJson($data);
 
@@ -212,18 +216,20 @@ if (isset($validated) && $validated) {
 
         $emailMapping = preg_split("?\n?", $params->get('emailrecipient'));
         $recipientAll = $objHelper->getEmailAdressesFromMapping($emailMapping);
-        $recipientDefault = $recipientAll[0] ?? '';
+        $recipientsDefault = explode(';', trim($recipientAll[0] ?? ''));
+        array_walk($recipientsDefault, function (&$item) { $item = trim($item); });
+        $recipientsDefault = array_filter($recipientsDefault);
         if ($params->get('emailswitch') && 0 < count($emailMapping)) {
             $emailMapping = $objHelper->getEmailMapping($emailMapping);
             $emailFieldname = $params->get('emailfieldname', '');
             $switchValue = $dataToValidate[$emailFieldname] ?? '';
-            $recipientAll = isset($emailMapping[$switchValue]) ? $emailMapping[$switchValue] : $recipientAll;
+            $recipientAll = $emailMapping[$switchValue] ?? $recipientsDefault;
         }
         $mailSent = [];
         try {
             foreach ($recipientAll as $k => $emailAdress) {
                 $emailAdress = trim($emailAdress);
-                if ('' == $emailAdress) {
+                if (empty($emailAdress)) {
                     unset($recipientAll[$k]);
                     continue;
                 }
@@ -240,13 +246,13 @@ if (isset($validated) && $validated) {
         $successful = count($mailSent);
         $failed = count($recipientAll) - count($mailSent);
         if (count($mailSent) === count($recipientAll)) {
-            if ($params->get('emailsentdisplay', 0)) {
+            if ($params->get('emailsentdisplay', false)) {
                 $objHelper->arrMessages[] = ['str' => Text::sprintf('MOD_QLFORM_MAIL_SENT', $successful)];
             }
         } else {
             $objHelper->arrMessages[] = ['warning' => 1, 'str' => Text::sprintf('MOD_QLFORM_MAIL_SENT_ERROR_COUNT', $successful, $failed)];
         }
-        if (isset($objHelper->files) && $params->get('fileemail_enabled', 0)) {
+        if (isset($objHelper->files) && $params->get('fileemail_enabled', false)) {
             $dataFileUpload = [];
             foreach ($objHelper->files as $k => $v) {
                 if (!isset($dataFileUpload[$v['name']])) $dataFileUpload[$v['name']] = [];
