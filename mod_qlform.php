@@ -9,16 +9,12 @@
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
 use Exception;
-use JCaptcha;
-use JHtml;
 use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\Registry\Registry;
-use JResponseJson;
-use JText;
 use QlformNamespace\Module\Qlform\Site\Helper\QlformHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use stdClass;
@@ -39,7 +35,6 @@ defined('_JEXEC') or die;
 if ($ajax) {
     jimport('joomla.application.module.helper');
 
-    QlformHelper::setJVersion(JVERSION);;
     $result = QlformHelper::getModuleParameters($objInput->getInt('moduleId', 0));
     $paramsRaw = $result->params ?? '';
 
@@ -52,7 +47,6 @@ if ($ajax) {
 
 // build helper with new parameter settings
 $objHelper = new QlformHelper($params, $module);
-$objHelper::setJVersion(JVERSION);
 $objHelper->formControl = $params->get('formControl', 'jform');
 
 $db = $objHelper->getDatabaseDriver(JVERSION);

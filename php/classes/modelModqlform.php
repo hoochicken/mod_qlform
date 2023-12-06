@@ -8,12 +8,12 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use JModelForm;
+use Joomla\CMS\MVC\Model\FormModel;
 
 defined('_JEXEC') or die;
 jimport('joomla.application.component.modelform');
 
-class modelModqlform extends JModelForm
+class modelModqlform extends FormModel
 {
     public string $str_xml;
 

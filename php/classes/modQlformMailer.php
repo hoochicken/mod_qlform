@@ -11,7 +11,6 @@ namespace QlformNamespace\Module\Qlform\Site\Helper;
 use Dompdf\Exception;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
-use JText;
 
 defined('_JEXEC') or die;
 

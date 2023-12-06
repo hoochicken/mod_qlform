@@ -19,7 +19,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Registry\Registry;
-use JTable;
 use plgQlformuploaderFiler;
 
 jimport('joomla.form.form');
@@ -54,22 +53,12 @@ class QlformHelper
         $this->params = $params;
         $this->module = $module;
         $this->arrMessages = [];
-        $this->db = new modQlformDatabase(self::getDatabaseDriver(self::getJVersion()));
-    }
-
-    static public function setJVersion($jversion)
-    {
-        self::$jversion = (string) $jversion;
-    }
-
-    static public function getJVersion()
-    {
-        return self::$jversion;
+        $this->db = new modQlformDatabase(self::getDatabaseDriver());
     }
 
     static public function getModuleParameters(int $moduleId)
     {
-        $db = self::getDatabaseDriver(self::$jversion);
+        $db = self::getDatabaseDriver();
         $query = $db->getQuery(true);
         $query->select('*')
             ->from('#__modules')
@@ -1124,12 +1113,12 @@ class QlformHelper
         return $this->obj_processor->$for($data);
     }
 
-    static public function getDatabaseDriver($version = 4)
+    static public function getDatabaseDriver()
     {
         return Factory::getContainer()->get('DatabaseDriver');
     }
 
-    static public function getInputByVersion($version = 4)
+    static public function getInputByVersion()
     {
         return Factory::getApplication()->input;
     }
