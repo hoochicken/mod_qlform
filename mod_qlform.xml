@@ -5,12 +5,12 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2023-11-24</creationDate>
+    <creationDate>2023-12-06</creationDate>
     <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>14.0.2</version>
+    <version>14.0.3</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>QlformNamespace\Module\Qlform\Site\Helper</namespace>
     <updateservers>

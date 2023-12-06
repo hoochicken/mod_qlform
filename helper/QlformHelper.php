@@ -26,9 +26,8 @@ jimport('joomla.form.form');
 class QlformHelper
 {
 
-    private static string $jversion = '';
     public array $arrMessages = [];
-    public array $files = [];
+    public ?array $files = [];
     public bool $processData = false;
     public array $arrFields = [];
     public Registry $params;

@@ -42,7 +42,7 @@ class modQlformMailer
                     if (!isset($file['fileChecked']) || !$file['fileChecked']) continue;
                     $mail->addAttachment($file['current'], $file['name'], 'base64', $file['type']);
                 }
-                unset($this->files);
+                $this->files = [];
             }
             if ($emaildisplay) {
                 $this->arrMessages[] = $this->mailAsString($message, $mail);
