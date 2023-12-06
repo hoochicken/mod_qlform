@@ -39,7 +39,9 @@ class modQlformMailer
             $mail->addReplyTo($params['emailreplyto']);
             if (isset($this->files) && is_array($this->files) && 0 < count($this->files)) {
                 foreach ($this->files as $k => $file) {
-                    if (!isset($file['fileChecked']) || !$file['fileChecked']) continue;
+                    if (!isset($file['fileChecked']) || !$file['fileChecked']) {
+                        continue;
+                    }
                     $mail->addAttachment($file['current'], $file['name'], 'base64', $file['type']);
                 }
                 $this->files = [];

@@ -496,6 +496,14 @@ class QlformHelper
             $obj_mailer->files = $this->files;
         }
 
+        if ($copy) {
+            // for send copies: file destination MUST NOT be displayes
+            unset($data['filesUploaded']);
+            unset($data['hyperlinks']);
+            unset($data['links']);
+            unset($data['filesSendViaEmail']);
+        }
+
         $subject .= $paramsMail['emailsubject2'];
         $mailSent = $obj_mailer->mail($recipient, $subject, $data, $paramsMail, $pretext, (bool)$this->params->get('emaildisplay', false));
         foreach ($obj_mailer->arrMessages as $strMsg) {
@@ -539,7 +547,7 @@ class QlformHelper
      * @param int $copy
      * @return  array   $dataWithLabel
      */
-    public function mailPrepareParams($data, $copy = 0)
+    public function mailPrepareParams($data, $copy = false)
     {
         $config = new JConfig();
         $arrMailParams = [];
@@ -568,7 +576,7 @@ class QlformHelper
         $arrMailParams['emailsender'] = $emailSender;
 
         /*set replyTo*/
-        if (0 == $copy) {
+        if (!$copy) {
             $emailReplyTo = $this->params->get('emailreplyto', '');
             if ('' != trim($emailReplyTo) && isset($data[$emailReplyTo]) && $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
             else $emailReplyTo = $config->mailfrom;
@@ -855,6 +863,7 @@ class QlformHelper
             $dataFilesUpload[$k] = [];
             $dataFilesUpload[$k]['name'] = $file['name'];
             $dataFilesUpload[$k]['savedTo'] = $file['current'];
+            $dataFilesUpload[$k]['link'] = $file['link'];
             $dataFilesUpload[$k]['hyperlink'] = $file['hyperlink'];
             $dataFilesUpload[$k]['errorUploadServer'] = $file['error'];
             $dataFilesUpload[$k]['errorUploadFileCheck'] = false;

@@ -191,6 +191,7 @@ if ($validated) {
             $objHelper->saveFiles();
             $data['filesUploaded'] = $objHelper->getFilesUploadedData();
             $data['hyperlinks'] = implode('<br />', array_column($data['filesUploaded'], 'hyperlink'));
+            $data['links'] = implode('<br />', array_column($data['filesUploaded'], 'link'));
         }
 
     }
@@ -262,13 +263,13 @@ if ($validated) {
     if ($params->get('todoDatabase') && $boolCheckDatabase) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'database');
         if ($params->get('databaseaddcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
-        if ($params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
+        if ($params->get('showDataSavedToDatabase')) $objHelper->arrMessages[] = ['str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring')];
         $objHelper->saveToDatabase($params->get('databasetable'), $dataJsonified);
     }
     if ($params->get('todoDatabaseExternal') && $boolCheckDatabaseExternal) {
         if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'databaseExternal');
         if ($params->get('databaseexternaladdcreated')) $dataJsonified['created'] = date('Y-m-d H:i:s');
-        if ($params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = array('str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring'));
+        if ($params->get('showDataSavedToDatabaseexternal')) $objHelper->arrMessages[] = ['str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASAVEDTODATABASE_LABEL') . '</strong><br />' . $objHelper->dump($dataJsonified, 'foreachstring')];
         $objHelper->saveToDatabase($params->get('databaseexternaltable'), $dataJsonified, $arrParamsDatabaseExternal);
     }
     if ($params->get('todoSomethingElse')) {
@@ -306,7 +307,7 @@ if ($validated) {
     if (!$ajax && 1 === (int)$params->get('formBehaviourAfterSendUse', 0)) {
         echo '<script>' . $params->get('formBehaviourAfterSend', '') . '</script>';
     }
-    $objHelper->arrMessages[] = array('str' => $params->get('message'));
+    $objHelper->arrMessages[] = ['str' => $params->get('message')];
 }
 
 // output json for recieve with javascript
