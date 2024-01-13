@@ -5,12 +5,12 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2023-12-06</creationDate>
+    <creationDate>2024-01-13</creationDate>
     <copyright>Copyright (C) 2023 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
     <authorUrl>https://ql.de</authorUrl>
-    <version>14.0.4</version>
+    <version>14.0.5</version>
     <description>qlform generates a form; form fields are defined via J!-form generation. You'll love it!</description>
     <namespace>QlformNamespace\Module\Qlform\Site\Helper</namespace>
     <updateservers>
@@ -1138,6 +1138,16 @@
                     <option value="1">JYES</option>
                     <option value="0">JNO</option>
                 </field>
+                <field
+                        name="additional_rule_paths"
+                        type="textarea"
+                        label="MOD_QLFORM_ADDITIONALRULEPATHS_LABEL"
+                        description="MOD_QLFORM_ADDITIONALRULEPATHS_DESC" />
+                <field
+                        name="additional_field_paths"
+                        type="textarea"
+                        label="MOD_QLFORM_ADDITIONALFIELDPATHS_LABEL"
+                        description="MOD_QLFORM_ADDITIONALFIELDPATHS_DESC" />
                 <field
                         name="honeypot"
                         type="radio"

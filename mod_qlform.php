@@ -11,6 +11,7 @@ namespace QlformNamespace\Module\Qlform\Site\Helper;
 use Exception;
 use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Response\JsonResponse;
@@ -96,6 +97,8 @@ if (isset($objHelper->arrFields) && is_array($objHelper->arrFields)) {
 
 // transform xml to Joomla! form object
 $objForm = $objHelper->getForm($strXml, $numModuleId);
+$objForm = $objHelper->addRulePaths($objForm, $objHelper->cleanArrayByString($params->get('additional_rule_paths', '')));
+$objForm = $objHelper->addFieldPaths($objForm, $objHelper->cleanArrayByString($params->get('additional_field_paths', '')));
 if ($params->get('stylesLabelswithin', false)) {
     $objForm = $objHelper->addPlaceholder($objForm);
 }

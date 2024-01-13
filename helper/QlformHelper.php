@@ -264,6 +264,39 @@ class QlformHelper
         return false;
     }
 
+
+    public function addRulePaths($form, array $paths)
+    {
+        /* @var $form Form */
+        if (0 === count($paths)) return $form;
+        foreach ($paths as $path) {
+            $path = JPATH_ROOT . $path;
+            $form::addRulePath($path);
+        }
+        return $form;
+    }
+
+
+    public function addFieldPaths($form, array $paths)
+    {
+        /* @var $form Form */
+        $paths[] = '/templates/qltemplate/php/fields';
+        if (0 === count($paths)) return $form;
+        foreach ($paths as $path) {
+            $path = JPATH_ROOT . $path;
+            $form::addFieldPath($path);
+        }
+        return $form;
+    }
+
+
+    public function cleanArrayByString(string $string, string $separator = "\n"): array
+    {
+        $array = explode($separator, $string);
+        array_walk($array, function(&$item) { $item = trim($item);});
+        return array_filter($array);
+    }
+
     /**
      * Method to get the form based on str_xml.
      *
