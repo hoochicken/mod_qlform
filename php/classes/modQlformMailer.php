@@ -8,9 +8,11 @@
 
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-use Dompdf\Exception;
+use Exception;
+use JFactory;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Mail\MailerFactoryInterface;
 
 defined('_JEXEC') or die;
 
@@ -31,36 +33,38 @@ class modQlformMailer
     {
         try {
             $message = $this->generateMail($data, $subject, $message);
-            $mail = Factory::getMailer();
-            $mail->addRecipient($to);
-            $mail->setSubject($subject);
-            $mail->setBody($message);
-            $mail->setSender($params['emailsender']);
-            $mail->addReplyTo($params['emailreplyto']);
+            $mailer = Factory::getContainer()->get(MailerFactoryInterface::class)->createMailer();
+            $mailer->addRecipient($to);
+            $mailer->setSubject($subject);
+            $mailer->setBody($message);
+            $mailer->setSender([
+                $params['emailsender'],
+                $params['emailsender'],
+            ]);
+            $mailer->addReplyTo($params['emailreplyto']);
             if (isset($this->files) && is_array($this->files) && 0 < count($this->files)) {
                 foreach ($this->files as $k => $file) {
                     if (!isset($file['fileChecked']) || !$file['fileChecked']) {
                         continue;
                     }
-                    $mail->addAttachment($file['current'], $file['name'], 'base64', $file['type']);
+                    $mailer->addAttachment($file['current'], $file['name'], 'base64', $file['type']);
                 }
                 $this->files = [];
             }
             if ($emaildisplay) {
-                $this->arrMessages[] = $this->mailAsString($message, $mail);
+                $this->arrMessages[] = $this->mailAsString($message, $mailer);
             }
-            return !is_object($mail->Send());
+            return !is_object($mailer->Send());
         } catch (Exception $e) {
             $this->arrMessages[] = $e->getMessage();
+            return false;
         }
     }
 
     public function mailAsString($message, $mail = '')
     {
         return '<span style=\'font-family:courier\'>' . preg_replace("/\\n/", '<br />', $message) . '</span>';
-        echo '<pre>';
-        print_r($mail);
-        echo '</pre>';
+        // echo '<pre>'; print_r($mail); echo '</pre>';
     }
 
     public function generateMail(array $data, string $subject, string $body = '')

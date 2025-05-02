@@ -7,8 +7,6 @@
  */
 namespace QlformNamespace\Module\Qlform\Site\Helper;
 
-// Class    'Joomla\Module\Qlform\Site\Helper\QlformHelper' not found
-// namespace Joomla\Module\Qlform\Site\Helper;
 use Exception;
 use JConfig;
 use Joomla\CMS\Captcha\Captcha;
@@ -17,7 +15,6 @@ use Joomla\CMS\Form\Form;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\WebAsset\WebAssetManager;
 use Joomla\Registry\Registry;
 use plgQlformuploaderFiler;
 
@@ -41,6 +38,7 @@ class QlformHelper
     public modelModqlform $obj_form;
     public string $linebreak = "\n";
     private $db = null;
+    private ?JConfig $config = null;
 
     /**
      * constructor
@@ -53,6 +51,7 @@ class QlformHelper
         $this->module = $module;
         $this->arrMessages = [];
         $this->db = new modQlformDatabase(self::getDatabaseDriver());
+        $this->config = new JConfig();
     }
 
     static public function getModuleParameters(int $moduleId)
@@ -582,11 +581,10 @@ class QlformHelper
      */
     public function mailPrepareParams($data, $copy = false)
     {
-        $config = new JConfig();
         $arrMailParams = [];
 
-        $arrMailParams['emailrecipient'] = $this->params->get('emailrecipient', $config->mailfrom);
-        $arrMailParams['emailsubject'] = $this->params->get('emailsubject', $config->sitename);
+        $arrMailParams['emailrecipient'] = $this->params->get('emailrecipient', $this->config->mailfrom);
+        $arrMailParams['emailsubject'] = $this->params->get('emailsubject', $this->config->sitename);
 
         /*generate subject from field values*/
         $subjectGenerated = $this->params->get('emailsubject2', '');
@@ -605,18 +603,20 @@ class QlformHelper
         /*set e-mail sender*/
         $emailSender = $this->params->get('emailsender', '');
         if ('' !== trim($emailSender) && isset($data[trim($emailSender)]) && $this->checkEmail($data[$emailSender])) $emailSender = $data[$emailSender];
-        else $emailSender = $config->mailfrom;
+        else $emailSender = $this->config->mailfrom;
         $arrMailParams['emailsender'] = $emailSender;
 
         /*set replyTo*/
         if (!$copy) {
             $emailReplyTo = $this->params->get('emailreplyto', '');
             if ('' != trim($emailReplyTo) && isset($data[$emailReplyTo]) && $this->checkEmail($data[$emailReplyTo])) $emailReplyTo = $data[$emailReplyTo];
-            else $emailReplyTo = $config->mailfrom;
+            else $emailReplyTo = $this->config->mailfrom;
             $arrMailParams['emailreplyto'] = $emailReplyTo;
         } else {
             $emailReplyTo = $this->params->get('sendcopyemailreplyto', '');
-            if (true != $this->checkEmail($emailReplyTo)) $emailReplyTo = $config->mailfrom;
+            if (!$this->checkEmail($emailReplyTo)) {
+                $emailReplyTo = $this->config->mailfrom;
+            }
             $arrMailParams['emailreplyto'] = $emailReplyTo;
         }
         return $arrMailParams;
