@@ -292,8 +292,12 @@ try {
         }
         if ($params->get('todoSendcopy') && isset($_POST[$objHelper->formControl]) && isset($_POST[$objHelper->formControl]['sendcopy']) && 1 == $_POST[$objHelper->formControl]['sendcopy'] && !empty($data[$params->get('sendcopyfieldname')])) {
             $dataWithoutServer = $data;
-            if (isset($dataWithoutServer['server'])) unset($dataWithoutServer['server']);
-            if ($objHelper->processData) $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
+            if (isset($dataWithoutServer['server'])) {
+                unset($dataWithoutServer['server']);
+            }
+            if ($objHelper->processData) {
+                $dataWithoutServer = $objHelper->processFor($dataWithoutServer, 'sendcopy');
+            }
             $dataWithoutServer = $objHelper->subarrayToJson($dataWithoutServer);
             $pretext = (string)$params->get('sendcopypretext', false);
             if ($params->get('sendcopyswitch', false)) {

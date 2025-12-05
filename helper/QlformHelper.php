@@ -189,26 +189,32 @@ class QlformHelper
     /**
      * method to add field to xml
      *
-     * @param string $str_xml
-     * @param array $arrFields array of fields to add
+     * @param string $xml
+     * @param array $fields array of fields to add
      * @param string $class string of fieldset class
      * @return string $str_xml
      */
-    public function addFieldsToXml(string $str_xml, array $arrFields, string $class = ''): string
+    public function addFieldsToXml(string $xml, array $fields, string $class = ''): string
     {
-        if (empty($arrFields)) return $str_xml;
+        if (empty($fields)) {
+            return $xml;
+        }
 
         $formCloseTag = '</form>';
         $formCloseTagLength = strlen($formCloseTag);
         $offset = -$formCloseTagLength - 1;
-        $str_xml = substr_replace($str_xml, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $this->linebreak . $formCloseTag, $offset);
-        foreach ($arrFields as $k => $v) {
-            $str_fieldtag = '<field ';
-            foreach ($v as $k2 => $v2) $str_fieldtag .= $k2 . '="' . $v2 . '" ';
-            $str_fieldtag .= ' />' . "\n";
-            $str_xml = substr_replace($str_xml, $str_fieldtag . $this->linebreak . $formCloseTag, $offset);
+
+        $xml = substr_replace($xml, '<fieldset class="' . $class . '" name="qlform' . md5(rand(0, 100)) . '">' . $this->linebreak . $formCloseTag, $offset);
+        foreach ($fields as $fieldAttributes) {
+            $fieldtag = '<field ';
+            foreach ($fieldAttributes as $attribute => $value) {
+                $fieldtag .= $attribute . '="' . $value . '" ';
+            }
+            $fieldtag .= ' />' . "\n";
+            $xml = substr_replace($xml, $fieldtag . $this->linebreak . $formCloseTag, $offset);
         }
-        return substr_replace($str_xml, '</fieldset>' . $this->linebreak . $formCloseTag, $offset);
+        $xml = substr_replace($xml, '</fieldset>' . $this->linebreak . $formCloseTag, $offset);
+        return str_replace('<<fieldset', '<fieldset', $xml);
     }
 
     private function getArticleData($field)
