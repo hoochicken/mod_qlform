@@ -24,7 +24,7 @@ use stdClass;
 try {
     require_once(__DIR__ . '/mod_qlform_require.php');
 
-    $objInput = QlformHelper::getInputByVersion(JVERSION);
+    $objInput = QlformHelper::getInputByVersion();
     $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
     $validated = false;
 
@@ -50,7 +50,7 @@ try {
     $objHelper = new QlformHelper($params, $module);
     $objHelper->formControl = $params->get('formControl', 'jform');
 
-    $db = $objHelper->getDatabaseDriver(JVERSION);
+    $db = $objHelper->getDatabaseDriver();
 
     if ($params->get('smtpCheck', false)) {
         $recipientAll = preg_split("?\n?", $params->get('emailrecipient'));
@@ -104,11 +104,11 @@ try {
     }
 
     $objCaptcha = null;
-// initiate captcha
+    // initiate captcha
     if ($boolShowCaptcha) {
         $objCaptcha = $objHelper->getCaptcha();
     }
-// check database connection
+    // check database connection
     $boolCheckDatabase = false;
     if ($params->get('todoDatabase')) {
         $boolCheckDatabase = $objHelper->connectToDatabase($db);
@@ -150,6 +150,9 @@ try {
         $objHelper->processData = false;
         if ($params->get('processData', 0)) $objHelper->initPreprocessing($data, $module, $objForm);
         if ($objHelper->processData) $data = $objHelper->processFor($data, 'formDataBeforeValidation');
+        if ($objHelper->isRemoveCaptchaFromData()) {
+            $data = $objHelper->removeCaptchaFromData($data);
+        }
         if ($params->get('captchaadded') && 0 != $boolShowCaptcha && isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
         $dataToValidate = $data;
         $dataFiles = $objInput->files->get($objHelper->formControl);

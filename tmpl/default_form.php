@@ -6,6 +6,7 @@
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 // no direct access
+use Joomla\CMS\Captcha\Captcha;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -81,7 +82,9 @@ foreach (PluginHelper::getPlugin('captcha') as $plugin) {
     <?php
 
     $onclick = (1 === (int)$params->get('formBehaviourBeforeSendUse', 0)) ? 'qlformBeforeSend_' . $module->id . '(' . $module->id . ')' : '';
-    if ($boolShowCaptcha && $objCaptcha instanceof JCaptcha) require ModuleHelper::getLayoutPath('mod_qlform', 'default_captcha'); ?>
+    if ($boolShowCaptcha && $objCaptcha instanceof Captcha) {
+        require ModuleHelper::getLayoutPath('mod_qlform', 'default_captcha');
+    } ?>
     <div class="submit control-group">
         <div class="controls">
             <button class="btn btn-large btn-primary submit <?php if (1 == $params->get('ajax', 0)) echo 'ajax'; ?>" onclick="<?= $onclick; ?>"
