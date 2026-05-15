@@ -8,7 +8,7 @@
 		<description>qlform displays a form</description>
 		<infourl title="ql.de - Blackforest Software">https://ql.de</infourl>
 		<downloads>
-			<downloadurl type="full" format="zip">https://github.com/hoochicken/mod_qlform/archive/refs/tags/v15.0.1.zip</downloadurl>
+			<downloadurl type="full" format="zip">https://github.com/hoochicken/mod_qlform/archive/refs/tags/15.0.1.zip</downloadurl>
 		</downloads>
 		<tags>
 			<tag>stable</tag>
