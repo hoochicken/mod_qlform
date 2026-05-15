@@ -104,11 +104,11 @@ try {
     }
 
     $objCaptcha = null;
-// initiate captcha
+    // initiate captcha
     if ($boolShowCaptcha) {
         $objCaptcha = $objHelper->getCaptcha();
     }
-// check database connection
+    // check database connection
     $boolCheckDatabase = false;
     if ($params->get('todoDatabase')) {
         $boolCheckDatabase = $objHelper->connectToDatabase($db);

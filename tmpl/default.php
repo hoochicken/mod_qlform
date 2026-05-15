@@ -7,7 +7,7 @@
  */
 // no direct access
 defined('_JEXEC') or die;
-JHtml::_('behavior.formvalidator');
+
 /** @var JForm $objForm  */
 /** @var JRegistry $params  */
 /** @var stdClass $params  */
