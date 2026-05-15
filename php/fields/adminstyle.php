@@ -1,19 +1,20 @@
 <?php
 /**
  * @package        mod_form
- * @copyright    Copyright (C) 2025 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2026 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Uri\Uri;
 
 defined('_JEXEC') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
-class JFormFieldAdminstyle extends JFormField
+class JFormFieldAdminstyle extends FormField
 {
     /**
      * The form field type.

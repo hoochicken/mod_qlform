@@ -1,12 +1,13 @@
 ﻿<?php
 /**
  * @package        mod_qlform
- * @copyright    Copyright (C) 2025 ql.de All rights reserved.
+ * @copyright    Copyright (C) 2026 ql.de All rights reserved.
  * @author        Mareike Riegel mareike.riegel@ql.de
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\FormField;
 use Joomla\CMS\Language\Text;
 
 defined('_JEXEC') or die;
@@ -14,7 +15,7 @@ jimport('joomla.html.html');
 //import the necessary class definition for formfield
 jimport('joomla.form.formfield');
 
-class JFormFieldFileupload extends JFormField
+class JFormFieldFileupload extends FormField
 {
     protected function getInput()
     {
