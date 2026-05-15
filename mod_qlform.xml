@@ -5,7 +5,7 @@
         method="upgrade">
     <name>qlform</name>
     <author>Mareike Riegel</author>
-    <creationDate>2026-01-30</creationDate>
+    <creationDate>2026-05-15</creationDate>
     <copyright>Copyright (C) 2026 ql.de</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>mareike.riegel@ql.de</authorEmail>
@@ -58,7 +58,8 @@
                         description="MOD_QLFORM_ADVANCED_DESC">
                 </field>
                 <field
-                        name="MOD_QLFORM_FUNCTIONALITY_LABEL"
+                        name="functionality"
+                        label="MOD_QLFORM_FUNCTIONALITY_LABEL"
                         description="MOD_QLFORM_FUNCTIONALITY_LABEL"
                         type="functionality"
                         />
@@ -823,6 +824,16 @@
                         type="spacer"
                         label="MOD_QLFORM_CAPTCHA2_DESC"
                         />
+                <field
+                        name="captcharemovefromdata"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_CAPTCHAREMOVEFROMDATA_LABEL"
+                        description="MOD_QLFORM_CAPTCHAREMOVEFROMDATA_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
                 <!--field
                         name="captchaadded"
                         type="radio"

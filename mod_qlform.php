@@ -24,7 +24,7 @@ use stdClass;
 try {
     require_once(__DIR__ . '/mod_qlform_require.php');
 
-    $objInput = QlformHelper::getInputByVersion(JVERSION);
+    $objInput = QlformHelper::getInputByVersion();
     $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
     $validated = false;
 
@@ -50,7 +50,7 @@ try {
     $objHelper = new QlformHelper($params, $module);
     $objHelper->formControl = $params->get('formControl', 'jform');
 
-    $db = $objHelper->getDatabaseDriver(JVERSION);
+    $db = $objHelper->getDatabaseDriver();
 
     if ($params->get('smtpCheck', false)) {
         $recipientAll = preg_split("?\n?", $params->get('emailrecipient'));
@@ -104,11 +104,11 @@ try {
     }
 
     $objCaptcha = null;
-// initiate captcha
+    // initiate captcha
     if ($boolShowCaptcha) {
         $objCaptcha = $objHelper->getCaptcha();
     }
-// check database connection
+    // check database connection
     $boolCheckDatabase = false;
     if ($params->get('todoDatabase')) {
         $boolCheckDatabase = $objHelper->connectToDatabase($db);
@@ -207,6 +207,9 @@ try {
         if ($params->get('show_data_sent')) {
             $objHelper->arrMessages[] = ['str' => '<strong>' . Text::_('MOD_QLFORM_SHOWDATASENT_LABEL') . '</strong><br />' . $objHelper->dump($data)];
         }
+        $dataForEmail = $objHelper->isRemoveCaptchaFromData()
+            ? $objHelper->removeCaptchaFromData($data)
+            : $data;
         $dataJsonified = $objHelper->subarrayToJson($data);
 
         if ($params->get('todoEmail')) {

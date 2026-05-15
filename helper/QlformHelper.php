@@ -26,6 +26,7 @@ class QlformHelper
     public array $arrMessages = [];
     public ?array $files = [];
     public bool $processData = false;
+    public bool $captchaRemoveData = false;
     public array $arrFields = [];
     public array $arrTableFields = [];
     public array $arrClean = [];
@@ -1156,6 +1157,19 @@ class QlformHelper
         if ($this->checkIfCustomExists('QlformNamespace\Module\Qlform\Site\Helper\modQlformPreprocessData')) $this->processData = true;
         else return false;
         $this->obj_processor = new modQlformPreprocessData($data, $this->params, $module, $form, $this);
+    }
+
+    public function isRemoveCaptchaFromData(): bool
+    {
+        return (bool)$this->params->get('captcharemovefromdata', false);
+    }
+
+    public function removeCaptchaFromData(array $data): array
+    {
+        if (isset($data['captcha'])) {
+            unset($data['captcha']);
+        }
+        return $data;
     }
 
     /**
