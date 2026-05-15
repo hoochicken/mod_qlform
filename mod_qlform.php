@@ -210,7 +210,7 @@ try {
         $dataForEmail = $objHelper->isRemoveCaptchaFromData()
             ? $objHelper->removeCaptchaFromData($data)
             : $data;
-        $dataJsonified = $objHelper->subarrayToJson($data);
+        $dataJsonified = $objHelper->subarrayToJson($dataForEmail);
 
         if ($params->get('todoEmail')) {
             if ($objHelper->processData) $dataJsonified = $objHelper->processFor($dataJsonified, 'email');
