@@ -50,7 +50,7 @@ try {
     $objHelper = new QlformHelper($params, $module);
     $objHelper->formControl = $params->get('formControl', 'jform');
 
-    $db = $objHelper->getDatabaseDriver(JVERSION);
+    $db = $objHelper->getDatabaseDriver();
 
     if ($params->get('smtpCheck', false)) {
         $recipientAll = preg_split("?\n?", $params->get('emailrecipient'));

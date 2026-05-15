@@ -13,7 +13,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 defined('_JEXEC') or die;
-defined('JPATH_PLATFORM') or die;
 
 /**
  * Form Rule class for the Joomla Platform.
