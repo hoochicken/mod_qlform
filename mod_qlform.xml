@@ -823,6 +823,16 @@
                         type="spacer"
                         label="MOD_QLFORM_CAPTCHA2_DESC"
                         />
+                <field
+                        name="captcharemovefromdata"
+                        type="radio"
+                        class="btn-group"
+                        default="0"
+                        label="MOD_QLFORM_CAPTCHAREMOVEFROMDATA_LABEL"
+                        description="MOD_QLFORM_CAPTCHAREMOVEFROMDATA_DESC">
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
                 <!--field
                         name="captchaadded"
                         type="radio"

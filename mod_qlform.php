@@ -24,7 +24,7 @@ use stdClass;
 try {
     require_once(__DIR__ . '/mod_qlform_require.php');
 
-    $objInput = QlformHelper::getInputByVersion(JVERSION);
+    $objInput = QlformHelper::getInputByVersion();
     $ajax = 'com_ajax' === $objInput->getString('option', '') && 'qlform' === $objInput->getString('module', '');
     $validated = false;
 
@@ -150,6 +150,9 @@ try {
         $objHelper->processData = false;
         if ($params->get('processData', 0)) $objHelper->initPreprocessing($data, $module, $objForm);
         if ($objHelper->processData) $data = $objHelper->processFor($data, 'formDataBeforeValidation');
+        if ($objHelper->isRemoveCaptchaFromData()) {
+            $data = $objHelper->removeCaptchaFromData($data);
+        }
         if ($params->get('captchaadded') && 0 != $boolShowCaptcha && isset($_POST['captcha'])) $data['captcha'] = $_POST['captcha'];
         $dataToValidate = $data;
         $dataFiles = $objInput->files->get($objHelper->formControl);
